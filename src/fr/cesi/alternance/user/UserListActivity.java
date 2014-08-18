@@ -5,9 +5,6 @@ import java.util.List;
   
 import fr.cesi.alternance.Constants; 
 import fr.cesi.alternance.R; 
-import fr.cesi.alternance.R.id; 
-import fr.cesi.alternance.R.layout; 
-import fr.cesi.alternance.R.menu; 
 import fr.cesi.alternance.user.User; 
   
 import android.app.ListActivity; 

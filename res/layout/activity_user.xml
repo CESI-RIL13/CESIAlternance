@@ -20,9 +20,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="E-mail"
-        android:inputType="textEmailAddress" >
-        <requestFocus />
-    </EditText>
+        android:inputType="textEmailAddress" />
+
     <EditText
         android:id="@+id/pwdUser"
         android:layout_width="wrap_content"
@@ -31,7 +30,6 @@
         android:hint="Mot de passe"
         android:inputType="textPassword"
         android:visibility="gone" />
-    
 
     <EditText
         android:id="@+id/phoneUser"

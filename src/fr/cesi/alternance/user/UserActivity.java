@@ -3,32 +3,24 @@ package fr.cesi.alternance.user;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
-
 import fr.cesi.alternance.R;
-import fr.cesi.alternance.R.id;
-import fr.cesi.alternance.R.layout;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.user.User;
-import android.R.menu;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -64,7 +56,6 @@ public class UserActivity extends Activity {
 		btNote = (Button) findViewById(R.id.noteUser);
 		btNote.setOnClickListener(mNoteListener);
 
-
 		//initialise les texteview
 		mName = (EditText)findViewById(R.id.nameUser);
 		mMail = (EditText)findViewById(R.id.mailUser);
@@ -76,7 +67,6 @@ public class UserActivity extends Activity {
 			mUser = (User)getIntent().getExtras().getParcelable("user");
 			mPromo = getIntent().getExtras().getLong("promo_id");
 		}
-
 
 		//si le user est passé charge les champs
 		if(mUser != null){
@@ -153,7 +143,7 @@ public class UserActivity extends Activity {
 			btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
 		}
 
-		//mName.setEnabled(mUser.getId() > 0);
+		mName.setEnabled(mUser.getId() == 0);
 	}
 
 	//listener Bouton
@@ -180,6 +170,7 @@ public class UserActivity extends Activity {
 		}
 
 	};
+	
 	private View.OnClickListener mNoteListener = new View.OnClickListener() {
 
 		@Override
@@ -256,6 +247,7 @@ public class UserActivity extends Activity {
 			}
 		}).start();
 	}
+	
 	//fonction qui delete un utilisateur
 	private String deleteUser(long l){
 		String error ;
@@ -300,6 +292,7 @@ public class UserActivity extends Activity {
 		success = "successfully submitted ! ";
 		return success;
 	}
+	
 	//fonction pour aller sur l'onglet qui permet d'afficher et rentrer des notes
 	private void noteUser(){
 

@@ -2,21 +2,14 @@ package fr.cesi.alternance.user;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
-
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.app.ActivityCompat;
-
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.helpers.Entity;
-//import fr.cesi.alternance.Promo;
 
 public class User extends Entity implements Parcelable {
 
@@ -147,6 +140,7 @@ public class User extends Entity implements Parcelable {
 			//Authentification
 			String token = AccountHelper.getData(Api.UserColumns.TOKEN);
 			HttpData post = new HttpData(url).header(Api.APP_AUTH_TOKEN,token)
+					.data("id",""+id)
 					.data("name",name)
 					.data("email",mail)
 					.data("role",role)
@@ -170,6 +164,4 @@ public class User extends Entity implements Parcelable {
 		return success;
 	}
 
-	private void getUserPhoto(){
-	}
 }
