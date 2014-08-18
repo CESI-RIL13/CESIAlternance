@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CESI Alternance</string>
+    <string name="action_settings">Paramètres</string>
+    
+    <string name="account_label">CESI Alternance</string>
+    <string name="account_type">fr.cesi.alternance.account</string>
+    
+    <string name="provider_calendar">com.android.calendar</string>
+    
+    <string name="auth_login_email">Votre email</string>
+    <string name="auth_login_pwd">Mot de passe</string>
+    <string name="auth_login_submit">Connexion</string>
+    
+    <string name="account_empty">Aucun compte</string>
+    <string name="account_empty_sub">Veuillez ajouter un compte</string>
+    <string name="account_add">Ajouter un compte</string>
+    
+    <string name="menu_add">Ajouter</string>
+    <string name="menu_delete">Supprimer</string>
+    
+    <string name="menu_contextuel_mess">Confirmer la suppression ?</string>
+<!--     <string name="menu_contextuel_title">Confirmer la suppression ?</string> -->
+    <string name="menu_contextuel_delete">Supprimer</string>
+    <string name="menu_contextuel_cancel">Annuler</string>
+    
+    <string name="progress_delete_title">Suppression</string>
+    <string name="progress_chargement">Chargement</string>  
+    <string name="progress_chargement_infos">Chargement en cours</string>  
+    <string name="progress_delete_infos">Suppression en cours</string>
+
+    <string name="eleve_list_activity_title">Liste des éléves</string>
+    <string name="user_list_add_action">Ajouter un utilisateur</string>
+    
+	<string name="promo_title">Promotions</string>
+	<string name="promo_name">Promotion</string>
+	<string name="promo_info">Informations</string>
+
+    <string name="user_save_settings">save</string>
+    <string name="user_delete_settings">delete</string>
+    <string name="user_note_settings">note</string>
+   
+</resources>

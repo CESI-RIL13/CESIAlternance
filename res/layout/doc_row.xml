@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/imageDocument"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/document" />
+
+    <LinearLayout
+        android:id="@+id/select_doc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.95"
+        android:gravity="top|left"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/titre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Titre"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description" />
+
+    </LinearLayout>
+
+</LinearLayout>
