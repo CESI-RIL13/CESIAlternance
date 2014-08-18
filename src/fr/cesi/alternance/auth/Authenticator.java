@@ -9,9 +9,13 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorException;
 import android.accounts.NetworkErrorException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.CalendarContract.Calendars;
+import android.provider.CalendarContract.Events;
 import android.util.Log;
 
 public class Authenticator extends AbstractAccountAuthenticator {
@@ -39,6 +43,25 @@ public class Authenticator extends AbstractAccountAuthenticator {
 		final Bundle bundle = new Bundle();
 		bundle.putParcelable(AccountManager.KEY_INTENT, intent);
 		return bundle;
+	}
+	
+	@Override
+	public Bundle getAccountRemovalAllowed(AccountAuthenticatorResponse response, Account account) throws NetworkErrorException {
+		Bundle result = super.getAccountRemovalAllowed(response, account);
+		if (result != null && result.containsKey(AccountManager.KEY_BOOLEAN_RESULT) && !result.containsKey(AccountManager.KEY_INTENT)) {
+	        final boolean removalAllowed = result.getBoolean(AccountManager.KEY_BOOLEAN_RESULT);
+	        if (removalAllowed) {
+	        	ContentResolver cr = mContext.getContentResolver();
+	    		String[] projection = new String[]{ Calendars._ID };
+	        	String where = Calendars.ACCOUNT_NAME + " = '" + account.name + "'";
+	            Cursor cur = cr.query(Calendars.CONTENT_URI, projection, where, null, null);
+	    		while (cur.moveToNext()) {
+	    			cr.delete(Events.CONTENT_URI, Events.CALENDAR_ID + " = " + cur.getLong(0), null);
+					cr.delete(Calendars.CONTENT_URI, where, null);
+	    		}
+	        }
+	    }
+		return result;
 	}
 
 	@Override
