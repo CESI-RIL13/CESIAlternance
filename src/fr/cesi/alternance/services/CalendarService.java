@@ -1,17 +1,9 @@
 package fr.cesi.alternance.services;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.kolapsis.utils.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.kolapsis.utils.HttpData;
-import com.kolapsis.utils.HttpData.HttpDataException;
-
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
@@ -121,41 +113,6 @@ public class CalendarService extends Service {
 		} catch (IOException e) {
 			Log.e("CalendarService", "IOException: " + e.getMessage(), e);
 		}
-		
-		/*
-		try {
-			//String url = "http://www.google.com/calendar/feeds/" + Constants.DEBUG_CALENDAR_REFERENCE + "@group.calendar.google.com/public/full?alt=json";
-			String url = Constants.BASE_API_URL + "/calendar";
-			HttpData request = new HttpData(url).get();
-			JSONObject json = request.asJSONObject();
-			//Log.v(TAG, "json: " + json);
-			JSONObject feed = json.getJSONObject("feed");
-			String title = feed.getJSONObject("title").getString("$t");
-			long calId = CalendarHelper.select(account, title);
-			//Log.v(TAG, "title: " + title);
-			if (calId == 0) calId = CalendarHelper.insert(account, title, Constants.DEBUG_CALENDAR_REFERENCE);
-			JSONArray entries = feed.getJSONArray("entry");
-			//Log.v(TAG, entries.length() + " entries");
-			for (int i=0; i<entries.length(); i++) {
-				JSONObject entry = entries.getJSONObject(i);
-				String sourceId = entry.getJSONObject("id").getString("$t");
-				int index = sourceId.lastIndexOf("/");
-				sourceId = sourceId.substring(index+1);
-				title = entry.getJSONObject("title").getString("$t");
-				String content = entry.getJSONObject("content").getString("$t");
-				JSONObject dates = entry.getJSONArray("gd$when").getJSONObject(0);
-				String begin = dates.getString("startTime");
-				String end = dates.getString("endTime");
-				String where = entry.getJSONArray("gd$where").getJSONObject(0).getString("valueString");
-				long evtId = CalendarHelper.Event.select(account, calId, sourceId);
-				if (evtId == 0) CalendarHelper.Event.insert(account, calId, sourceId, title, content, begin, end, where);
-			}
-		} catch (HttpDataException e) {
-			Log.e("AuthService", "HttpDataException: " + e.getMessage(), e);
-		} catch (JSONException e) {
-			Log.e("AuthService", "JSONException: " + e.getMessage(), e);
-		}
-		*/
 	}
 
 }

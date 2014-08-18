@@ -194,7 +194,7 @@ public class CalendarHelper {
 		
 		@Override
 		public String getApiPath() {
-			return "/calendar/events";
+			return null;
 		}
 		
 		public long getCalId() {
