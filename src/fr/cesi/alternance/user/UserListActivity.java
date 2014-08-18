@@ -35,17 +35,16 @@ public class UserListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) { 
     	Log.v(TAG, "onCreate");
         super.onCreate(savedInstanceState); 
+
         //setContentView(R.layout.activity_list_user);
         setContentView(R.layout.activity_home); 
-  
+ 
         role = getIntent().getExtras().getString("role"); 
         promo = new Promo(getIntent().getExtras().getLong("promo_id")); 
-		
+
 		TextView name = (TextView) findViewById(R.id.name);
 		name.setText(getIntent().getExtras().getString("users_list_name"));
 
-        
-          
         ListView lv = getListView(); 
           
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
@@ -86,17 +85,16 @@ public class UserListActivity extends ListActivity {
         getMenuInflater().inflate(R.menu.userlist, menu); 
         return true; 
     } 
-      
+
     public boolean onOptionsItemSelected(MenuItem item) { 
         switch (item.getItemId()) { 
         case R.id.add_action: 
-              
             User testUser = new User(); 
-            testUser.setName(""); 
-            testUser.setMail(""); 
-            testUser.setPhone(""); 
-            testUser.setRole(role); 
-              
+            testUser.setName("");
+            testUser.setMail("");
+            testUser.setPhone("");
+            testUser.setRole(role);
+
             Intent intent = new Intent(UserListActivity.this, UserActivity.class); 
             intent.putExtra("user", testUser); 
             intent.putExtra("promo_id", promo.getId()); 

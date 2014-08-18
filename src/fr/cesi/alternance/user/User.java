@@ -24,10 +24,10 @@ public class User extends Entity implements Parcelable {
 	private String mail;
 	private String role;
 	private String phone;
+	private String picture_path;
 	private int id_promo;
 
-	public User() {
-	}
+	public User() {}
 
 	public User(Parcel in){
 		id = in.readLong();
@@ -35,6 +35,7 @@ public class User extends Entity implements Parcelable {
 		mail = in.readString();
 		role = in.readString();
 		phone = in.readString();
+		picture_path = in.readString();
 	}
 
 	@Override
@@ -51,6 +52,7 @@ public class User extends Entity implements Parcelable {
 			mail = json.getString("email");
 			role = json.getString("role");
 			phone = json.getString("phone");
+			picture_path = json.getString("picture_path");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -60,6 +62,14 @@ public class User extends Entity implements Parcelable {
 	@Override
 	public JSONObject asJSON() {
 		return null;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getMail() {
@@ -86,18 +96,14 @@ public class User extends Entity implements Parcelable {
 		this.phone = phone;
 	}
 
-	public String getName() {
-		return name;
+	public String getPicture_path() {
+		return picture_path;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPicture_path(String picture_path) {
+		this.picture_path = picture_path;
 	}
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
 	public int getId_promo() {
 		return id_promo;
 	}
@@ -107,12 +113,18 @@ public class User extends Entity implements Parcelable {
 	}
 
 	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(id);
 		dest.writeString(name);
 		dest.writeString(mail);
 		dest.writeString(role);
 		dest.writeString(phone);
+		dest.writeString(picture_path);
 	}
 
 	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
@@ -125,8 +137,7 @@ public class User extends Entity implements Parcelable {
 		}
 	};
 
-	//fonction qui fait la requète submit
-	private boolean save(){
+	public boolean save(){
 
 		boolean success = false;
 		try {
@@ -157,5 +168,8 @@ public class User extends Entity implements Parcelable {
 			e.printStackTrace();
 		}
 		return success;
+	}
+
+	private void getUserPhoto(){
 	}
 }

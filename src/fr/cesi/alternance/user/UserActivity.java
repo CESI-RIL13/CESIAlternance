@@ -153,8 +153,9 @@ public class UserActivity extends Activity {
 			btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
 		}
 
-		mName.setEnabled(mUser.getId() > 0);
+		//mName.setEnabled(mUser.getId() > 0);
 	}
+
 	//listener Bouton
 	private View.OnClickListener mCallListener = new View.OnClickListener() {
 
@@ -166,6 +167,7 @@ public class UserActivity extends Activity {
 		}
 
 	};
+
 	private View.OnClickListener mMailerListener = new View.OnClickListener() {
 
 		@Override
@@ -183,7 +185,6 @@ public class UserActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			//Show note
-
 		}
 
 	};
@@ -192,8 +193,8 @@ public class UserActivity extends Activity {
 	private void saveUser(){
 
 		//modifi l'objet user courant avec les nouveaux paramètres
-		mUser.setMail(mMail.getText().toString());
 		mUser.setName(mName.getText().toString());
+		mUser.setMail(mMail.getText().toString());
 		mUser.setPhone(mPhone.getText().toString());
 
 		//regarde si un champ est vide
@@ -208,50 +209,16 @@ public class UserActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				boolean success = false;
-				try {
-					//requète 
-					//appel de la fonction addUser
-					String url = Constants.BASE_API_URL + "/user/addUser";
-					//Authentification
-					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
-					HttpData post = new HttpData(url).header(Api.APP_AUTH_TOKEN,token)
-							.data("name",mName.getText().toString())
-							.data("email",mMail.getText().toString())
-							.data("role",mUser.getRole())
-							.data("phone",mPhone.getText().toString())
-							.data("pwd",mPwd.getText().toString())
-							.data("id_promo",mPromo.toString());
-					//post.logData();
-					post.post();
-					//Log.d("EEE", post.asString());
-					JSONObject obj = post.asJSONObject();
-					success = obj.getBoolean("success");
-					if(success) {
-						JSONObject rs = obj.getJSONObject("result");
-						mUser.setId(rs.getLong("id"));
-						mUser.setMail(mMail.getText().toString());
-						mUser.setName(mName.getText().toString());
-						mUser.setPhone(mPhone.getText().toString());
-					}
 
-				} catch (HttpDataException hde) {
-					// TODO Auto-generated catch block
-					hde.printStackTrace();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					if(success) {
-						ActivityCompat.invalidateOptionsMenu(UserActivity.this);
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								UserActivity.this.initialize();
-								progress.dismiss();
-							}
-						});
-					}
+				if(mUser.save()) {
+					ActivityCompat.invalidateOptionsMenu(UserActivity.this);
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							UserActivity.this.initialize();
+							progress.dismiss();
+						}
+					});
 				}
 
 			}
@@ -276,46 +243,16 @@ public class UserActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				boolean success = false;
-				try {
-					//requète 
-					//appel de la fonction addUser
-					String url = Constants.BASE_API_URL + "/user/updateUser";
-					//Authentification
-					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
-					HttpData post = new HttpData(url).header(Api.APP_AUTH_TOKEN,token)
-							.data("name",mName.getText().toString())
-							.data("email",mMail.getText().toString())
-							.data("phone",mPhone.getText().toString());
-					//post.logData();
-					post.post();
-					//Log.d("EEE", post.asString());
-					JSONObject obj = post.asJSONObject();
-					success = obj.getBoolean("success");
-					if(success) {
-						mUser.setMail(mMail.getText().toString());
-						mUser.setPhone(mPhone.getText().toString());
-					}
-
-				} catch (HttpDataException hde) {
-					// TODO Auto-generated catch block
-					hde.printStackTrace();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					if(success) {
-						ActivityCompat.invalidateOptionsMenu(UserActivity.this);
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								UserActivity.this.initialize();
-								progress.dismiss();
-							}
-						});
-					}
+				if(mUser.save()) {
+					ActivityCompat.invalidateOptionsMenu(UserActivity.this);
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							UserActivity.this.initialize();
+							progress.dismiss();
+						}
+					});
 				}
-
 			}
 		}).start();
 	}
