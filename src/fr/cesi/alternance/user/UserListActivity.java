@@ -30,10 +30,8 @@ public class UserListActivity extends ListActivity {
     private Promo promo; 
   
     protected void onCreate(Bundle savedInstanceState) { 
-    	Log.v(TAG, "onCreate");
         super.onCreate(savedInstanceState); 
 
-        //setContentView(R.layout.activity_list_user);
         setContentView(R.layout.activity_home); 
  
         role = getIntent().getExtras().getString("role"); 
@@ -62,7 +60,6 @@ public class UserListActivity extends ListActivity {
             
             @Override
             public void run() { 
-                // TODO Auto-generated method stub 
                 ArrayList<User> user_list = promo.getListUser(role); 
                   
                 final UsersAdapter adapter = new UsersAdapter(UserListActivity.this, android.R.layout.simple_list_item_1, user_list); 
