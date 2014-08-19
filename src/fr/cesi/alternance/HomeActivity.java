@@ -4,6 +4,7 @@ package fr.cesi.alternance;
 import fr.cesi.alternance.helpers.AccountHelper;
 //import fr.cesi.alternance.user.UserListActivity;
 import fr.cesi.alternance.docs.DocListActivity;
+import fr.cesi.alternance.promo.PromoListActivity;
 import fr.cesi.alternance.training.TrainingActivity;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.Calendar;
 import com.kolapsis.utils.StringUtils;
 
 import fr.cesi.alternance.helpers.AccountHelper;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -51,10 +51,6 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		
 		//AccountHelper.setContext(this);
 		setContentView(R.layout.activity_home);
-		
-		/*
-		 * DEBUG : lance activiter UserListActivity
-		startActivity(new Intent(this, UserListActivity.class)); */
 		
 		AccountHelper.setContext(this);
 		
@@ -163,16 +159,29 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		buttons.add(new Holder("Calendrier", "Ouvrir mon calendrier", intent));
 		
 		if ("IF".equals(role)) {
+			
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
+			
 			buttons.add(new Holder("Formations", "Mes formations", intentFormations));
+		
 		} else if ("Intervenant".equals(role)) {			
-			//buttons.add(new Holder("Mes supports", "Gérer mes supports de cours", null));
-			//buttons.add(new Holder("Notes", "Noter une promo", null));
+
+			Intent intentFormations = new Intent(this, TrainingActivity.class);
 			Intent intentDoc = new Intent(this, DocListActivity.class);
+			
+			buttons.add(new Holder("Formations", "Mes formations", intentFormations));
 			buttons.add(new Holder("Documents", "Documents officiels CESI", intentDoc));
+		
 		} else if ("Stagiaire".equals(role)) {
-			buttons.add(new Holder("Mes supports", "Consulter mes supports de cours", null));
+			
+			Intent intentPromos = new Intent(this, PromoListActivity.class);
 			Intent intentDocStagiaire = new Intent(this, DocListActivity.class);
+			
+			intentPromos.putExtra("training", 0);
+			intentPromos.putExtra("name", "Mes promotions");
+			
+			buttons.add(new Holder("Formations", "Mes formations", intentPromos));
+			buttons.add(new Holder("Mes supports", "Consulter mes supports de cours", null));		
 			buttons.add(new Holder("Documents", "Documents officiels CESI", intentDocStagiaire));
 		}
 		

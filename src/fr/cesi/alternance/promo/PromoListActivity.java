@@ -39,23 +39,16 @@ public class PromoListActivity extends ListActivity{
 	public static final String TAG = "PromoListActivity";
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		
-		
+	protected void onCreate(Bundle savedInstanceState) {		
+
 		training = getIntent().getExtras().getInt("training");
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		
+
 		TextView name = (TextView) findViewById(R.id.name);
 		name.setText(getIntent().getExtras().getString("name"));
-		
-		//training = 1;
-		//super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_home);
-		//setContentView(R.layout.activity_promo_list);
-		//getListPromo();
+
 		syncPromo();
 	}
 	
@@ -68,8 +61,10 @@ public class PromoListActivity extends ListActivity{
 				try {
 					final ArrayList<Promo> listPromo = new ArrayList<Promo>();
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
+					
 					HttpData get = new  HttpData(Constants.BASE_API_URL + "/promo").header(Api.APP_AUTH_TOKEN, token).data("training", String.valueOf(training)).get();
 					JSONObject json = get.asJSONObject();
+					
 					if(json.getBoolean("success")) {
 						JSONArray result = json.getJSONArray("result");
 						for (int i = 0; i < result.length(); i++) {
