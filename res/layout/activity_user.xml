@@ -4,7 +4,12 @@
     android:layout_height="match_parent"
     android:gravity="center|center_vertical"
     android:orientation="vertical" >
-
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/picture"
+            android:src="@drawable/ic_launcher"
+            />
     <EditText
         android:id="@+id/nameUser"
         android:layout_width="wrap_content"
@@ -56,10 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Show note" />
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/picture"
-            />
+
 
 </LinearLayout>
