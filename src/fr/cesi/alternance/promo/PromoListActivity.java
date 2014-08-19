@@ -55,9 +55,7 @@ public class PromoListActivity extends ListActivity{
 	private void syncPromo(){
 		new Thread(new Runnable() {
 			
-			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					final ArrayList<Promo> listPromo = new ArrayList<Promo>();
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
@@ -96,28 +94,15 @@ public class PromoListActivity extends ListActivity{
 	}
 	
 	private void getListPromo(final ArrayList<Promo> listPromo) {
-			
-/*		final ArrayList<Promo> listPromo = new ArrayList<Promo>();
-		
-		for (int i=0; i<10; i++){
-			Promo p = new Promo(i);
-			p.setName(1+i);
-			p.setNumber(2+i);
-			p.setCode("CODE" + i );
-			Log.v(TAG, "ok" + i);
-			listPromo.add(p);
-		} */
 		
 		PromoAdapter adapter= new PromoAdapter(this, android.R.layout.simple_list_item_2, listPromo);
 		
 		setListAdapter(adapter);
-	
 		
 		ListView lv = getListView();
 		
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-			@Override
 			public void onItemClick(AdapterView<?> list, View view, int position,
 					long id) {
 				
@@ -125,7 +110,6 @@ public class PromoListActivity extends ListActivity{
 				intent.putExtra("id_promo", listPromo.get(position).getId());
 				intent.putExtra("name_promo", listPromo.get(position).getName());
 				startActivity(intent);
-				//finish();
 			}
 		});
 	}
@@ -161,9 +145,6 @@ public class PromoListActivity extends ListActivity{
 			
 			return view;
 		}
-		
-		
-		
 		
 	}
 	

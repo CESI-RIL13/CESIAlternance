@@ -155,22 +155,24 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
 		builder.appendPath("time");
 		ContentUris.appendId(builder, startMillis);
+		
 		intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
-		buttons.add(new Holder("Calendrier", "Ouvrir mon calendrier", intent));
+		
+		buttons.add(new Holder(getString(R.string.calendrier_title), getString(R.string.calendrier_action), intent));
 		
 		if ("IF".equals(role)) {
 			
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
 			
-			buttons.add(new Holder("Formations", "Mes formations", intentFormations));
+			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
 		
 		} else if ("Intervenant".equals(role)) {			
 
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
 			Intent intentDoc = new Intent(this, DocListActivity.class);
 			
-			buttons.add(new Holder("Formations", "Mes formations", intentFormations));
-			buttons.add(new Holder("Documents", "Documents officiels CESI", intentDoc));
+			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
+			buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDoc));
 		
 		} else if ("Stagiaire".equals(role)) {
 			
@@ -178,11 +180,11 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 			Intent intentDocStagiaire = new Intent(this, DocListActivity.class);
 			
 			intentPromos.putExtra("training", 0);
-			intentPromos.putExtra("name", "Mes promotions");
+			intentPromos.putExtra("name", getString(R.string.promo_desc));
 			
-			buttons.add(new Holder("Formations", "Mes formations", intentPromos));
-			buttons.add(new Holder("Mes supports", "Consulter mes supports de cours", null));		
-			buttons.add(new Holder("Documents", "Documents officiels CESI", intentDocStagiaire));
+			buttons.add(new Holder(getString(R.string.promo_title), getString(R.string.promo_action), intentPromos));
+			buttons.add(new Holder(getString(R.string.support_title), getString(R.string.support_action), null));		
+			buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDocStagiaire));
 		}
 		
 		mAdapter = new HolderAdapter(this, buttons);

@@ -3,6 +3,7 @@ package fr.cesi.alternance.user;
 import java.util.ArrayList; 
 import java.util.List; 
   
+
 import fr.cesi.alternance.Constants; 
 import fr.cesi.alternance.R; 
 import fr.cesi.alternance.user.User; 
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter; 
 import android.widget.ListView; 
 import android.widget.TextView; 
+import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.promo.Promo; 
   
 public class UserListActivity extends ListActivity { 
@@ -33,7 +35,7 @@ public class UserListActivity extends ListActivity {
         super.onCreate(savedInstanceState); 
 
         setContentView(R.layout.activity_home); 
- 
+
         role = getIntent().getExtras().getString("role"); 
         promo = new Promo(getIntent().getExtras().getLong("promo_id")); 
 
@@ -75,14 +77,17 @@ public class UserListActivity extends ListActivity {
     	super.onResume();
     }
       
-    public boolean onCreateOptionsMenu (Menu menu) { 
+    public boolean onCreateOptionsMenu (Menu menu) {
+    	if(!"IF".equals(AccountHelper.getRole()))
+    		return false;
         getMenuInflater().inflate(R.menu.userlist, menu); 
         return true; 
     } 
 
     public boolean onOptionsItemSelected(MenuItem item) { 
         switch (item.getItemId()) { 
-        case R.id.add_action: 
+        case R.id.add_action:
+        	
             User testUser = new User(); 
             testUser.setName("");
             testUser.setMail("");

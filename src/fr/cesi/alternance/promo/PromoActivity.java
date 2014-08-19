@@ -37,9 +37,8 @@ public class PromoActivity extends ListActivity {
 
 	private void listGoTo() {
 		
-		final String[] values = {"Stagiaires", "Intervenants", "Supports", "Documents"};
+		final String[] values = {getString(R.string.stagiaire_title), getString(R.string.intervenant_title), getString(R.string.support_title), getString(R.string.doc_title)};
 		
-		//ListView lv = (ListView) findViewById(R.id.goTo);
 		ListView lv = getListView();
 
 		lv.setAdapter(new ArrayAdapter<String>(PromoActivity.this,  android.R.layout.simple_list_item_1, values));
@@ -47,8 +46,7 @@ public class PromoActivity extends ListActivity {
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> promo_toGo, View view, int position,
-					long id) {
+			public void onItemClick(AdapterView<?> promo_toGo, View view, int position, long id) {
 				
 				try {
 					Intent intent = new Intent();
@@ -85,8 +83,7 @@ public class PromoActivity extends ListActivity {
 		});
 
 	}
-	
-	@Override
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.promo, menu);
