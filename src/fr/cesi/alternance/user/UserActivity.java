@@ -1,10 +1,12 @@
 package fr.cesi.alternance.user;
 
 
+import android.widget.ImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
+import com.kolapsis.utils.DownloadImageTask;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
@@ -30,14 +32,14 @@ public class UserActivity extends Activity {
 	private EditText mName;
 	private EditText mMail;
 	private EditText mPhone;
-	//private EditText mPwd;
-	private String mRoleAccount;//(role de l'utilisateur du téléphone)
+	private String mRoleAccount;//(role de l'utilisateur du tï¿½lï¿½phone)
 	private String mRole;
 	private Long mPromo;
 	private User mUser;
 	private Button btCall;
 	private Button btMail;
 	private Button btNote;
+    private ImageView mPicture;
 	private MenuItem mSave;
 	private MenuItem mDelete;
 	private MenuItem mNoter;
@@ -59,23 +61,27 @@ public class UserActivity extends Activity {
 		//initialise les texteview
 		mName = (EditText)findViewById(R.id.nameUser);
 		mMail = (EditText)findViewById(R.id.mailUser);
-		//mPwd = (EditText)findViewById(R.id.pwdUser);
 		mPhone = (EditText)findViewById(R.id.phoneUser);
 
-		// récupère le choix du chemin de Home (Eleve ou Intervenant) && l'objet User
+        //initialise l'image
+        mPicture = (ImageView)findViewById(R.id.picture);
+
+		// rï¿½cupï¿½re le choix du chemin de Home (Eleve ou Intervenant) && l'objet User
 		if(getIntent().getExtras() != null){
 			mUser = (User)getIntent().getExtras().getParcelable("user");
 			mPromo = getIntent().getExtras().getLong("promo_id");
 		}
 
-		//si le user est passé charge les champs
+		//si le user est passï¿½ charge les champs
 		if(mUser != null){
 			mName.setText(mUser.getName());
 			mPhone.setText(mUser.getPhone());
 			mMail.setText(mUser.getMail());
+            mPicture.setTag(mUser.getPicture_path());
+            new DownloadImageTask(mPicture);
 		}
 
-		// récupère le role de l'utilisateur du téléphone
+		// rï¿½cupï¿½re le role de l'utilisateur du tï¿½lï¿½phone
 		mRoleAccount = AccountHelper.getRole();
 
 		setTitle(mUser.getRole());
@@ -83,6 +89,9 @@ public class UserActivity extends Activity {
 		Log.v(TAG, mUser.getName());
 		Log.v(TAG, mUser.getPhone());
 		Log.v(TAG, mUser.getMail());
+
+        //affichage de la photo
+
 
 		initialize();
 	}
@@ -107,7 +116,7 @@ public class UserActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.user_settings_save:
 			// Comportement du bouton save
-			// appelle la fonction qui fait la requète
+			// appelle la fonction qui fait la requï¿½te
 			if(mUser.getId() == 0) {
 				saveUser();
 			} else if(mUser.getId() > 0) {
@@ -135,18 +144,14 @@ public class UserActivity extends Activity {
 			btCall.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
 			btMail.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
 			btNote.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
-			//mPwd.setVisibility((mUser.getId() == 0 ? View.VISIBLE : View.GONE));
 		}		
 		// 4 - l'eleve(pour plus tard)
 		else if("stagiaire".equals(mRoleAccount)){
 			//prepa interface
 			btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
 		}
-		
-		mName.setEnabled((mUser.getId() == 0 || ("IF".equals(mRoleAccount) && mUser.getId() == 0)));
-		mMail.setEnabled("IF".equals(mRoleAccount));
-		mPhone.setEnabled("IF".equals(mRoleAccount));
 
+		mName.setEnabled(mUser.getId() == 0);
 	}
 
 	//listener Bouton
@@ -183,10 +188,10 @@ public class UserActivity extends Activity {
 
 	};
 
-	//fonction qui fait la requète submit
+	//fonction qui fait la requï¿½te submit
 	private void saveUser(){
 
-		//modifi l'objet user courant avec les nouveaux paramètres
+		//modifi l'objet user courant avec les nouveaux paramï¿½tres
 		mUser.setName(mName.getText().toString());
 		mUser.setMail(mMail.getText().toString());
 		mUser.setPhone(mPhone.getText().toString());
@@ -196,10 +201,10 @@ public class UserActivity extends Activity {
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
 
-		//déclare un thread qui fait la requète
+		//dï¿½clare un thread qui fait la requï¿½te
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -221,7 +226,7 @@ public class UserActivity extends Activity {
 
 	private void update() {
 
-		//modifi l'objet user courant avec les nouveaux paramètres
+		//modifi l'objet user courant avec les nouveaux paramï¿½tres
 		mUser.setMail(mMail.getText().toString());
 		mUser.setPhone(mPhone.getText().toString());
 
@@ -230,10 +235,10 @@ public class UserActivity extends Activity {
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
 
-		//déclare un thread qui fait la requète
+		//dï¿½clare un thread qui fait la requï¿½te
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -255,18 +260,18 @@ public class UserActivity extends Activity {
 	private String deleteUser(long l){
 		String error ;
 		String success;
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
 
-		//déclare un thread qui fait la requète
+		//dï¿½clare un thread qui fait la requï¿½te
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					Thread.sleep(3000);
 					progress.dismiss();
-					//requète 
-					//requète 
+					//requï¿½te 
+					//requï¿½te 
 					//appel de la fonction addUser
 					String url = Constants.BASE_API_URL + "/user/delete/"+mUser.getId();
 					Log.v(TAG,url);
