@@ -142,8 +142,11 @@ public class UserActivity extends Activity {
 			//prepa interface
 			btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
 		}
+		
+		mName.setEnabled((mUser.getId() == 0 || ("IF".equals(mRoleAccount) && mUser.getId() == 0)));
+		mMail.setEnabled("IF".equals(mRoleAccount));
+		mPhone.setEnabled("IF".equals(mRoleAccount));
 
-		mName.setEnabled(mUser.getId() == 0);
 	}
 
 	//listener Bouton

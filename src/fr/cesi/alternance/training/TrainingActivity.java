@@ -45,7 +45,6 @@ public class TrainingActivity extends ListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 				
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
@@ -59,7 +58,6 @@ public class TrainingActivity extends ListActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
 		//return super.onCreateOptionsMenu(menu);
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.training_menu, menu);
