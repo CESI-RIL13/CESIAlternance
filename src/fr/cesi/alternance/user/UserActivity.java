@@ -151,7 +151,9 @@ public class UserActivity extends Activity {
 			btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
 		}
 
-		mName.setEnabled(mUser.getId() == 0);
+		mName.setEnabled((mUser.getId() == 0 || ("IF".equals(mRoleAccount) && mUser.getId() == 0)));
+		mMail.setEnabled("IF".equals(mRoleAccount));
+		mPhone.setEnabled("IF".equals(mRoleAccount));
 	}
 
 	//listener Bouton
