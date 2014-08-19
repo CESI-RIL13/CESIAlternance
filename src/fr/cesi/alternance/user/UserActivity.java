@@ -30,7 +30,7 @@ public class UserActivity extends Activity {
 	private EditText mName;
 	private EditText mMail;
 	private EditText mPhone;
-	private EditText mPwd;
+	//private EditText mPwd;
 	private String mRoleAccount;//(role de l'utilisateur du téléphone)
 	private String mRole;
 	private Long mPromo;
@@ -59,7 +59,7 @@ public class UserActivity extends Activity {
 		//initialise les texteview
 		mName = (EditText)findViewById(R.id.nameUser);
 		mMail = (EditText)findViewById(R.id.mailUser);
-		mPwd = (EditText)findViewById(R.id.pwdUser);
+		//mPwd = (EditText)findViewById(R.id.pwdUser);
 		mPhone = (EditText)findViewById(R.id.phoneUser);
 
 		// récupère le choix du chemin de Home (Eleve ou Intervenant) && l'objet User
@@ -135,7 +135,7 @@ public class UserActivity extends Activity {
 			btCall.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
 			btMail.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
 			btNote.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
-			mPwd.setVisibility((mUser.getId() == 0 ? View.VISIBLE : View.GONE));
+			//mPwd.setVisibility((mUser.getId() == 0 ? View.VISIBLE : View.GONE));
 		}		
 		// 4 - l'eleve(pour plus tard)
 		else if("stagiaire".equals(mRoleAccount)){
