@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,23 +37,30 @@ public class PromoListActivity extends ListActivity{
 
 	private String role;
 	private int training;
-	public static final String TAG = "PromoListActivity";
+    private ProgressBar loader;
+	
+    public static final String TAG = "PromoListActivity";
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {		
-
-		training = getIntent().getExtras().getInt("training");
-
+	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_home);
-
+        loader = (ProgressBar) findViewById(android.R.id.progress);
+		training = getIntent().getExtras().getInt("training");
 		TextView name = (TextView) findViewById(R.id.name);
+		
 		name.setText(getIntent().getExtras().getString("name"));
 
 		syncPromo();
 	}
 	
 	private void syncPromo(){
+
+    	getListView().setVisibility(View.GONE);
+    	loader.setVisibility(View.VISIBLE);
+  
 		new Thread(new Runnable() {
 			
 			public void run() {
@@ -75,7 +83,8 @@ public class PromoListActivity extends ListActivity{
 							@Override
 							public void run() {
 								getListPromo(listPromo);
-								
+						    	getListView().setVisibility(View.VISIBLE);
+						    	loader.setVisibility(View.GONE);	
 							}
 						});
 					}

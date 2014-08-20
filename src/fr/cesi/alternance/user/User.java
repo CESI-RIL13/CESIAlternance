@@ -18,7 +18,7 @@ public class User extends Entity implements Parcelable {
 	private String role;
 	private String phone;
 	private String picture_path;
-	private int id_promo;
+	private long id_promo;
 
 	public User() {}
 
@@ -97,11 +97,11 @@ public class User extends Entity implements Parcelable {
 		this.picture_path = picture_path;
 	}
 
-	public int getId_promo() {
+	public long getId_promo() {
 		return id_promo;
 	}
 
-	public void setId_promo(int id_promo) {
+	public void setId_promo(long id_promo) {
 		this.id_promo = id_promo;
 	}
 

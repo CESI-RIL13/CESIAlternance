@@ -2,14 +2,11 @@ package fr.cesi.alternance.user;
 
 
 import android.widget.ImageView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
 import com.kolapsis.utils.DownloadImageTask;
-
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
@@ -28,30 +25,41 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class UserActivity extends Activity {
 
 	public static final String TAG = "USER ACTIVITY ==========>>>>";
-	private EditText mName;
-	private EditText mMail;
-	private EditText mPhone;
-	private String mRoleAccount;//(role de l'utilisateur du tï¿½lï¿½phone)
-	private String mRole;
+	private TextView mName;
+	private TextView mMail;
+	private TextView mPhone;
+	private String mRoleAccount;
 	private Long mPromo;
 	private User mUser;
 	private Button btCall;
 	private Button btMail;
 	private Button btNote;
     private ImageView mPicture;
-	private MenuItem mSave;
-	private MenuItem mDelete;
-	private MenuItem mNoter;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_user);
+		
+		mRoleAccount = AccountHelper.getRole();
+		
+		if("IF".equals(mRoleAccount)) {
+			setContentView(R.layout.activity_user_edit);
+			//initialise les EditText
+			mName = (TextView)findViewById(R.id.nameUser);
+			mMail = (EditText)findViewById(R.id.mailUser);
+			mPhone = (EditText)findViewById(R.id.phoneUser);
+		} else {
+			setContentView(R.layout.activity_user);
+			//initialise les TextView
+			mName = (TextView)findViewById(R.id.nameUser);
+			mMail = (TextView)findViewById(R.id.mailUser);
+			mPhone = (TextView)findViewById(R.id.phoneUser);			
+		}
 
 		//initialise les boutons
 		btCall = (Button) findViewById(R.id.callUser);
@@ -61,41 +69,24 @@ public class UserActivity extends Activity {
 		btNote = (Button) findViewById(R.id.noteUser);
 		btNote.setOnClickListener(mNoteListener);
 
-		//initialise les texteview
-		mName = (EditText)findViewById(R.id.nameUser);
-		mMail = (EditText)findViewById(R.id.mailUser);
-		mPhone = (EditText)findViewById(R.id.phoneUser);
-
         //initialise l'image
         mPicture = (ImageView)findViewById(R.id.picture);
 
-		// rï¿½cupï¿½re le choix du chemin de Home (Eleve ou Intervenant) && l'objet User
 		if(getIntent().getExtras() != null){
 			mUser = (User)getIntent().getExtras().getParcelable("user");
 			mPromo = getIntent().getExtras().getLong("id_promo");
 		}
 
-		//si le user est passï¿½ charge les champs
+		//si le user est passé charge les champs
 		if(mUser != null){
             mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+mUser.getPicture_path());
             new DownloadImageTask(mPicture).execute();
             mName.setText(mUser.getName());
 			mPhone.setText(mUser.getPhone());
 			mMail.setText(mUser.getMail());
-
 		}
 
-		// rï¿½cupï¿½re le role de l'utilisateur du tï¿½lï¿½phone
-		mRoleAccount = AccountHelper.getRole();
-
 		setTitle(mUser.getRole());
-
-		Log.v(TAG, mUser.getName());
-		Log.v(TAG, mUser.getPhone());
-		Log.v(TAG, mUser.getMail());
-
-        //affichage de la photo
-
 
 		initialize();
 	}
@@ -119,16 +110,9 @@ public class UserActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.user_settings_save:
-			// Comportement du bouton save
-			// appelle la fonction qui fait la requï¿½te
-			if(mUser.getId() == 0) {
-				saveUser();
-			} else if(mUser.getId() > 0) {
-				update();
-			}
+			save(mUser.getId() == 0);
 			return true;
 		case R.id.user_settings_delete:
-			// Comportement du bouton delete
 			deleteUser(mUser.getId());
 			return true;
 		case R.id.user_settings_note:
@@ -155,15 +139,11 @@ public class UserActivity extends Activity {
 			btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
 		}
 
-		mName.setEnabled((mUser.getId() == 0 || ("IF".equals(mRoleAccount) && mUser.getId() == 0)));
-		mMail.setEnabled("IF".equals(mRoleAccount));
-		mPhone.setEnabled("IF".equals(mRoleAccount));
 	}
 
 	//listener Bouton
 	private View.OnClickListener mCallListener = new View.OnClickListener() {
 
-		@Override
 		public void onClick(View v) {
 			//Call
 			Intent callIntent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:"+mUser.getPhone()));
@@ -172,9 +152,9 @@ public class UserActivity extends Activity {
 
 	};
 
+	
 	private View.OnClickListener mMailerListener = new View.OnClickListener() {
 
-		@Override
 		public void onClick(View v) {
 			//Mail
 			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -184,33 +164,36 @@ public class UserActivity extends Activity {
 		}
 
 	};
+
 	
 	private View.OnClickListener mNoteListener = new View.OnClickListener() {
 
-		@Override
 		public void onClick(View v) {
 			//Show note
 		}
 
 	};
 
-	//fonction qui fait la requï¿½te submit
-	private void saveUser(){
-
+	
+	private void save(Boolean add) {
 		//modifi l'objet user courant avec les nouveaux paramï¿½tres
-		mUser.setName(mName.getText().toString());
+		if(add) {
+			mUser.setName(mName.getText().toString());
+			mUser.setId_promo(mPromo);
+		}
+
 		mUser.setMail(mMail.getText().toString());
 		mUser.setPhone(mPhone.getText().toString());
 
 		//regarde si un champ est vide
-		if(mUser.getMail().isEmpty()||mUser.getName().isEmpty()||mUser.getPhone().isEmpty()){
+		if((add && mUser.getName().isEmpty()) || mUser.getMail().isEmpty()|| mUser.getPhone().isEmpty()){
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
-		//ï¿½cran d'attente
+		//écran d'attente
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
 
-		//dï¿½clare un thread qui fait la requï¿½te
+		//déclare un thread qui fait la requéte
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -227,69 +210,38 @@ public class UserActivity extends Activity {
 				}
 
 			}
-		}).start();
-	}
-
-	private void update() {
-
-		//modifi l'objet user courant avec les nouveaux paramï¿½tres
-		mUser.setMail(mMail.getText().toString());
-		mUser.setPhone(mPhone.getText().toString());
-
-		//regarde si un champ est vide
-		if(mUser.getMail().isEmpty() || mUser.getPhone().isEmpty()){
-			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
-		}
-
-		//ï¿½cran d'attente
-		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
-
-		//dï¿½clare un thread qui fait la requï¿½te
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if(mUser.save()) {
-					ActivityCompat.invalidateOptionsMenu(UserActivity.this);
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							UserActivity.this.initialize();
-							progress.dismiss();
-						}
-					});
-				}
-			}
-		}).start();
+		}).start();		
 	}
 	
 	//fonction qui delete un utilisateur
 	private String deleteUser(long l){
 		String error ;
 		String success;
-		//ï¿½cran d'attente
+		
+		//écran d'attente
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
 
-		//dï¿½clare un thread qui fait la requï¿½te
+		//déclare un thread qui fait la requéte
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					Thread.sleep(3000);
 					progress.dismiss();
-					//requï¿½te 
-					//requï¿½te 
-					//appel de la fonction addUser
+
 					String url = Constants.BASE_API_URL + "/user/delete/"+mUser.getId();
-					Log.v(TAG,url);
-					//Authentification
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
+					
 					HttpData delete = new HttpData(url).header(Api.APP_AUTH_TOKEN,token);
+					
 					delete.delete();
-					Log.d("EEE", delete.asString());
+					
 					JSONObject obj = delete.asJSONObject();
+					
 					if(obj.getBoolean("success")) {
 						UserActivity.this.finish();
 					}
+				
 				} catch (HttpDataException hde) {
 					// TODO Auto-generated catch block
 					hde.printStackTrace();

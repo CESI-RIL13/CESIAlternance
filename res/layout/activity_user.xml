@@ -10,39 +10,22 @@
             android:id="@+id/picture"
             android:src="@drawable/ic_launcher"
             />
-    <EditText
+    <TextView
         android:id="@+id/nameUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Name"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="text" />
+        android:ems="10" />
 
-    <EditText
+    <TextView
         android:id="@+id/mailUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="E-mail"
-        android:inputType="textEmailAddress" />
+        android:ems="10" />
 
-    <EditText
-        android:id="@+id/pwdUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Mot de passe"
-        android:inputType="textPassword"
-        android:visibility="gone" />
-
-    <EditText
+    <TextView
         android:id="@+id/phoneUser"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Phone"
-        android:inputType="textPhonetic" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/callUser"

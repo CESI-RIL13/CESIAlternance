@@ -7,12 +7,14 @@
         android:showAsAction="always"
         android:title="@string/user_save_settings"
         android:icon="@android:drawable/ic_menu_save"/>
+    
     <item
         android:id="@+id/user_settings_delete"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/user_delete_settings"
         android:icon="@android:drawable/ic_menu_delete"/>
+    
     <item
         android:id="@+id/user_settings_note"
         android:orderInCategory="100"

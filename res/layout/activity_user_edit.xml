@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center|center_vertical"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:focusable="true" android:focusableInTouchMode="true" >
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,15 +27,6 @@
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/pwdUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Mot de passe"
-        android:inputType="textPassword"
-        android:visibility="gone" />
 
     <EditText
         android:id="@+id/phoneUser"

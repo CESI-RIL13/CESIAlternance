@@ -45,56 +45,40 @@ public final class R {
     public static final class id {
         public static final int LinearLayout1=0x7f0a0007;
         public static final int account_add=0x7f0a0000;
-        public static final int action_settings=0x7f0a001d;
-        public static final int add_action=0x7f0a0024;
-<<<<<<< HEAD
+        public static final int action_settings=0x7f0a001c;
+        public static final int add_action=0x7f0a0023;
         public static final int callUser=0x7f0a0013;
-=======
-        public static final int callUser=0x7f0a0014;
->>>>>>> master
-        public static final int desc=0x7f0a001a;
-        public static final int doc_add=0x7f0a001e;
-        public static final int doc_delete=0x7f0a001f;
+        public static final int desc=0x7f0a0019;
+        public static final int doc_add=0x7f0a001d;
+        public static final int doc_delete=0x7f0a001e;
         public static final int email=0x7f0a0001;
         public static final int error=0x7f0a0004;
         public static final int goTo=0x7f0a000b;
-        public static final int imageDocument=0x7f0a0017;
+        public static final int imageDocument=0x7f0a0016;
         public static final int img=0x7f0a000c;
         public static final int info=0x7f0a000e;
         public static final int linearLayout1=0x7f0a0008;
         public static final int mailUser=0x7f0a0011;
-        public static final int mailerUser=0x7f0a0015;
+        public static final int mailerUser=0x7f0a0014;
         public static final int name=0x7f0a0006;
-<<<<<<< HEAD
-        public static final int nameUser=0x7f0a000f;
+        public static final int nameUser=0x7f0a0010;
         public static final int noteUser=0x7f0a0015;
         public static final int phoneUser=0x7f0a0012;
-        public static final int picture=0x7f0a0016;
-=======
-        public static final int nameUser=0x7f0a0010;
-        public static final int noteUser=0x7f0a0016;
-        public static final int phoneUser=0x7f0a0013;
         public static final int picture=0x7f0a000f;
->>>>>>> master
         public static final int progress=0x7f0a0005;
         public static final int promo_info=0x7f0a000a;
         public static final int promo_name=0x7f0a0009;
         public static final int pwd=0x7f0a0002;
-<<<<<<< HEAD
-        public static final int pwdUser=0x7f0a0011;
-=======
-        public static final int pwdUser=0x7f0a0012;
->>>>>>> master
-        public static final int select_doc=0x7f0a0018;
+        public static final int select_doc=0x7f0a0017;
         public static final int submit=0x7f0a0003;
         public static final int title=0x7f0a000d;
-        public static final int titre=0x7f0a0019;
-        public static final int training_alias=0x7f0a001b;
-        public static final int training_menu_document=0x7f0a0020;
-        public static final int training_name=0x7f0a001c;
-        public static final int user_settings_delete=0x7f0a0022;
-        public static final int user_settings_note=0x7f0a0023;
-        public static final int user_settings_save=0x7f0a0021;
+        public static final int titre=0x7f0a0018;
+        public static final int training_alias=0x7f0a001a;
+        public static final int training_menu_document=0x7f0a001f;
+        public static final int training_name=0x7f0a001b;
+        public static final int user_settings_delete=0x7f0a0021;
+        public static final int user_settings_note=0x7f0a0022;
+        public static final int user_settings_save=0x7f0a0020;
     }
     public static final class layout {
         public static final int account_empty=0x7f030000;
@@ -106,11 +90,12 @@ public final class R {
         public static final int activity_promo_row=0x7f030006;
         public static final int activity_training=0x7f030007;
         public static final int activity_user=0x7f030008;
-        public static final int doc_list_activity=0x7f030009;
-        public static final int doc_row=0x7f03000a;
-        public static final int list_row=0x7f03000b;
-        public static final int list_sample=0x7f03000c;
-        public static final int training_row=0x7f03000d;
+        public static final int activity_user_edit=0x7f030009;
+        public static final int doc_list_activity=0x7f03000a;
+        public static final int doc_row=0x7f03000b;
+        public static final int list_row=0x7f03000c;
+        public static final int list_sample=0x7f03000d;
+        public static final int training_row=0x7f03000e;
     }
     public static final class menu {
         public static final int main=0x7f090000;

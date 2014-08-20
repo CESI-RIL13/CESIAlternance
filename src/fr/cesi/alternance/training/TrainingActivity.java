@@ -2,6 +2,7 @@ package fr.cesi.alternance.training;
 
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.Constants;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,6 @@ import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.promo.PromoListActivity;
 import fr.cesi.alternance.user.UserActivity;
 import fr.cesi.alternance.user.UserListActivity;
-
 import android.R.integer;
 import android.accounts.AuthenticatorException;
 import android.app.ListActivity;
@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
@@ -42,6 +43,7 @@ public class TrainingActivity extends ListActivity {
 	
 	public static final String TAG = "TrainingActivity";
 	public static final String ROLE = "IF";
+    private ProgressBar loader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,9 @@ public class TrainingActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		TextView name = (TextView) findViewById(R.id.name);
-		name.setText("Formations");
+        loader = (ProgressBar) findViewById(android.R.id.progress);
+		
+        name.setText("Formations");
 		AccountHelper.setContext(this);
 		
 		//trainingListComplex();
@@ -63,6 +67,7 @@ public class TrainingActivity extends ListActivity {
 		menuInflater.inflate(R.menu.training_menu, menu);
 		return true;
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
@@ -78,6 +83,9 @@ public class TrainingActivity extends ListActivity {
 	
 	private void trainingGetAll(){
 
+    	getListView().setVisibility(View.GONE);
+    	loader.setVisibility(View.VISIBLE);
+   
 		new Thread(new Runnable() {
 
 			@Override
@@ -96,6 +104,7 @@ public class TrainingActivity extends ListActivity {
 						if(trainings != null){
 							trainingListComplex(trainings);
 						}
+
 					}
 				} catch (HttpDataException e) {
 					// TODO Auto-generated catch block
@@ -132,7 +141,9 @@ public class TrainingActivity extends ListActivity {
 					
 					@Override
 					public void run() {
-						setListAdapter(adapter);						
+						setListAdapter(adapter);
+				    	getListView().setVisibility(View.VISIBLE);
+				    	loader.setVisibility(View.GONE);
 					}
 				});
 

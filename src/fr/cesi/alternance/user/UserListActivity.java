@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List; 
   
 
+
 import fr.cesi.alternance.Constants; 
 import fr.cesi.alternance.R; 
 import fr.cesi.alternance.user.User; 
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView; 
 import android.widget.ArrayAdapter; 
 import android.widget.ListView; 
+import android.widget.ProgressBar;
 import android.widget.TextView; 
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.promo.Promo; 
@@ -29,12 +31,14 @@ public class UserListActivity extends ListActivity {
   
     public static final String TAG = Constants.APP_NAME + ".UserListActivity"; 
     private String role; 
-    private Promo promo; 
+    private Promo promo;
+    private ProgressBar loader;
   
     protected void onCreate(Bundle savedInstanceState) { 
         super.onCreate(savedInstanceState); 
 
-        setContentView(R.layout.activity_home); 
+        setContentView(R.layout.activity_home);
+        loader = (ProgressBar) findViewById(android.R.id.progress);
 
         role = getIntent().getExtras().getString("role"); 
         promo = new Promo(getIntent().getExtras().getLong("id_promo")); 
@@ -58,6 +62,15 @@ public class UserListActivity extends ListActivity {
     
     @Override
     protected void onResume() {
+    	loadUser();
+    	super.onResume();
+    }
+
+    private void loadUser() {
+    	
+    	getListView().setVisibility(View.GONE);
+    	loader.setVisibility(View.VISIBLE);
+    	
     	new Thread(new Runnable() { 
             
             @Override
@@ -70,14 +83,15 @@ public class UserListActivity extends ListActivity {
                     @Override
                     public void run() { 
                         setListAdapter(adapter);
+                    	getListView().setVisibility(View.VISIBLE);
+                    	loader.setVisibility(View.GONE);
                     } 
                 }); 
             } 
         }).start(); 
-    	super.onResume();
-    }
-      
-    public boolean onCreateOptionsMenu (Menu menu) {
+	}
+
+	public boolean onCreateOptionsMenu (Menu menu) {
     	if(!"IF".equals(AccountHelper.getRole()))
     		return false;
         getMenuInflater().inflate(R.menu.userlist, menu); 
