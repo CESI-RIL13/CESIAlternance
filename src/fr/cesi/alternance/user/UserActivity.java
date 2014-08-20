@@ -72,7 +72,7 @@ public class UserActivity extends Activity {
 		// r�cup�re le choix du chemin de Home (Eleve ou Intervenant) && l'objet User
 		if(getIntent().getExtras() != null){
 			mUser = (User)getIntent().getExtras().getParcelable("user");
-			mPromo = getIntent().getExtras().getLong("promo_id");
+			mPromo = getIntent().getExtras().getLong("id_promo");
 		}
 
 		//si le user est pass� charge les champs

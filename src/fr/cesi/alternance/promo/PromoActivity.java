@@ -72,7 +72,7 @@ public class PromoActivity extends ListActivity {
 					if (role != null)
 						intent.putExtra("role", role);
 					
-					intent.putExtra("promo_id", promo);
+					intent.putExtra("id_promo", promo);
 					startActivity(intent);
 					//finish();
 				} catch (Exception e) {

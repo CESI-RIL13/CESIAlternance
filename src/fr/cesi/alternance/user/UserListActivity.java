@@ -37,7 +37,7 @@ public class UserListActivity extends ListActivity {
         setContentView(R.layout.activity_home); 
 
         role = getIntent().getExtras().getString("role"); 
-        promo = new Promo(getIntent().getExtras().getLong("promo_id")); 
+        promo = new Promo(getIntent().getExtras().getLong("id_promo")); 
 
 		TextView name = (TextView) findViewById(R.id.name);
 		name.setText(getIntent().getExtras().getString("users_list_name"));
@@ -50,7 +50,7 @@ public class UserListActivity extends ListActivity {
                   
                 Intent intent = new Intent(UserListActivity.this, UserActivity.class); 
                 intent.putExtra("user", user); 
-                intent.putExtra("promo_id", promo.getId()); 
+                intent.putExtra("id_promo", promo.getId()); 
                 startActivity(intent); 
             } 
         }); 
@@ -96,7 +96,7 @@ public class UserListActivity extends ListActivity {
 
             Intent intent = new Intent(UserListActivity.this, UserActivity.class); 
             intent.putExtra("user", testUser); 
-            intent.putExtra("promo_id", promo.getId()); 
+            intent.putExtra("id_promo", promo.getId()); 
             startActivity(intent); 
             return true; 
         default: 
