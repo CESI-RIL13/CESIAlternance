@@ -2,11 +2,14 @@ package fr.cesi.alternance.user;
 
 
 import android.widget.ImageView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
 import com.kolapsis.utils.DownloadImageTask;
+
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
@@ -74,11 +77,12 @@ public class UserActivity extends Activity {
 
 		//si le user est pass� charge les champs
 		if(mUser != null){
-			mName.setText(mUser.getName());
+            mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+mUser.getPicture_path());
+            new DownloadImageTask(mPicture).execute();
+            mName.setText(mUser.getName());
 			mPhone.setText(mUser.getPhone());
 			mMail.setText(mUser.getMail());
-            mPicture.setTag(mUser.getPicture_path());
-            new DownloadImageTask(mPicture);
+
 		}
 
 		// r�cup�re le role de l'utilisateur du t�l�phone

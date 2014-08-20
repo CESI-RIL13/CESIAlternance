@@ -47,7 +47,11 @@ public final class R {
         public static final int account_add=0x7f0a0000;
         public static final int action_settings=0x7f0a001d;
         public static final int add_action=0x7f0a0024;
+<<<<<<< HEAD
         public static final int callUser=0x7f0a0013;
+=======
+        public static final int callUser=0x7f0a0014;
+>>>>>>> master
         public static final int desc=0x7f0a001a;
         public static final int doc_add=0x7f0a001e;
         public static final int doc_delete=0x7f0a001f;
@@ -58,18 +62,29 @@ public final class R {
         public static final int img=0x7f0a000c;
         public static final int info=0x7f0a000e;
         public static final int linearLayout1=0x7f0a0008;
-        public static final int mailUser=0x7f0a0010;
-        public static final int mailerUser=0x7f0a0014;
+        public static final int mailUser=0x7f0a0011;
+        public static final int mailerUser=0x7f0a0015;
         public static final int name=0x7f0a0006;
+<<<<<<< HEAD
         public static final int nameUser=0x7f0a000f;
         public static final int noteUser=0x7f0a0015;
         public static final int phoneUser=0x7f0a0012;
         public static final int picture=0x7f0a0016;
+=======
+        public static final int nameUser=0x7f0a0010;
+        public static final int noteUser=0x7f0a0016;
+        public static final int phoneUser=0x7f0a0013;
+        public static final int picture=0x7f0a000f;
+>>>>>>> master
         public static final int progress=0x7f0a0005;
         public static final int promo_info=0x7f0a000a;
         public static final int promo_name=0x7f0a0009;
         public static final int pwd=0x7f0a0002;
+<<<<<<< HEAD
         public static final int pwdUser=0x7f0a0011;
+=======
+        public static final int pwdUser=0x7f0a0012;
+>>>>>>> master
         public static final int select_doc=0x7f0a0018;
         public static final int submit=0x7f0a0003;
         public static final int title=0x7f0a000d;
