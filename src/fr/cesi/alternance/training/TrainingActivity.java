@@ -55,10 +55,14 @@ public class TrainingActivity extends ListActivity {
 		
         name.setText("Formations");
 		AccountHelper.setContext(this);
-		
-		//trainingListComplex();
-		trainingGetAll();
+
 	}
+	
+  @Override
+    protected void onResume() {
+	  	trainingGetAll();
+    	super.onResume();
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

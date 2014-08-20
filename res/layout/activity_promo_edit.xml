@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|center_vertical"
+    android:orientation="vertical"
+    android:focusable="true" android:focusableInTouchMode="true" >
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/picture"
+            android:src="@drawable/ic_launcher"
+            />
+    <EditText
+        android:id="@+id/nameUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Name"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/mailUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/phoneUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Phone"
+        android:inputType="textPhonetic" />
+
+    <Button
+        android:id="@+id/callUser"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="Call" />
+
+    <Button
+        android:id="@+id/mailerUser"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="Mail" />
+
+    <Button
+        android:id="@+id/noteUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show note" />
+
+
+</LinearLayout>

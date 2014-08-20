@@ -51,7 +51,7 @@ public class UserListActivity extends ListActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
             public void onItemClick(AdapterView<?> list, View view, int position, long id) { 
                 User user = (User) getListAdapter().getItem(position); 
-                  
+
                 Intent intent = new Intent(UserListActivity.this, UserActivity.class); 
                 intent.putExtra("user", user); 
                 intent.putExtra("id_promo", promo.getId()); 
@@ -118,7 +118,7 @@ public class UserListActivity extends ListActivity {
         } 
     } 
   
-    private class UsersAdapter extends ArrayAdapter<User> { 
+    public class UsersAdapter extends ArrayAdapter<User> { 
           
         private Context mContexte; 
         private int mResource; 

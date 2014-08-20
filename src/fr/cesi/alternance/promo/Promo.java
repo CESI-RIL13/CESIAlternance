@@ -25,6 +25,9 @@ public class Promo extends Entity implements Parcelable {
 	private String name;
 	private int number;
 	private String code;
+	private String begin;
+	private String end;
+	private String id_planning;
 	
 	
 	public Promo(){}
@@ -60,6 +63,38 @@ public class Promo extends Entity implements Parcelable {
 	
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public int getPromo_id() {
+		return promo_id;
+	}
+
+	public void setPromo_id(int promo_id) {
+		this.promo_id = promo_id;
+	}
+
+	public String getBegin() {
+		return begin;
+	}
+
+	public void setBegin(String begin) {
+		this.begin = begin;
+	}
+
+	public String getEnd() {
+		return end;
+	}
+
+	public void setEnd(String end) {
+		this.end = end;
+	}
+
+	public String getId_planning() {
+		return id_planning;
+	}
+
+	public void setId_planning(String id_planning) {
+		this.id_planning = id_planning;
 	}
 
 	@Override

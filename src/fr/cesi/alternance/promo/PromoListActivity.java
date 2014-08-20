@@ -10,32 +10,25 @@ import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
 
 import fr.cesi.alternance.Constants;
-import fr.cesi.alternance.HomeActivity;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class PromoListActivity extends ListActivity{
 
-	private String role;
 	private int training;
     private ProgressBar loader;
 	
@@ -53,9 +46,15 @@ public class PromoListActivity extends ListActivity{
 		
 		name.setText(getIntent().getExtras().getString("name"));
 
-		syncPromo();
+		
 	}
-	
+
+    @Override
+    protected void onResume() {
+    	syncPromo();
+    	super.onResume();
+    }
+
 	private void syncPromo(){
 
     	getListView().setVisibility(View.GONE);
@@ -122,7 +121,6 @@ public class PromoListActivity extends ListActivity{
 			}
 		});
 	}
-
 
 	private class PromoAdapter extends ArrayAdapter<Promo> {
 
