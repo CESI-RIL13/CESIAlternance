@@ -17,6 +17,10 @@
     <string name="account_empty_sub">Veuillez ajouter un compte</string>
     <string name="account_add">Ajouter un compte</string>
     
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Annuler</string>
+    <string name="validate">Valider</string>
+    
     <string name="menu_add">Ajouter</string>
     <string name="menu_delete">Supprimer</string>
     
@@ -69,5 +73,14 @@
     <string name="user_save_settings">save</string>
     <string name="user_delete_settings">delete</string>
     <string name="user_note_settings">note</string>
+    
+    <string name="doc_nom">Nom du document</string>
+    <string name="doc_description">Description</string>
+    <string name="doc_file">Fichier</string>
+    <string name="doc_browser">...</string>
+    
+    <string name="progress_envoi">Envoi</string>  
+    <string name="progress_envoi_infos">Envoi en cours</string>  
+    
    
 </resources>
