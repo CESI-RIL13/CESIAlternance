@@ -30,7 +30,7 @@
     <string name="progress_delete_infos">Suppression en cours</string>
 
     <string name="eleve_list_activity_title">Liste des éléves</string>
-    <string name="user_list_add_action">Ajouter un utilisateur</string>
+    <string name="list_add_action">Ajouter un utilisateur</string>
     
     <string name="calendrier_title">Calendrier</string>
     <string name="calendrier_action">Ouvrir mon calendrier</string>

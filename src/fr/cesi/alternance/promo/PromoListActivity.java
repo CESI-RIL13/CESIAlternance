@@ -18,6 +18,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -45,7 +47,6 @@ public class PromoListActivity extends ListActivity{
 		TextView name = (TextView) findViewById(R.id.name);
 		
 		name.setText(getIntent().getExtras().getString("name"));
-
 		
 	}
 
@@ -100,7 +101,43 @@ public class PromoListActivity extends ListActivity{
 		}).start();
 
 	}
-	
+
+	public boolean onCreateOptionsMenu (Menu menu) {
+    	if(!"IF".equals(AccountHelper.getRole()))
+    		return false;
+        getMenuInflater().inflate(R.menu.add_action, menu);
+        return true;
+    } 
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.add_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) { 
+        switch (item.getItemId()) { 
+        case R.id.add_list_action:
+        	
+            Promo newPromo = new Promo();
+            newPromo.setName("");
+            newPromo.setNumber(0);
+            newPromo.setCode("");
+            newPromo.setEnd("");
+            newPromo.setBegin("");
+            newPromo.setId_planning("");
+
+            Intent intent = new Intent(PromoListActivity.this, PromoEditActivity.class); 
+            intent.putExtra("promo", newPromo); 
+            intent.putExtra("id_training", training); 
+            startActivity(intent); 
+            return true; 
+        default: 
+            return super.onOptionsItemSelected(item); 
+        } 
+    } 
+
 	private void getListPromo(final ArrayList<Promo> listPromo) {
 		
 		PromoAdapter adapter= new PromoAdapter(this, android.R.layout.simple_list_item_2, listPromo);

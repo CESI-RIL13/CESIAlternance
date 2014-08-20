@@ -45,12 +45,13 @@ public final class R {
     public static final class id {
         public static final int LinearLayout1=0x7f0a0007;
         public static final int account_add=0x7f0a0000;
-        public static final int action_settings=0x7f0a001c;
-        public static final int add_action=0x7f0a0023;
+        public static final int action_settings=0x7f0a001f;
+        public static final int add_doc_action=0x7f0a001c;
+        public static final int add_list_action=0x7f0a001e;
         public static final int callUser=0x7f0a0010;
         public static final int desc=0x7f0a0019;
-        public static final int doc_add=0x7f0a001d;
-        public static final int doc_delete=0x7f0a001e;
+        public static final int doc_add=0x7f0a0020;
+        public static final int doc_delete=0x7f0a0021;
         public static final int email=0x7f0a0001;
         public static final int error=0x7f0a0004;
         public static final int goTo=0x7f0a000b;
@@ -74,11 +75,12 @@ public final class R {
         public static final int title=0x7f0a0014;
         public static final int titre=0x7f0a0018;
         public static final int training_alias=0x7f0a001a;
-        public static final int training_menu_document=0x7f0a001f;
+        public static final int training_menu_document=0x7f0a0022;
         public static final int training_name=0x7f0a001b;
-        public static final int user_settings_delete=0x7f0a0021;
-        public static final int user_settings_note=0x7f0a0022;
-        public static final int user_settings_save=0x7f0a0020;
+        public static final int user_settings_delete=0x7f0a0024;
+        public static final int user_settings_note=0x7f0a0025;
+        public static final int user_settings_save=0x7f0a0023;
+        public static final int view_doc_action=0x7f0a001d;
     }
     public static final class layout {
         public static final int account_empty=0x7f030000;
@@ -99,12 +101,12 @@ public final class R {
         public static final int training_row=0x7f03000f;
     }
     public static final class menu {
-        public static final int main=0x7f090000;
-        public static final int menu_doc_list=0x7f090001;
-        public static final int promo=0x7f090002;
-        public static final int training_menu=0x7f090003;
-        public static final int user=0x7f090004;
-        public static final int userlist=0x7f090005;
+        public static final int add_action=0x7f090000;
+        public static final int main=0x7f090001;
+        public static final int menu_doc_list=0x7f090002;
+        public static final int promo=0x7f090003;
+        public static final int training_menu=0x7f090004;
+        public static final int user=0x7f090005;
     }
     public static final class string {
         public static final int account_add=0x7f07000a;
@@ -128,6 +130,7 @@ public final class R {
         public static final int intervenant_desc=0x7f07002f;
         public static final int intervenant_name=0x7f07002e;
         public static final int intervenant_title=0x7f07002d;
+        public static final int list_add_action=0x7f070015;
         public static final int menu_add=0x7f07000b;
         public static final int menu_contextuel_cancel=0x7f07000f;
         public static final int menu_contextuel_delete=0x7f07000e;
@@ -156,7 +159,6 @@ public final class R {
         public static final int training_name=0x7f070019;
         public static final int training_title=0x7f070018;
         public static final int user_delete_settings=0x7f070032;
-        public static final int user_list_add_action=0x7f070015;
         public static final int user_note_settings=0x7f070033;
         public static final int user_save_settings=0x7f070031;
     }

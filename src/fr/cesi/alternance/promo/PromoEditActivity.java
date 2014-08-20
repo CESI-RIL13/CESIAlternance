@@ -79,9 +79,9 @@ public class PromoEditActivity extends Activity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.user_settings_save).setVisible("IF".equals(mRoleAccount));
-		menu.findItem(R.id.user_settings_delete).setVisible("IF".equals(mRoleAccount) && mUser.getId() > 0);
-		menu.findItem(R.id.user_settings_note).setVisible("Intervenant".equals(mRoleAccount));
+//		menu.findItem(R.id.user_settings_save).setVisible("IF".equals(mRoleAccount));
+//		menu.findItem(R.id.user_settings_delete).setVisible("IF".equals(mRoleAccount) && mUser.getId() > 0);
+//		menu.findItem(R.id.user_settings_note).setVisible("Intervenant".equals(mRoleAccount));
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -90,10 +90,10 @@ public class PromoEditActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.user_settings_save:
-			save(mUser.getId() == 0);
+//			save(mUser.getId() == 0);
 			return true;
 		case R.id.user_settings_delete:
-			deleteUser(mUser.getId());
+//			deleteUser(mUser.getId());
 			return true;
 		case R.id.user_settings_note:
 			// Comportement du bouton note
@@ -103,89 +103,89 @@ public class PromoEditActivity extends Activity {
 		}
 	}
 
-	private void save(Boolean add) {
-		//modifi l'objet user courant avec les nouveaux paramï¿½tres
-		if(add) {
-			mUser.setName(mName.getText().toString());
-			mUser.setId_promo(mPromo);
-		}
-
-		mUser.setMail(mMail.getText().toString());
-		mUser.setPhone(mPhone.getText().toString());
-
-		//regarde si un champ est vide
-		if((add && mUser.getName().isEmpty()) || mUser.getMail().isEmpty()|| mUser.getPhone().isEmpty()){
-			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
-		}
-
-		//écran d'attente
-		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
-
-		//déclare un thread qui fait la requéte
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-
-				if(mUser.save()) {
-					ActivityCompat.invalidateOptionsMenu(UserActivity.this);
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							UserActivity.this.initialize();
-							progress.dismiss();
-						}
-					});
-				}
-
-			}
-		}).start();		
-	}
+//	private void save(Boolean add) {
+//		//modifi l'objet user courant avec les nouveaux paramï¿½tres
+//		if(add) {
+////			mUser.setName(mName.getText().toString());
+////			mUser.setId_promo(mPromo);
+//		}
+//
+////		mUser.setMail(mMail.getText().toString());
+////		mUser.setPhone(mPhone.getText().toString());
+//
+//		//regarde si un champ est vide
+////		if((add && mUser.getName().isEmpty()) || mUser.getMail().isEmpty()|| mUser.getPhone().isEmpty()){
+////			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
+////		}
+//
+//		//écran d'attente
+////		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
+//
+//		//déclare un thread qui fait la requéte
+//		new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//
+////				if(mUser.save()) {
+////					ActivityCompat.invalidateOptionsMenu(UserActivity.this);
+////					runOnUiThread(new Runnable() {
+////						@Override
+////						public void run() {
+////							UserActivity.this.initialize();
+////							progress.dismiss();
+////						}
+////					});
+//				}
+//
+//			}
+//		}).start();		
+//	}
 	
 	//fonction qui delete un utilisateur
-	private String deletePromo(long l){
-		String error ;
-		String success;
-		
-		//écran d'attente
-		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
-
-		//déclare un thread qui fait la requéte
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(3000);
-					progress.dismiss();
-
-					String url = Constants.BASE_API_URL + "/user/delete/"+mUser.getId();
-					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
-					
-					HttpData delete = new HttpData(url).header(Api.APP_AUTH_TOKEN,token);
-					
-					delete.delete();
-					
-					JSONObject obj = delete.asJSONObject();
-					
-					if(obj.getBoolean("success")) {
-						UserActivity.this.finish();
-					}
-				
-				} catch (HttpDataException hde) {
-					// TODO Auto-generated catch block
-					hde.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		}).start();
-		success = "successfully submitted ! ";
-		return success;
-	}
+//	private String deletePromo(long l){
+//		String error ;
+//		String success;
+//		
+//		//écran d'attente
+//		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
+//
+//		//déclare un thread qui fait la requéte
+//		new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				try {
+//					Thread.sleep(3000);
+//					progress.dismiss();
+//
+//					String url = Constants.BASE_API_URL + "/user/delete/"+mUser.getId();
+//					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
+//					
+//					HttpData delete = new HttpData(url).header(Api.APP_AUTH_TOKEN,token);
+//					
+//					delete.delete();
+//					
+//					JSONObject obj = delete.asJSONObject();
+//					
+//					if(obj.getBoolean("success")) {
+//						UserActivity.this.finish();
+//					}
+//				
+//				} catch (HttpDataException hde) {
+//					// TODO Auto-generated catch block
+//					hde.printStackTrace();
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (JSONException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		}).start();
+//		success = "successfully submitted ! ";
+//		return success;
+//	}
 	
 	//fonction pour aller sur l'onglet qui permet d'afficher et rentrer des notes
 	private void noteUser(){
