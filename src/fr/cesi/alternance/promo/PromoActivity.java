@@ -2,12 +2,14 @@ package fr.cesi.alternance.promo;
 import android.os.Bundle;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.docs.DocListActivity;
+import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.user.UserListActivity;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -85,9 +87,36 @@ public class PromoActivity extends ListActivity {
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.promo, menu);
+		getMenuInflater().inflate(R.menu.add_action, menu);
 		return true;
 	}
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.add_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) { 
+        switch (item.getItemId()) { 
+        case R.id.add_list_action:
+        	
+//            Promo newPromo = new Promo();
+//            newPromo.setName("");
+//            newPromo.setNumber(0);
+//            newPromo.setCode("");
+//            newPromo.setEnd("");
+//            newPromo.setBegin("");
+//            newPromo.setId_planning("");
+//
+//            Intent intent = new Intent(PromoActivity.this, PromoEditActivity.class); 
+//            intent.putExtra("promo", newPromo); 
+//            intent.putExtra("id_training", training); 
+//            startActivity(intent); 
+            return true; 
+        default: 
+            return super.onOptionsItemSelected(item); 
+        } 
+    }
 }

@@ -12,6 +12,7 @@
     <string name="account_empty">Aucun compte</string>
     <string name="account_empty_sub">Veuillez ajouter un compte</string>
     <string name="account_add">Ajouter un compte</string>
+    <string name="promo_add">Ajouter une promotion</string>
     
     <string name="delete">Supprimer</string>
     <string name="cancel">Annuler</string>
@@ -35,7 +36,6 @@
 	<string name="promo_title">Promotions</string>
 	<string name="promo_name">Promotion</string>
 	<string name="promo_info">Informations</string>
-
 	
     <string name="user_save_settings">save</string>
     <string name="user_delete_settings">delete</string>
@@ -45,6 +45,8 @@
     <string name="doc_description">Description</string>
     <string name="doc_file">Fichier</string>
     <string name="doc_browser">...</string>
+
+    <string name="list_add_action">Ajouter un utilisateur</string>
     
     <string name="progress_envoi">Envoi</string>  
     <string name="progress_envoi_infos">Envoi en cours</string> 
@@ -98,5 +100,10 @@
     <string name="menu_contextuel_edit">Modifier</string>
     <string name="menu_contextuel_open">Ouvrir</string>
 
-
+    <string name="date_begin">Date de début</string>
+    <string name="date_end">Date de fin</string>
+    <string name="number_promo">Numéro</string>
+    <string name="code_promo">Code</string>
+    <string name="id_planning">ID du planning</string>
+    
 </resources>

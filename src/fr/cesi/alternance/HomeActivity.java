@@ -195,7 +195,7 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 			Intent intentPromos = new Intent(this, PromoListActivity.class);
 			Intent intentDocStagiaire = new Intent(this, DocListActivity.class);
 			
-			intentPromos.putExtra("training", 0);
+			intentPromos.putExtra("id_training", 0);
 			intentPromos.putExtra("name", getString(R.string.promo_desc));
 			
 			buttons.add(new Holder(getString(R.string.promo_title), getString(R.string.promo_action), intentPromos));
