@@ -63,6 +63,9 @@ public class Api {
 		public static final String EMAIL				= "email";
 		public static final String PASSWORD				= "pwd";
 		public static final String ERROR				= "error";
+		public static final String PHONE				= "phone";
+		public static final String PICTURE_PATH			= "picture_path";
+		public static final String LINKS				= "links";
 	}
 
 	private final Bundle mUser;
@@ -247,9 +250,9 @@ public class Api {
 	}
 	
 	/**
-	 * Chargement des données d'un compte authentifié
+	 * Chargement des donnï¿½es d'un compte authentifiï¿½
 	 * @param token
-	 * @return Les données de l'utilisateur
+	 * @return Les donnï¿½es de l'utilisateur
 	 * @throws AuthenticatorException
 	 * @throws IOException
 	 */
@@ -269,6 +272,11 @@ public class Api {
 				data.putString(UserColumns.ID, String.valueOf(result.getInt(UserColumns.ID)));
 				data.putString(UserColumns.NAME, result.getString(UserColumns.NAME));
 				data.putString(UserColumns.ROLE, result.getString(UserColumns.ROLE));
+				data.putString(UserColumns.PHONE, result.getString(UserColumns.PHONE));
+				data.putString(UserColumns.PICTURE_PATH, result.getString(UserColumns.PICTURE_PATH));
+				data.putString(UserColumns.EMAIL, result.getString(UserColumns.EMAIL));
+				data.putString(UserColumns.LINKS, json.getJSONArray(UserColumns.LINKS).toString());
+				//Log.v(TAG, data.getString(UserColumns.LINKS));
 			}
 		} catch (HttpDataException e) {
 			Log.e(TAG+".Auth", "HttpDataException: " + e.getMessage());
@@ -287,10 +295,10 @@ public class Api {
 	 */
 	
 	/**
-	 * Chargement des Entités
-	 * @param clzz Class de l'entité a utiliser.
+	 * Chargement des Entitï¿½s
+	 * @param clzz Class de l'entitï¿½ a utiliser.
 	 * @param account Compte a synchroniser
-	 * @return Une <b>liste</b> d'entité <b>&lt;Entity&gt</b>
+	 * @return Une <b>liste</b> d'entitï¿½ <b>&lt;Entity&gt</b>
 	 * @throws AuthenticatorException
 	 * @throws IOException
 	 */
@@ -299,11 +307,11 @@ public class Api {
 	}
 	
 	/**
-	 * Chargement des Entités
-	 * @param clzz Class de l'entité a utiliser.
+	 * Chargement des Entitï¿½s
+	 * @param clzz Class de l'entitï¿½ a utiliser.
 	 * @param account Compte a synchroniser
-	 * @param lastSync Timestamp (long) de la dernière synchronisation
-	 * @return Une <b>liste</b> d'entité <b>&lt;Entity&gt</b>
+	 * @param lastSync Timestamp (long) de la derniï¿½re synchronisation
+	 * @return Une <b>liste</b> d'entitï¿½ <b>&lt;Entity&gt</b>
 	 * @throws AuthenticatorException
 	 * @throws IOException
 	 */
@@ -348,10 +356,10 @@ public class Api {
 	}
 	
 	/** 
-	 * Ajout d'une entité
-	 * @param clzz Class de l'entité a utiliser.
+	 * Ajout d'une entitï¿½
+	 * @param clzz Class de l'entitï¿½ a utiliser.
 	 * @param account Compte a synchroniser
-	 * @param entity Entité a sauvegarder
+	 * @param entity Entitï¿½ a sauvegarder
 	 * @return Un <b>entier</b> positif correspondant au nouvel identifiant distant, ou 0 si une erreur est survenue
 	 * @throws AuthenticatorException
 	 * @throws IOException
@@ -387,11 +395,11 @@ public class Api {
 	}
 	
 	/**
-	 * Suppression d'une entité
-	 * @param clzz Class de l'entité a utiliser.
+	 * Suppression d'une entitï¿½
+	 * @param clzz Class de l'entitï¿½ a utiliser.
 	 * @param account Compte a synchroniser
-	 * @param remoteId Identifiant distant de l'entité à supprimer
-	 * @return Un <b>booléen</b>, <b>true</b> si la suppression est effectuée avec succès, sinon <b>false</b>
+	 * @param remoteId Identifiant distant de l'entitï¿½ ï¿½ supprimer
+	 * @return Un <b>boolï¿½en</b>, <b>true</b> si la suppression est effectuï¿½e avec succï¿½s, sinon <b>false</b>
 	 * @throws AuthenticatorException
 	 * @throws IOException
 	 */

@@ -24,7 +24,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".HomeActivity"
+            android:name="fr.cesi.alternance.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,43 +32,43 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <!-- ACCOUNT -->
         <activity
-            android:name=".auth.AccountActivity"
+            android:name="fr.cesi.alternance.auth.AccountActivity"
             android:excludeFromRecents="true" />
-
-   		<activity
-		    android:name="fr.cesi.alternance.training.TrainingActivity"
-		    android:label="@string/app_name" >
+        <activity
+            android:name="fr.cesi.alternance.training.TrainingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="fr.cesi.alternance.promo.PromoListActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="fr.cesi.alternance.promo.PromoActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="fr.cesi.alternance.user.UserListActivity"
+            android:label="@string/eleve_list_activity_title" >
+        </activity>
+        <activity
+            android:name="fr.cesi.alternance.user.UserActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="fr.cesi.alternance.docs.DocListActivity"
+            android:label="@string/app_name" >
         </activity>
 
-		<activity
-		    android:name="fr.cesi.alternance.promo.PromoListActivity"
-		    android:label="@string/app_name" >
+        <activity
+            android:name="fr.cesi.alternance.UserAccount"
+            android:label="@string/title_activity_user_account" >
         </activity>
-        
-		<activity
-			android:name="fr.cesi.alternance.promo.PromoActivity"
-			android:label="@string/app_name" ></activity>
-
-		<activity 
-        	android:name="fr.cesi.alternance.user.UserListActivity"
-            android:label="@string/eleve_list_activity_title"></activity>
-
-		<activity 
-        	android:name="fr.cesi.alternance.user.UserActivity"
-            android:label="@string/app_name">
-		</activity>
-
-		<activity 
-        	android:name="fr.cesi.alternance.docs.DocListActivity"
-            android:label="@string/app_name">
-		</activity>
-
 
         <service
-            android:name=".services.AuthService"
+            android:name="fr.cesi.alternance.services.AuthService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -78,10 +78,10 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        
+
         <!-- CALENDAR -->
         <service
-            android:name=".services.CalendarService"
+            android:name="fr.cesi.alternance.services.CalendarService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
