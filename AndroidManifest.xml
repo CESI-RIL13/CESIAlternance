@@ -52,6 +52,10 @@
 			android:name="fr.cesi.alternance.promo.PromoActivity"
 			android:label="@string/app_name" ></activity>
 
+		<activity
+			android:name="fr.cesi.alternance.promo.PromoEditActivity"
+			android:label="@string/app_name" ></activity>
+
 		<activity 
         	android:name="fr.cesi.alternance.user.UserListActivity"
             android:label="@string/eleve_list_activity_title"></activity>

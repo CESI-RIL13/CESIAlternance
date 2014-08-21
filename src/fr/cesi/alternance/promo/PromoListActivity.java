@@ -1,5 +1,6 @@
 package fr.cesi.alternance.promo;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import com.kolapsis.utils.HttpData.HttpDataException;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
+import fr.cesi.alternance.docs.DocListActivity;
 import fr.cesi.alternance.helpers.AccountHelper;
 import android.app.ListActivity;
 import android.content.Context;
@@ -31,7 +33,7 @@ import android.widget.TextView;
 
 public class PromoListActivity extends ListActivity{
 
-	private int training;
+	private long id_training;
     private ProgressBar loader;
 	
     public static final String TAG = "PromoListActivity";
@@ -43,7 +45,7 @@ public class PromoListActivity extends ListActivity{
 		
 		setContentView(R.layout.activity_home);
         loader = (ProgressBar) findViewById(android.R.id.progress);
-		training = getIntent().getExtras().getInt("training");
+		id_training = getIntent().getExtras().getInt("training");
 		TextView name = (TextView) findViewById(R.id.name);
 		
 		name.setText(getIntent().getExtras().getString("name"));
@@ -68,7 +70,7 @@ public class PromoListActivity extends ListActivity{
 					final ArrayList<Promo> listPromo = new ArrayList<Promo>();
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
 					
-					HttpData get = new  HttpData(Constants.BASE_API_URL + "/promo").header(Api.APP_AUTH_TOKEN, token).data("training", String.valueOf(training)).get();
+					HttpData get = new  HttpData(Constants.BASE_API_URL + "/promo").header(Api.APP_AUTH_TOKEN, token).data("id_training", String.valueOf(id_training)).get();
 					JSONObject json = get.asJSONObject();
 					
 					if(json.getBoolean("success")) {
@@ -116,25 +118,36 @@ public class PromoListActivity extends ListActivity{
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	public boolean onOptionsItemSelected(MenuItem item) { 
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
         switch (item.getItemId()) { 
-        case R.id.add_list_action:
-        	
-            Promo newPromo = new Promo();
-            newPromo.setName("");
-            newPromo.setNumber(0);
-            newPromo.setCode("");
-            newPromo.setEnd("");
-            newPromo.setBegin("");
-            newPromo.setId_planning("");
-
-            Intent intent = new Intent(PromoListActivity.this, PromoEditActivity.class); 
-            intent.putExtra("promo", newPromo); 
-            intent.putExtra("id_training", training); 
-            startActivity(intent); 
-            return true; 
-        default: 
-            return super.onOptionsItemSelected(item); 
+	        case R.id.add_list_action:
+	        	
+	            Promo newPromo = new Promo();
+	            newPromo.setName("");
+	            newPromo.setNumber(0);
+	            newPromo.setCode("");
+	            newPromo.setEnd(new Date());
+	            newPromo.setBegin(new Date());
+	            newPromo.setId_planning("");
+	
+	            intent = new Intent(PromoListActivity.this, PromoEditActivity.class); 
+	            intent.putExtra("promo", newPromo);
+	            intent.putExtra("id_training", id_training); 
+	            startActivity(intent); 
+	            return true;
+	        case R.id.add_doc_action:
+	//            intent = new Intent(PromoListActivity.this, DocListActivity.class); 
+	//            intent.putExtra("promo", newPromo); 
+	//            intent.putExtra("id_training", training); 
+	//            startActivity(intent);         	
+	        	return true;
+	        case R.id.view_doc_action:
+//	            intent = new Intent(PromoListActivity.this, DocListActivity.class); 
+//	            startActivity(intent);  	
+	        	return true;
+	        default: 
+	            return super.onOptionsItemSelected(item); 
         } 
     } 
 

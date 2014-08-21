@@ -5,54 +5,45 @@
     android:gravity="center|center_vertical"
     android:orientation="vertical"
     android:focusable="true" android:focusableInTouchMode="true" >
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/picture"
-            android:src="@drawable/ic_launcher"
-            />
+
     <EditText
-        android:id="@+id/nameUser"
+        android:id="@+id/begin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Name"
         android:ems="10"
-        android:hint="Name"
+        android:hint="@string/date_begin"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/date_end"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/number_promo"
+        android:inputType="numberDecimal" />
+
+     <EditText
+        android:id="@+id/code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/code_promo"
+        android:inputType="numberDecimal" />
+
+     <EditText
+        android:id="@+id/id_planning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ID du planning"
         android:inputType="text" />
-
-    <EditText
-        android:id="@+id/mailUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="E-mail"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/phoneUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Phone"
-        android:inputType="textPhonetic" />
-
-    <Button
-        android:id="@+id/callUser"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:text="Call" />
-
-    <Button
-        android:id="@+id/mailerUser"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:text="Mail" />
-
-    <Button
-        android:id="@+id/noteUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show note" />
-
-
+ 
 </LinearLayout>

@@ -16,6 +16,7 @@
     <string name="account_empty">Aucun compte</string>
     <string name="account_empty_sub">Veuillez ajouter un compte</string>
     <string name="account_add">Ajouter un compte</string>
+    <string name="promo_add">Ajouter une promotion</string>
     
     <string name="menu_add">Ajouter</string>
     <string name="menu_delete">Supprimer</string>
@@ -69,5 +70,11 @@
     <string name="user_save_settings">save</string>
     <string name="user_delete_settings">delete</string>
     <string name="user_note_settings">note</string>
-   
+
+    <string name="date_begin">Date de début</string>
+    <string name="date_end">Date de fin</string>
+    <string name="number_promo">Numéro</string>
+    <string name="code_promo">Code</string>
+    <string name="id_planning">ID du planning</string>
+    
 </resources>

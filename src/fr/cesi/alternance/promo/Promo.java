@@ -1,6 +1,9 @@
 package fr.cesi.alternance.promo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +26,12 @@ public class Promo extends Entity implements Parcelable {
 	
 	private int promo_id;
 	private String name;
-	private int number;
+	private Long number;
 	private String code;
-	private String begin;
-	private String end;
+	private Date begin;
+	private Date end;
 	private String id_planning;
+	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 	
 	
 	public Promo(){}
@@ -36,11 +40,21 @@ public class Promo extends Entity implements Parcelable {
 		this.id = id;
 	}
 	
-	public Promo(long id, String name, int number, String code) {
+	public Promo(long id, String name, long number, String code) {
 		this.id = id;
 		this.name = name;
 		this.number = number;
 		this.code = code;
+	}
+
+	public Promo(Parcel in){
+		id = in.readLong();
+		name = in.readString();
+		number = in.readLong();
+		code = in.readString();
+		begin = new Date(in.readLong());
+		end = new Date(in.readLong());
+		id_planning = in.readString();
 	}
 
 	public String getName() {
@@ -50,10 +64,10 @@ public class Promo extends Entity implements Parcelable {
 		this.name = name;
 	}
 	
-	public int getNumber() {
+	public long getNumber() {
 		return number;
 	}
-	public void setNumber(int number) {
+	public void setNumber(long number) {
 		this.number = number;
 	}
 	
@@ -73,19 +87,19 @@ public class Promo extends Entity implements Parcelable {
 		this.promo_id = promo_id;
 	}
 
-	public String getBegin() {
+	public Date getBegin() {
 		return begin;
 	}
 
-	public void setBegin(String begin) {
+	public void setBegin(Date begin) {
 		this.begin = begin;
 	}
 
-	public String getEnd() {
+	public Date getEnd() {
 		return end;
 	}
 
-	public void setEnd(String end) {
+	public void setEnd(Date end) {
 		this.end = end;
 	}
 
@@ -103,21 +117,20 @@ public class Promo extends Entity implements Parcelable {
 		return api_path;
 	}
 
-	public Promo(Parcel in){
-		id = in.readLong();
-		name = in.readString();
-		number = in.readInt();
-		code = in.readString();
-	}
-
 	@Override
 	public Promo fromJSON(JSONObject json) {
 		try {
 			id = json.getLong("id");
-			number = json.getInt("number");
+			number = json.getLong("number");
 			name = json.getString("name");
 			code = json.getString("code");
+			begin = fmt.parse(json.getString("begin"));
+			end = fmt.parse(json.getString("end"));
+			id_planning = json.getString("id_planning");
 		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return this;
@@ -161,16 +174,16 @@ public class Promo extends Entity implements Parcelable {
 	public int describeContents() {
 		return 0;
 	}
+	
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(id);
 		dest.writeString(name);
-		dest.writeInt(number);
+		dest.writeLong(number);
 		dest.writeString(code);
-	}
-
-	public int getPromoId() {
-		return promo_id;
+		dest.writeLong(begin.getTime());
+		dest.writeLong(end.getTime());
+		dest.writeString(id_planning);
 	}
 
 	public static final Parcelable.Creator<Promo> CREATOR = new Parcelable.Creator<Promo>() {

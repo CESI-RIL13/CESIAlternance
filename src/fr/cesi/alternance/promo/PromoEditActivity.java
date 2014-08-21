@@ -1,32 +1,21 @@
 package fr.cesi.alternance.promo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-import com.kolapsis.utils.DownloadImageTask;
-import com.kolapsis.utils.HttpData;
-import com.kolapsis.utils.HttpData.HttpDataException;
-
-import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.R;
-import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
-import fr.cesi.alternance.user.User;
-import fr.cesi.alternance.user.UserActivity;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
+import android.app.DatePickerDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class PromoEditActivity extends Activity {
 	
@@ -38,6 +27,8 @@ public class PromoEditActivity extends Activity {
 	private String mRoleAccount;
 	private Promo promo;
 	private Long training;
+	private SimpleDateFormat fmt = new SimpleDateFormat("dd MMMM yyyy");
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +38,11 @@ public class PromoEditActivity extends Activity {
 		
 		setContentView(R.layout.activity_promo_edit);
 		//initialise les EditText
-		begin = (EditText)findViewById(R.id.nameUser);
-		end = (EditText)findViewById(R.id.mailUser);
-		number = (EditText)findViewById(R.id.phoneUser);
-		code = (EditText)findViewById(R.id.phoneUser);
-		id_planning = (EditText)findViewById(R.id.phoneUser);
+		begin = (EditText)findViewById(R.id.begin);
+		end = (EditText)findViewById(R.id.end);
+		number = (EditText)findViewById(R.id.number);
+		code = (EditText)findViewById(R.id.code);
+		id_planning = (EditText)findViewById(R.id.id_planning);
 
 		if(getIntent().getExtras() != null){
 			promo = (Promo)getIntent().getExtras().getParcelable("promo");
@@ -60,29 +51,52 @@ public class PromoEditActivity extends Activity {
 
 		//si le user est passé charge les champs
 		if(promo != null){
-            begin.setText(promo.getBegin());
-			end.setText(promo.getEnd());
-			number.setText(promo.getNumber());
+            begin.setText(fmt.format(promo.getBegin()));
+			end.setText(fmt.format(promo.getEnd()));
+			number.setText(""+promo.getNumber());
 			code.setText(promo.getCode());
 			id_planning.setText(promo.getId_planning());
 		}
 
-		setTitle("Create new Promo");
+		setTitle(R.string.promo_add);
+		
+		begin.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				Calendar c = Calendar.getInstance();
+				c.setTimeInMillis(promo.getBegin().getTime());
+				
+				new DatePickerDialog(PromoEditActivity.this, beginCallBack, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE)).show();
+			}
+		});
 
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.user, menu); 
-		return true; 
+		end.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				Calendar c = Calendar.getInstance();
+				c.setTimeInMillis(promo.getEnd().getTime());
+				
+				new DatePickerDialog(PromoEditActivity.this, endCallBack, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE)).show();
+			}
+		});
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-//		menu.findItem(R.id.user_settings_save).setVisible("IF".equals(mRoleAccount));
-//		menu.findItem(R.id.user_settings_delete).setVisible("IF".equals(mRoleAccount) && mUser.getId() > 0);
-//		menu.findItem(R.id.user_settings_note).setVisible("Intervenant".equals(mRoleAccount));
+		menu.findItem(R.id.save_action).setVisible("IF".equals(mRoleAccount));
+		menu.findItem(R.id.delete_action).setVisible("IF".equals(mRoleAccount) && promo.getId() > 0);
+		menu.findItem(R.id.cancel_action).setVisible("IF".equals(mRoleAccount));
 		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.save_action, menu); 
+		return true; 
 	}
 
 	@Override
@@ -102,6 +116,39 @@ public class PromoEditActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+
+	private DatePickerDialog.OnDateSetListener beginCallBack = new DatePickerDialog.OnDateSetListener() {
+		
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+			Calendar c = Calendar.getInstance();
+			c.set(Calendar.YEAR, year);
+			c.set(Calendar.MONTH, monthOfYear);
+			c.set(Calendar.DATE, dayOfMonth);
+			
+			promo.setBegin(c.getTime());
+			
+			begin.setText(fmt.format(c.getTime()));
+		}
+	};	
+
+	private DatePickerDialog.OnDateSetListener endCallBack = new DatePickerDialog.OnDateSetListener() {
+		
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+			Calendar c = Calendar.getInstance();
+			c.set(Calendar.YEAR, year);
+			c.set(Calendar.MONTH, monthOfYear);
+			c.set(Calendar.DATE, dayOfMonth);
+			
+			promo.setEnd(c.getTime());
+			
+			end.setText(fmt.format(c.getTime()));
+		}
+	};	
+
 
 //	private void save(Boolean add) {
 //		//modifi l'objet user courant avec les nouveaux paramï¿½tres
@@ -186,9 +233,5 @@ public class PromoEditActivity extends Activity {
 //		success = "successfully submitted ! ";
 //		return success;
 //	}
-	
-	//fonction pour aller sur l'onglet qui permet d'afficher et rentrer des notes
-	private void noteUser(){
 
-	}
 }
