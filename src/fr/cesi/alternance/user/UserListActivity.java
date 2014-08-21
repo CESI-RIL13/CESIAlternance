@@ -5,6 +5,7 @@ import java.util.List;
   
 
 
+
 import fr.cesi.alternance.Constants; 
 import fr.cesi.alternance.R; 
 import fr.cesi.alternance.user.User; 
@@ -51,7 +52,7 @@ public class UserListActivity extends ListActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() { 
             public void onItemClick(AdapterView<?> list, View view, int position, long id) { 
                 User user = (User) getListAdapter().getItem(position); 
-                  
+
                 Intent intent = new Intent(UserListActivity.this, UserActivity.class); 
                 intent.putExtra("user", user); 
                 intent.putExtra("id_promo", promo.getId()); 
@@ -94,13 +95,20 @@ public class UserListActivity extends ListActivity {
 	public boolean onCreateOptionsMenu (Menu menu) {
     	if(!"IF".equals(AccountHelper.getRole()))
     		return false;
-        getMenuInflater().inflate(R.menu.userlist, menu); 
+        getMenuInflater().inflate(R.menu.add_action, menu);
         return true; 
     } 
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.add_doc_action).setVisible(false);
+		menu.findItem(R.id.view_doc_action).setVisible(false);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
     public boolean onOptionsItemSelected(MenuItem item) { 
         switch (item.getItemId()) { 
-        case R.id.add_action:
+        case R.id.add_list_action:
         	
             User testUser = new User(); 
             testUser.setName("");
@@ -118,7 +126,7 @@ public class UserListActivity extends ListActivity {
         } 
     } 
   
-    private class UsersAdapter extends ArrayAdapter<User> { 
+    public class UsersAdapter extends ArrayAdapter<User> { 
           
         private Context mContexte; 
         private int mResource; 

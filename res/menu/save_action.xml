@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/save_action"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="save"
+        android:icon="@android:drawable/ic_menu_save"/>
+    
+    <item
+        android:id="@+id/delete_action"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="delete"
+        android:icon="@android:drawable/ic_menu_delete"/>
+    
+    <item
+        android:id="@+id/cancel_action"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="cancel"
+        android:icon="@android:drawable/ic_menu_send"/>
+
+</menu>

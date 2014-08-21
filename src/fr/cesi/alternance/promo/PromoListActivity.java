@@ -1,5 +1,6 @@
 package fr.cesi.alternance.promo;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -10,33 +11,29 @@ import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
 
 import fr.cesi.alternance.Constants;
-import fr.cesi.alternance.HomeActivity;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
+import fr.cesi.alternance.docs.DocListActivity;
 import fr.cesi.alternance.helpers.AccountHelper;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class PromoListActivity extends ListActivity{
 
-	private String role;
-	private int training;
+	private long id_training;
     private ProgressBar loader;
 	
     public static final String TAG = "PromoListActivity";
@@ -48,14 +45,19 @@ public class PromoListActivity extends ListActivity{
 		
 		setContentView(R.layout.activity_home);
         loader = (ProgressBar) findViewById(android.R.id.progress);
-		training = getIntent().getExtras().getInt("training");
+		id_training = getIntent().getExtras().getInt("training");
 		TextView name = (TextView) findViewById(R.id.name);
 		
 		name.setText(getIntent().getExtras().getString("name"));
-
-		syncPromo();
+		
 	}
-	
+
+    @Override
+    protected void onResume() {
+    	syncPromo();
+    	super.onResume();
+    }
+
 	private void syncPromo(){
 
     	getListView().setVisibility(View.GONE);
@@ -68,7 +70,7 @@ public class PromoListActivity extends ListActivity{
 					final ArrayList<Promo> listPromo = new ArrayList<Promo>();
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
 					
-					HttpData get = new  HttpData(Constants.BASE_API_URL + "/promo").header(Api.APP_AUTH_TOKEN, token).data("training", String.valueOf(training)).get();
+					HttpData get = new  HttpData(Constants.BASE_API_URL + "/promo").header(Api.APP_AUTH_TOKEN, token).data("id_training", String.valueOf(id_training)).get();
 					JSONObject json = get.asJSONObject();
 					
 					if(json.getBoolean("success")) {
@@ -101,7 +103,54 @@ public class PromoListActivity extends ListActivity{
 		}).start();
 
 	}
+
+	public boolean onCreateOptionsMenu (Menu menu) {
+    	if(!"IF".equals(AccountHelper.getRole()))
+    		return false;
+        getMenuInflater().inflate(R.menu.add_action, menu);
+        return true;
+    } 
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.add_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+        switch (item.getItemId()) { 
+	        case R.id.add_list_action:
+	        	
+	            Promo newPromo = new Promo();
+	            newPromo.setName("");
+	            newPromo.setNumber(0);
+	            newPromo.setCode("");
+	            newPromo.setEnd(new Date());
+	            newPromo.setBegin(new Date());
+	            newPromo.setId_planning("");
 	
+	            intent = new Intent(PromoListActivity.this, PromoEditActivity.class); 
+	            intent.putExtra("promo", newPromo);
+	            intent.putExtra("id_training", id_training); 
+	            startActivity(intent); 
+	            return true;
+	        case R.id.add_doc_action:
+	//            intent = new Intent(PromoListActivity.this, DocListActivity.class); 
+	//            intent.putExtra("promo", newPromo); 
+	//            intent.putExtra("id_training", training); 
+	//            startActivity(intent);         	
+	        	return true;
+	        case R.id.view_doc_action:
+//	            intent = new Intent(PromoListActivity.this, DocListActivity.class); 
+//	            startActivity(intent);  	
+	        	return true;
+	        default: 
+	            return super.onOptionsItemSelected(item); 
+        } 
+    } 
+
 	private void getListPromo(final ArrayList<Promo> listPromo) {
 		
 		PromoAdapter adapter= new PromoAdapter(this, android.R.layout.simple_list_item_2, listPromo);
@@ -122,7 +171,6 @@ public class PromoListActivity extends ListActivity{
 			}
 		});
 	}
-
 
 	private class PromoAdapter extends ArrayAdapter<Promo> {
 
