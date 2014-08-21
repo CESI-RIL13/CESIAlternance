@@ -32,9 +32,9 @@ public class User extends Entity implements Parcelable {
 	private String mail;
 	private String role;
 	private String phone;
-	private String photo;
+	private String picture_path;
 	private ArrayList<Link> links;
-	private int id_promo;
+	private long id_promo;
 
 	public User() {
 		links = new ArrayList<Link>();
@@ -46,7 +46,7 @@ public class User extends Entity implements Parcelable {
 		mail = in.readString();
 		role = in.readString();
 		phone = in.readString();
-		photo=in.readString();
+		picture_path=in.readString();
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class User extends Entity implements Parcelable {
 			mail = json.getString("email");
 			role = json.getString("role");
 			phone = json.getString("phone");
-			photo=json.getString("picture_path");
+			picture_path=json.getString("picture_path");
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -78,7 +78,7 @@ public class User extends Entity implements Parcelable {
 		u.mail=bundle.getString(Api.UserColumns.EMAIL);
 		u.role=bundle.getString(Api.UserColumns.ROLE);
 		u.phone=bundle.getString(Api.UserColumns.PHONE);
-		u.photo=bundle.getString(Api.UserColumns.PICTURE_PATH);
+		u.picture_path=bundle.getString(Api.UserColumns.PICTURE_PATH);
 		String listeLinks = bundle.getString(Api.UserColumns.LINKS);
 		try {
 			JSONArray jsLinks = new JSONArray(listeLinks);
@@ -134,7 +134,7 @@ public class User extends Entity implements Parcelable {
 	public int describeContents() {
 		return 0;
 	}
-	public int getId_promo() {
+	public long getId_promo() {
 		return id_promo;
 	}
 
@@ -145,15 +145,15 @@ public class User extends Entity implements Parcelable {
 	/**
 	 * @return the photo
 	 */
-	public String getPhoto() {
-		return photo;
+	public String getPicture_Path() {
+		return picture_path;
 	}
 
 	/**
 	 * @param photo the photo to set
 	 */
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setPicture_Path(String photo) {
+		this.picture_path = photo;
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class User extends Entity implements Parcelable {
 		dest.writeString(mail);
 		dest.writeString(role);
 		dest.writeString(phone);
-		dest.writeString(photo);
+		dest.writeString(picture_path);
 	}
 
 	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

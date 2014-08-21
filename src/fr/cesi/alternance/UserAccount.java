@@ -225,7 +225,7 @@ public class UserAccount extends FragmentActivity {
 				mEditNom.setText(utilisateur.getName());
 				mEditMail.setText(utilisateur.getMail());
 				mEditPhone.setText(utilisateur.getPhone());
-				String url = utilisateur.getPhoto();
+				String url = utilisateur.getPicture_Path();
 				if(!TextUtils.isEmpty(url)) {
 					mIVPhoto.setTag(Constants.BASE_URL + "/picture/" + url);
 					new DownloadImageTask(mIVPhoto).execute();
