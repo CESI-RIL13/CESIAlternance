@@ -1,11 +1,21 @@
 package fr.cesi.alternance.user;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.accounts.AuthenticatorException;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
@@ -18,9 +28,12 @@ public class User extends Entity implements Parcelable {
 	private String role;
 	private String phone;
 	private String picture_path;
+	private ArrayList<Link> links;
 	private long id_promo;
 
-	public User() {}
+	public User() {
+		links = new ArrayList<Link>();
+	}
 
 	public User(Parcel in){
 		id = in.readLong();
@@ -30,7 +43,7 @@ public class User extends Entity implements Parcelable {
 		phone = in.readString();
 		picture_path = in.readString();
 	}
-
+	
 	@Override
 	public String getApiPath() {
 		String api_path = "user/" + this.id;
@@ -46,10 +59,33 @@ public class User extends Entity implements Parcelable {
 			role = json.getString("role");
 			phone = json.getString("phone");
 			picture_path = json.getString("picture_path");
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return this;
+	}
+	
+	public static User fromBundle(Bundle bundle){
+		User u = new User();
+		u.id= Integer.parseInt(bundle.getString(Api.UserColumns.ID));
+		u.name=bundle.getString(Api.UserColumns.NAME);
+		u.mail=bundle.getString(Api.UserColumns.EMAIL);
+		u.role=bundle.getString(Api.UserColumns.ROLE);
+		u.phone=bundle.getString(Api.UserColumns.PHONE);
+		u.picture_path=bundle.getString(Api.UserColumns.PICTURE_PATH);
+		String listeLinks = bundle.getString(Api.UserColumns.LINKS);
+		try {
+			JSONArray jsLinks = new JSONArray(listeLinks);
+			for (int i = 0; i < jsLinks.length(); i++) {
+				Link link = new Link().fromJSON(jsLinks.getJSONObject(i));
+				u.links.add(link);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return u;
 	}
 
 	@Override
@@ -105,6 +141,35 @@ public class User extends Entity implements Parcelable {
 		this.id_promo = id_promo;
 	}
 
+	/**
+	 * @return the photo
+	 */
+	public String getPicture_Path() {
+		return picture_path;
+	}
+
+	/**
+	 * @param photo the photo to set
+	 */
+	public void setPicture_Path(String photo) {
+		this.picture_path = photo;
+	}
+
+	/**
+	 * @return the links
+	 */
+	public ArrayList<Link> getLinks() {
+		if(links == null) links = new ArrayList<Link>();
+		return links;
+	}
+
+	/**
+	 * @param links the links to set
+	 */
+	public void setLinks(ArrayList<Link> links) {
+		this.links = links;
+	}
+
 	@Override
 	public int describeContents() {
 		return 0;
@@ -129,12 +194,50 @@ public class User extends Entity implements Parcelable {
 			return new User[size];
 		}
 	};
+	
+	public void addLink(final String type, final String url){
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				String apiUrl = Constants.BASE_API_URL + "/user/addLink";
+				try {
+					String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
+					JSONObject json = new HttpData(apiUrl).header(Api.APP_AUTH_TOKEN, token)
+											.data("id", String.valueOf(id))
+											.data("type", type)
+											.data("url", url)
+											.post().asJSONObject();
+					Log.v(TAG, json.toString());					
+					if(json.getBoolean("success"))
+					{
+						JSONObject result = json.getJSONObject("result");
+						links.add(new Link(result.getInt("id"), TypeEnum.fromString(type), url));
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 catch (HttpDataException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (AuthenticatorException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
 	public boolean save(){
 
 		boolean success = false;
 		try {
-			//requète 
+			//requï¿½te 
 			//appel de la fonction addUser
 			String url = Constants.BASE_API_URL + "/user/" + (this.id > 0 ? "updateUser" : "addUser");
 			//Authentification
