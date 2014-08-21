@@ -25,8 +25,6 @@
     <string name="menu_delete">Supprimer</string>
     
     <string name="menu_contextuel_mess">Confirmer la suppression ?</string>
-    <string name="menu_contextuel_delete">Supprimer</string>
-    <string name="menu_contextuel_cancel">Annuler</string>
     
     <string name="progress_delete_title">Suppression</string>
     <string name="progress_chargement">Chargement</string>  
@@ -35,40 +33,11 @@
 
     <string name="eleve_list_activity_title">Liste des éléves</string>
     <string name="user_list_add_action">Ajouter un utilisateur</string>
-    
-    <string name="calendrier_title">Calendrier</string>
-    <string name="calendrier_action">Ouvrir mon calendrier</string>
-	
-	<string name="training_title">Formations</string>
-	<string name="training_name">Formation</string>
-	<string name="training_desc">Mes formations</string>
-	<string name="training_action">Liste des formations que vous gérez</string>
 	    
 	<string name="promo_title">Promotions</string>
 	<string name="promo_name">Promotion</string>
-	<string name="promo_desc">Mes promotions</string>
-	<string name="promo_action">Liste des informations utiles</string>
 	<string name="promo_info">Informations</string>
 
-	<string name="doc_title">Documents</string>
-	<string name="doc_name">Document</string>
-	<string name="doc_desc">Mes documents</string>
-	<string name="doc_action">Consultez les documents officiels CESI</string>
-
-    <string name="support_title">Supports</string>
-	<string name="support_name">Support</string>
-	<string name="support_desc">Mes supports</string>
-	<string name="support_action">Liste de mes supports de cours</string>
-   
-    <string name="stagiaire_title">Stagiaires</string>
-	<string name="stagiaire_name">Stagiaire</string>
-	<string name="stagiaire_desc">Les stagiaires</string>
-	<string name="stagiaire_action">Liste des stagiaires</string>
-
-    <string name="intervenant_title">Intervenants</string>
-	<string name="intervenant_name">Intervenant</string>
-	<string name="intervenant_desc">Les intervenants</string>
-	<string name="intervenant_action">Liste des intervenants</string>
 	
     <string name="user_save_settings">save</string>
     <string name="user_delete_settings">delete</string>
