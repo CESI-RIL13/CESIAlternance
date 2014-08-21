@@ -87,5 +87,6 @@
 	<string name="intervenant_name">Intervenant</string>
 	<string name="intervenant_desc">Les intervenants</string>
 	<string name="intervenant_action">Liste des intervenants</string>
+
    
 </resources>

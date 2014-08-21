@@ -21,5 +21,11 @@
         android:showAsAction="always"
         android:title="@string/user_note_settings"
         android:icon="@android:drawable/ic_menu_send"/>
+    <item
+            android:id="@+id/user_settings_photo"
+            android:orderInCategory="100"
+            android:showAsAction="always"
+            android:title="@string/user_photo_settings"
+            android:icon="@android:drawable/ic_menu_gallery"/>
 
 </menu>
