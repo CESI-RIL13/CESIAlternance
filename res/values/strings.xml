@@ -2,17 +2,13 @@
 <resources>
 
     <string name="app_name">CESI Alternance</string>
-    <string name="action_settings">Paramètres</string>
-    
+    <string name="action_settings">Compte utilisateur</string>
     <string name="account_label">CESI Alternance</string>
     <string name="account_type">fr.cesi.alternance.account</string>
-    
     <string name="provider_calendar">com.android.calendar</string>
-    
     <string name="auth_login_email">Votre email</string>
     <string name="auth_login_pwd">Mot de passe</string>
     <string name="auth_login_submit">Connexion</string>
-    
     <string name="account_empty">Aucun compte</string>
     <string name="account_empty_sub">Veuillez ajouter un compte</string>
     <string name="account_add">Ajouter un compte</string>
@@ -21,16 +17,18 @@
     <string name="cancel">Annuler</string>
     <string name="validate">Valider</string>
     
+
     <string name="menu_add">Ajouter</string>
     <string name="menu_delete">Supprimer</string>
-    
     <string name="menu_contextuel_mess">Confirmer la suppression ?</string>
-    
-    <string name="progress_delete_title">Suppression</string>
-    <string name="progress_chargement">Chargement</string>  
-    <string name="progress_chargement_infos">Chargement en cours</string>  
-    <string name="progress_delete_infos">Suppression en cours</string>
 
+    <string name="menu_contextuel_delete">Supprimer</string>
+    <string name="menu_contextuel_cancel">Annuler</string>
+
+    <string name="progress_delete_title">Suppression</string>
+    <string name="progress_chargement">Chargement</string>
+    <string name="progress_chargement_infos">Chargement en cours</string>
+    <string name="progress_delete_infos">Suppression en cours</string>
     <string name="eleve_list_activity_title">Liste des éléves</string>
     <string name="user_list_add_action">Ajouter un utilisateur</string>
 	    
@@ -53,9 +51,6 @@
      
     <string name="doc_establishment_title">Documents administratifs</string>
     <string name="doc_establishment_action">Ouvrir les documents administratifs</string>
-    
-    <string name="menu_contextuel_delete">Supprimer</string>
-    <string name="menu_contextuel_cancel">Annuler</string>
 
     <string name="calendrier_title">Calendrier</string>
     <string name="calendrier_action">Ouvrir mon calendrier</string>
@@ -88,5 +83,20 @@
 	<string name="intervenant_desc">Les intervenants</string>
 	<string name="intervenant_action">Liste des intervenants</string>
 
-   
+    <string name="user_photo">Photo</string>
+    <string name="user_name">Nom</string>
+    <string name="user_mail">Email</string>
+    <string name="user_phone">Numéro</string>
+    <string name="user_social">Social</string>
+    <string name="facebook">Facebook</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="title_activity_user_account">Compte utilisateur</string>
+    <string name="user_prenom">Prénom</string>
+    <string name="user_add_link">Ajouter</string>
+    <string name="link_type">Type</string>
+    <string name="link_lien">Lien</string>
+    <string name="menu_contextuel_edit">Modifier</string>
+    <string name="menu_contextuel_open">Ouvrir</string>
+
+
 </resources>

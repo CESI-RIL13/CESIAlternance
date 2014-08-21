@@ -21,6 +21,7 @@ import android.provider.CalendarContract.Events;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.ClipData.Item;
 import android.content.Intent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -30,6 +31,7 @@ import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -93,8 +95,22 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent intentCompteUser = new Intent(this, UserAccount.class);
+			startActivity(intentCompteUser);
+			break;
+		default:
+			break;
+		}
+		return false;
 	}
 
 	@Override
