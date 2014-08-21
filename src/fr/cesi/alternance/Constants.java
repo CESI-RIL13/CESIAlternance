@@ -15,7 +15,9 @@ public class Constants {
 	public static final String APP_VERSION_CODE				= "1";
 	public static final String APP_NAMESPACE				= "http://schemas.android.com/apk/res/" + APP_PACKAGE;
 	
-	public static final String BASE_API_URL					= "http://cesi.kolapsis.com/cesi_alternance/api/v1";
+
+	public static final String BASE_URL						= "http://cesi.kolapsis.com/cesi_alternance";
+	public static final String BASE_API_URL					= BASE_URL + "/api/v1";
 
 	public static final int RESULT_NEW_ACCOUNT				= 1;
 	public static final int RESULT_PREFERENCES				= 2;
