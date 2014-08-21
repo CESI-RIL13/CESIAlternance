@@ -63,10 +63,10 @@
 	<string name="promo_desc">Mes promotions</string>
 	<string name="promo_action">Liste des informations utiles</string>
 
-	<string name="doc_title">Documents</string>
-	<string name="doc_name">Document</string>
+	<string name="doc_title">Mes Documents</string>
+	<string name="doc_name">Documents personnels</string>
 	<string name="doc_desc">Mes documents</string>
-	<string name="doc_action">Consultez les documents officiels CESI</string>
+	<string name="doc_action">Liste des documents personnels</string>
 
     <string name="support_title">Supports</string>
 	<string name="support_name">Support</string>

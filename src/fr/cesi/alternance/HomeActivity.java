@@ -159,7 +159,6 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 	private void showApp() {
 		setContentView(R.layout.activity_home);
 
-		// TODO: remplir avec les �l�ments n�cessaire suivant le role de l'utilisateur
 		Intent intent;
 		ArrayList<Holder> buttons = new ArrayList<Holder>();
 		final String role = AccountHelper.getRole();
@@ -173,13 +172,14 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		ContentUris.appendId(builder, startMillis);
 		
 		intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
+		Intent intentDocEtablissement = new Intent(this, DocListActivity.class);
 		
 		buttons.add(new Holder(getString(R.string.calendrier_title), getString(R.string.calendrier_action), intent));
 		
 		if ("IF".equals(role)) {
 			
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
-			
+			intentDocEtablissement.putExtra("add", true);
 			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
 		
 		} else if ("Intervenant".equals(role)) {			
@@ -188,7 +188,7 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 			Intent intentDoc = new Intent(this, DocListActivity.class);
 			
 			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
-			buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDoc));
+			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
 		
 		} else if ("Stagiaire".equals(role)) {
 			
@@ -202,6 +202,15 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 			buttons.add(new Holder(getString(R.string.support_title), getString(R.string.support_action), null));		
 			buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDocStagiaire));
 		}
+		
+		intentDocEtablissement.putExtra("id_establishment", 1L);
+
+		buttons.add(new Holder(getString(R.string.doc_establishment_title), getString(R.string.doc_establishment_action), intentDocEtablissement));
+		
+		Intent intentDoc = new Intent(this, DocListActivity.class);
+		int id_user = AccountHelper.getUserId();
+		intentDoc.putExtra("id_user", id_user);
+		buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDoc));
 		
 		mAdapter = new HolderAdapter(this, buttons);
 		ListView list = (ListView) findViewById(android.R.id.list);
