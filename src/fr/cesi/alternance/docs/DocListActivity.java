@@ -11,13 +11,16 @@ import org.json.JSONObject;
 import android.accounts.Account;
 import android.accounts.AuthenticatorException;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -29,7 +32,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
@@ -39,30 +44,31 @@ import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
 
-public class DocListActivity extends ListActivity {
+public class DocListActivity extends FragmentActivity {
 
+	public static final String TAG = "DocListActivity";
 	private Boolean selection;
 	private DocsAdapter adapter;
-	private ArrayList <Doc> docs = new ArrayList<Doc>();
+	private ArrayList<Doc> docs = new ArrayList<Doc>();
 	private boolean remove;
-	private static Account account;
+	private Account account;
+	private ListView mList;
 
-	private static final String NAME				= "name";
-	private static final String DESCRIPTION         = "description";
-	private static final String PATH 				= "path";
+
 
 
 	// ---------------------------------------------------------------------------------------
-	// Procedures onCreate 
+	// Procedures onCreate
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.doc_list_activity);
-		ListDoc();
-		getListView().setOnItemLongClickListener(docLongClick);
-		getListView().setOnItemClickListener(docClick);
+		mList = (ListView) findViewById(android.R.id.list);
+		connexionServer();
+		mList.setOnItemLongClickListener(docLongClick);
+		mList.setOnItemClickListener(docClick);
 		selection = false;
 	}
 
@@ -71,11 +77,10 @@ public class DocListActivity extends ListActivity {
 		// TODO Auto-generated method stub
 		getMenuInflater().inflate(R.menu.menu_doc_list, menu);
 
-		MenuItem item =  menu.findItem(R.id.doc_delete);
+		MenuItem item = menu.findItem(R.id.doc_delete);
 		item.setVisible(false);
 		return true;
 	}
-
 
 	// ---------------------------------------------------------------------------------------
 	// Procedures menu
@@ -83,18 +88,20 @@ public class DocListActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.doc_delete :
+		case R.id.doc_delete:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setTitle(R.string.progress_delete_title);
 			builder.setMessage(R.string.menu_contextuel_mess);
-			builder.setNegativeButton(R.string.menu_contextuel_cancel, new DialogInterface.OnClickListener() {	
+			builder.setNegativeButton(R.string.cancel,
+					new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 				}
 			});
-			builder.setPositiveButton(R.string.menu_contextuel_delete, new DialogInterface.OnClickListener() {
+			builder.setPositiveButton(R.string.delete,
+					new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					remove = true;
@@ -106,10 +113,11 @@ public class DocListActivity extends ListActivity {
 				public void onDismiss(DialogInterface dialog) {
 					if (remove) {
 						List<Doc> rm = new ArrayList<Doc>();
-						for(Doc doc : docs)
-							if(doc.isSelected()) rm.add(doc);
+						for (Doc doc : docs)
+							if (doc.isSelected())
+								rm.add(doc);
 
-						for (Doc doc : rm) 
+						for (Doc doc : rm)
 							docs.remove(doc);
 
 						adapter.notifyDataSetChanged();
@@ -125,7 +133,12 @@ public class DocListActivity extends ListActivity {
 			builder.show();
 
 			return true;
-		case R.id.doc_add : 
+		case R.id.doc_add:
+			final long id_promo = getIntent().getLongExtra("id_promo", 0);
+			final long id_training = getIntent().getLongExtra("id_training", 0);
+			final long id_establishment = getIntent().getLongExtra("id_establishment", 0);
+			DialogFragment dialog = new DocUploadDialog(id_establishment,id_training,id_promo);
+			dialog.show(getSupportFragmentManager(), "dialog");
 			return true;
 
 		}
@@ -134,10 +147,11 @@ public class DocListActivity extends ListActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem item =  menu.findItem(R.id.doc_delete);
-		if(afficheMenuDelete())
+		MenuItem item = menu.findItem(R.id.doc_delete);
+		if (afficheMenuDelete())
 			item.setVisible(true);
-		else item.setVisible(false);
+		else
+			item.setVisible(false);
 
 		return true;
 	}
@@ -148,12 +162,19 @@ public class DocListActivity extends ListActivity {
 	private OnItemClickListener docClick = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> adapterView, View view, int position,long id) {
-			if(selection){
-				if(checkItem(position))
+		public void onItemClick(AdapterView<?> adapterView, View view,
+				int position, long id) {
+			if (selection) {
+				if (checkItem(position))
 					view.setBackgroundColor(Color.CYAN);
-				else view.setBackgroundColor(Color.WHITE);
+				else
+					view.setBackgroundColor(Color.WHITE);
 				invalidateOptionsMenu();
+			} else {
+				String url = Constants.BASE_URL + "/"
+						+ docs.get(position).getPath();
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				startActivity(intent);
 			}
 		}
 	};
@@ -161,24 +182,25 @@ public class DocListActivity extends ListActivity {
 	private OnItemLongClickListener docLongClick = new OnItemLongClickListener() {
 
 		@Override
-		public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+		public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+				int position, long id) {
 			selection = true;
 
-			if(checkItem(position))
+			if (checkItem(position))
 				view.setBackgroundColor(Color.CYAN);
-			else view.setBackgroundColor(Color.WHITE);
+			else
+				view.setBackgroundColor(Color.WHITE);
 
 			invalidateOptionsMenu();
 			return true;
 		}
 	};
 
-
 	// --------------------------------------------------------------------------------------------
 	// Fonctions utiles
 
 	private boolean checkItem(int position) {
-		Doc doc = ((DocsAdapter) getListAdapter()).getItem(position);
+		Doc doc = adapter.getItem(position);
 		doc.setSelected(!doc.isSelected());
 		docs.get(position).setSelected(doc.isSelected());
 
@@ -186,10 +208,10 @@ public class DocListActivity extends ListActivity {
 	}
 
 	private boolean afficheMenuDelete() {
-		for(int i = 0; i < docs.size(); i++){
+		for (int i = 0; i < docs.size(); i++) {
 			Doc doc = docs.get(i);
-			Log.v("selection", ""+doc.isSelected()+i);
-			if(doc.isSelected())
+			Log.v("selection", "" + doc.isSelected() + i);
+			if (doc.isSelected())
 				return true;
 		}
 
@@ -198,36 +220,43 @@ public class DocListActivity extends ListActivity {
 	}
 
 	private void traceSel() {
-		SparseBooleanArray sel = getListView().getCheckedItemPositions();
-		for(int i = 0;i<adapter.getCount();i++){
-			Log.v("select" + i, "" +sel.get(i));
+		SparseBooleanArray sel = mList.getCheckedItemPositions();
+		for (int i = 0; i < adapter.getCount(); i++) {
+			Log.v("select" + i, "" + sel.get(i));
 		}
 	}
 
 	private void deleteDocs(final List<Doc> rm) {
-		final ProgressDialog progress = ProgressDialog.show(DocListActivity.this, getString(R.string.progress_delete_title), getString(R.string.progress_delete_infos));
+		final ProgressDialog progress = ProgressDialog.show(
+				DocListActivity.this,
+				getString(R.string.progress_delete_title),
+				getString(R.string.progress_delete_infos));
 
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
-					final String url = Constants.BASE_API_URL +"/document/delete/";
-					final String token = AccountHelper.blockingGetAuthToken(account, Constants.ACCOUNT_TOKEN_TYPE, true);
+					final String url = Constants.BASE_API_URL
+							+ "/document/delete/";
+					final String token = AccountHelper.blockingGetAuthToken(
+							account, Constants.ACCOUNT_TOKEN_TYPE, true);
 
 					account = AccountHelper.getAccount();
-					for(int i= 0;i<rm.size();i++) {
+					for (int i = 0; i < rm.size(); i++) {
 						Doc d = rm.get(i);
-						Log.v("objet doc avant delete", ""+ d.getName());
+						Log.v("objet doc avant delete", "" + d.getName());
 						String u = url + d.getId();
-						Log.v("objet u", ""+ u);
+						Log.v("objet u", "" + u);
 						HttpData get = new HttpData(u).header(Api.APP_AUTH_TOKEN, token).get();
 						Log.v("retour du serveur", get.asString());
 						JSONObject result = get.asJSONObject();
-						Log.v("resultat de l'appel serveur", ""+ result.toString());
-						if(result.getBoolean("success")){
+						Log.v("resultat de l'appel serveur",
+								"" + result.toString());
+						if (result.getBoolean("success")) {
 							docs.remove(d);
-							Log.v("objet docs apres delete", ""+ docs.toString());
+							Log.v("objet docs apres delete",
+									"" + docs.toString());
 						}
 
 					}
@@ -251,31 +280,48 @@ public class DocListActivity extends ListActivity {
 		}).start();
 	}
 
-	private boolean connexionServer() throws AuthenticatorException, IOException{
-		final ProgressDialog progress = ProgressDialog.show(DocListActivity.this, getString(R.string.progress_chargement), getString(R.string.progress_chargement_infos));
-		final String url = Constants.BASE_API_URL +"/document";
+	private boolean connexionServer() {
+		final ProgressDialog progress = ProgressDialog.show(
+				DocListActivity.this, getString(R.string.progress_chargement),
+				getString(R.string.progress_chargement_infos));
 		account = AccountHelper.getAccount();
-		//final String token = Constants.TOKEN_TEST;
-		//final String role = AccountHelper.getData(Api.UserColumns.ROLE);
+		final long id_promo = getIntent().getLongExtra("id_promo", 0);
+		final long id_training = getIntent().getLongExtra("id_training", 0);
+		final long id_establishment = getIntent().getLongExtra("id_establishment", 0);
+		Log.v("promo", "" + id_promo);
+		Log.v("training", "" + id_training);
+		Log.v("establishment", "" + id_establishment);
+
+		final String url = Constants.BASE_API_URL + "/document";
+
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
-					final String token = AccountHelper.blockingGetAuthToken(account, Constants.ACCOUNT_TOKEN_TYPE, true);
-					JSONObject json = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).get().asJSONObject();
-					Log.v("objet Json", ""+ json.toString());
+					final String token = AccountHelper.blockingGetAuthToken(
+							account, Constants.ACCOUNT_TOKEN_TYPE, true);
+					JSONObject json = new HttpData(url)
+					.header(Api.APP_AUTH_TOKEN, token)
+					.data("id_establishment", String.valueOf(id_establishment))
+					.data("id_training", String.valueOf(id_training))
+					.data("id_promo", String.valueOf(id_promo))
+					.get().asJSONObject();
+					Log.v("objet Json", "" + json.toString());
+					if(json.has("error")){
+						showError(json.getString("error"));
+					}else{
+						JSONArray result = json.getJSONArray("result");
+						Log.v("objet RESULT", "" + result.toString());
+						docs.clear();
 
-					JSONArray result = json.getJSONArray("result");
-					Log.v("objet RESULT", ""+ result.toString());
-					docs.clear();
-
-					for(int i= 0;i<result.length();i++) {
-						JSONObject objet = result.getJSONObject(i);
-						Doc d = new Doc().fromJSON(objet);
-						docs.add(d);
+						for (int i = 0; i < result.length(); i++) {
+							JSONObject objet = result.getJSONObject(i);
+							Doc d = new Doc().fromJSON(objet);
+							docs.add(d);
+						}
+						generationDeVue();
 					}
-					generationDeVue();
 
 				} catch (HttpDataException e) {
 					e.printStackTrace();
@@ -292,65 +338,63 @@ public class DocListActivity extends ListActivity {
 
 					progress.dismiss();
 				}
-				
+
 			}
 
 		}).start();
 
 		return true;
 	}
+
 	// ------------------------------------------------------------------------------------
 	// Corps de l'activity
 
-	private void generationDeVue(){
+	protected void showError(final String err) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				//new AlertDialog.Builder(DocListActivity.this).setTitle("Erreur").setMessage(err).setNeutralButton("Fermer", null).create().show();
+				Toast.makeText(DocListActivity.this, err, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+	private void generationDeVue() {
 		runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				adapter = new DocsAdapter(DocListActivity.this,R.layout.doc_row,docs);
-				setListAdapter(adapter);
+				adapter = new DocsAdapter(DocListActivity.this,
+						R.layout.doc_row, docs);
+				mList.setAdapter(adapter);
 			}
 		});
-	}
-
-
-	private void ListDoc() {
-
-		try {
-			connexionServer();
-
-		} catch (AuthenticatorException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	// -------------------------------------------------------------------------------------
 	// Class adapter view
 
-	private class DocsAdapter extends ArrayAdapter<Doc>{
+	private class DocsAdapter extends ArrayAdapter<Doc> {
 
 		private Context mContext;
 		private int mRessource;
 		private List<Doc> mItems;
 
-		public DocsAdapter(Context context, int resource,
-				List<Doc> objects) {
+		public DocsAdapter(Context context, int resource, List<Doc> objects) {
 			super(context, resource, objects);
 			// TODO Auto-generated constructor stub
 			mContext = context;
 			mRessource = resource;
 			mItems = objects;
 		}
+
 		@Override
 		public View getView(int position, View view, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			if (view == null) view = LayoutInflater.from(mContext).inflate(mRessource, parent, false);
+			if (view == null)
+				view = LayoutInflater.from(mContext).inflate(mRessource,
+						parent, false);
 
 			Doc doc = mItems.get(position);
 			TextView tv = (TextView) view.findViewById(R.id.titre);
@@ -358,9 +402,10 @@ public class DocListActivity extends ListActivity {
 			tv = (TextView) view.findViewById(R.id.desc);
 			tv.setText(doc.getDescription());
 
-			if(doc.isSelected())
+			if (doc.isSelected())
 				view.setBackgroundColor(Color.CYAN);
-			else view.setBackgroundColor(Color.WHITE);
+			else
+				view.setBackgroundColor(Color.WHITE);
 
 			return view;
 		}
