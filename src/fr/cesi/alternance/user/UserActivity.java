@@ -3,7 +3,7 @@ package fr.cesi.alternance.user;
 
 import android.app.DialogFragment;
 import android.widget.ImageView;
-import fr.cesi.alternance.docs.PhotoUserDialog;
+import fr.cesi.alternance.user.PhotoUserDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.kolapsis.utils.HttpData;
@@ -119,6 +119,7 @@ public class UserActivity extends Activity {
 			return true;
         case R.id.user_settings_photo:
             DialogFragment dialog = new PhotoUserDialog(mUser,mUploadListener);
+            dialog.show(getFragmentManager(), "dialog");
 		default:
 			return super.onOptionsItemSelected(item);
 		}

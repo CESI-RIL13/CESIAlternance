@@ -1,5 +1,5 @@
 
-package fr.cesi.alternance.docs;
+package fr.cesi.alternance.user;
 
 import java.io.File;
 import java.io.IOException;
@@ -195,9 +195,9 @@ public class PhotoUserDialog extends DialogFragment {
         }
 
         @Override
-        protected void onPostExecute(String... result) {
+        protected void onPostExecute(String result) {
             progress.dismiss();
-            if(mListener != null) mListener.onUpload(result[0]);
+            if(mListener != null) mListener.onUpload(result);
         }
     }
 }

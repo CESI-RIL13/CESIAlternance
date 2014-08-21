@@ -46,7 +46,7 @@ public final class R {
         public static final int LinearLayout1=0x7f0a0007;
         public static final int account_add=0x7f0a0000;
         public static final int action_settings=0x7f0a0023;
-        public static final int add_action=0x7f0a002a;
+        public static final int add_action=0x7f0a002b;
         public static final int browse=0x7f0a001c;
         public static final int callUser=0x7f0a0013;
         public static final int desc=0x7f0a0019;
@@ -85,6 +85,7 @@ public final class R {
         public static final int user=0x7f0a0020;
         public static final int user_settings_delete=0x7f0a0028;
         public static final int user_settings_note=0x7f0a0029;
+        public static final int user_settings_photo=0x7f0a002a;
         public static final int user_settings_save=0x7f0a0027;
     }
     public static final class layout {
@@ -103,7 +104,8 @@ public final class R {
         public static final int doc_upload=0x7f03000c;
         public static final int list_row=0x7f03000d;
         public static final int list_sample=0x7f03000e;
-        public static final int training_row=0x7f03000f;
+        public static final int photo_upload=0x7f03000f;
+        public static final int training_row=0x7f030010;
     }
     public static final class menu {
         public static final int main=0x7f090000;
