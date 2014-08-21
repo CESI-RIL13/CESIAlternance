@@ -17,12 +17,14 @@
     <string name="account_empty_sub">Veuillez ajouter un compte</string>
     <string name="account_add">Ajouter un compte</string>
     
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Annuler</string>
+    <string name="validate">Valider</string>
+    
     <string name="menu_add">Ajouter</string>
     <string name="menu_delete">Supprimer</string>
     
     <string name="menu_contextuel_mess">Confirmer la suppression ?</string>
-    <string name="menu_contextuel_delete">Supprimer</string>
-    <string name="menu_contextuel_cancel">Annuler</string>
     
     <string name="progress_delete_title">Suppression</string>
     <string name="progress_chargement">Chargement</string>  
@@ -31,7 +33,30 @@
 
     <string name="eleve_list_activity_title">Liste des éléves</string>
     <string name="user_list_add_action">Ajouter un utilisateur</string>
+	    
+	<string name="promo_title">Promotions</string>
+	<string name="promo_name">Promotion</string>
+	<string name="promo_info">Informations</string>
+
+	
+    <string name="user_save_settings">save</string>
+    <string name="user_delete_settings">delete</string>
+    <string name="user_note_settings">note</string>
     
+    <string name="doc_nom">Nom du document</string>
+    <string name="doc_description">Description</string>
+    <string name="doc_file">Fichier</string>
+    <string name="doc_browser">...</string>
+    
+    <string name="progress_envoi">Envoi</string>  
+    <string name="progress_envoi_infos">Envoi en cours</string> 
+     
+    <string name="doc_establishment_title">Documents administratifs</string>
+    <string name="doc_establishment_action">Ouvrir les documents administratifs</string>
+    
+    <string name="menu_contextuel_delete">Supprimer</string>
+    <string name="menu_contextuel_cancel">Annuler</string>
+
     <string name="calendrier_title">Calendrier</string>
     <string name="calendrier_action">Ouvrir mon calendrier</string>
 	
@@ -39,12 +64,9 @@
 	<string name="training_name">Formation</string>
 	<string name="training_desc">Mes formations</string>
 	<string name="training_action">Liste des formations que vous gérez</string>
-	    
-	<string name="promo_title">Promotions</string>
-	<string name="promo_name">Promotion</string>
+
 	<string name="promo_desc">Mes promotions</string>
 	<string name="promo_action">Liste des informations utiles</string>
-	<string name="promo_info">Informations</string>
 
 	<string name="doc_title">Documents</string>
 	<string name="doc_name">Document</string>
@@ -65,9 +87,6 @@
 	<string name="intervenant_name">Intervenant</string>
 	<string name="intervenant_desc">Les intervenants</string>
 	<string name="intervenant_action">Liste des intervenants</string>
-	
-    <string name="user_save_settings">save</string>
-    <string name="user_delete_settings">delete</string>
-    <string name="user_note_settings">note</string>
+
    
 </resources>
