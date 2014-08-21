@@ -4,6 +4,7 @@ package fr.cesi.alternance;
 import fr.cesi.alternance.helpers.AccountHelper;
 //import fr.cesi.alternance.user.UserListActivity;
 import fr.cesi.alternance.docs.DocListActivity;
+import fr.cesi.alternance.promo.PromoListActivity;
 import fr.cesi.alternance.training.TrainingActivity;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.Calendar;
 import com.kolapsis.utils.StringUtils;
 
 import fr.cesi.alternance.helpers.AccountHelper;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -51,10 +51,6 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		
 		//AccountHelper.setContext(this);
 		setContentView(R.layout.activity_home);
-		
-		/*
-		 * DEBUG : lance activiter UserListActivity
-		startActivity(new Intent(this, UserListActivity.class)); */
 		
 		AccountHelper.setContext(this);
 		
@@ -147,7 +143,6 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 	private void showApp() {
 		setContentView(R.layout.activity_home);
 
-		// TODO: remplir avec les �l�ments n�cessaire suivant le role de l'utilisateur
 		Intent intent;
 		ArrayList<Holder> buttons = new ArrayList<Holder>();
 		final String role = AccountHelper.getRole();
@@ -159,22 +154,42 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
 		builder.appendPath("time");
 		ContentUris.appendId(builder, startMillis);
+		
 		intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
-		buttons.add(new Holder("Calendrier", "Ouvrir mon calendrier", intent));
+		Intent intentDocEtablissement = new Intent(this, DocListActivity.class);
+		
+		buttons.add(new Holder(getString(R.string.calendrier_title), getString(R.string.calendrier_action), intent));
 		
 		if ("IF".equals(role)) {
+			
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
-			buttons.add(new Holder("Formations", "Mes formations", intentFormations));
+			intentDocEtablissement.putExtra("add", true);
+			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
+		
 		} else if ("Intervenant".equals(role)) {			
-			//buttons.add(new Holder("Mes supports", "Gérer mes supports de cours", null));
-			//buttons.add(new Holder("Notes", "Noter une promo", null));
-			Intent intentDoc = new Intent(this, DocListActivity.class);
-			buttons.add(new Holder("Documents", "Documents officiels CESI", intentDoc));
+
+			Intent intentFormations = new Intent(this, TrainingActivity.class);
+			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
+		
 		} else if ("Stagiaire".equals(role)) {
-			buttons.add(new Holder("Mes supports", "Consulter mes supports de cours", null));
-			Intent intentDocStagiaire = new Intent(this, DocListActivity.class);
-			buttons.add(new Holder("Documents", "Documents officiels CESI", intentDocStagiaire));
+			
+			Intent intentPromos = new Intent(this, PromoListActivity.class);
+			
+			intentPromos.putExtra("training", 0);
+			intentPromos.putExtra("name", getString(R.string.promo_desc));
+			
+			buttons.add(new Holder(getString(R.string.promo_title), getString(R.string.promo_action), intentPromos));
+			buttons.add(new Holder(getString(R.string.support_title), getString(R.string.support_action), null));		
 		}
+		
+		intentDocEtablissement.putExtra("id_establishment", 1L);
+
+		buttons.add(new Holder(getString(R.string.doc_establishment_title), getString(R.string.doc_establishment_action), intentDocEtablissement));
+		
+		Intent intentDoc = new Intent(this, DocListActivity.class);
+		int id_user = AccountHelper.getUserId();
+		intentDoc.putExtra("id_user", id_user);
+		buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDoc));
 		
 		mAdapter = new HolderAdapter(this, buttons);
 		ListView list = (ListView) findViewById(android.R.id.list);

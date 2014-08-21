@@ -67,7 +67,6 @@ public class DocUploadDialog extends DialogFragment {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
 						new UploadDoc().execute();
 					}
 				})
@@ -122,12 +121,9 @@ public class DocUploadDialog extends DialogFragment {
 				try {
 					String path = getPath(getActivity(), uri);
 					onSelectFile(path);
-					//new UploadDoc(path).execute();
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 			break;
 		}
@@ -169,24 +165,22 @@ public class DocUploadDialog extends DialogFragment {
 			try {
 				final String token = AccountHelper.blockingGetAuthToken(
 						AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, true);
-				final String url = Constants.BASE_API_URL + "/document/upload/";
+				final String url = Constants.BASE_API_URL + "/document/upload";
+				Log.v(TAG, "establishment : "+mEstablishment);
 				HttpData p = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).file("file", file)
 						.data("path", "document/")
 						.data("titre", mTitle.getText().toString())
 						.data("description", mDesc.getText().toString())
-						.data("id_Establishment", String.valueOf(mEstablishment))
-						.data("id_Training", String.valueOf(mTraining))
-						.data("id_Promo", String.valueOf(mPromo))
+						.data("id_establishment", String.valueOf(mEstablishment))
+						.data("id_training", String.valueOf(mTraining))
+						.data("id_promo", String.valueOf(mPromo))
 						.post();
 				Log.v(TAG, p.asString());
 			} catch (AuthenticatorException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (HttpDataException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
