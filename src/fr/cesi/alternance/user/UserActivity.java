@@ -1,7 +1,9 @@
 package fr.cesi.alternance.user;
 
 
+import android.app.DialogFragment;
 import android.widget.ImageView;
+import fr.cesi.alternance.docs.PhotoUserDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.kolapsis.utils.HttpData;
@@ -30,15 +32,11 @@ import android.widget.TextView;
 public class UserActivity extends Activity {
 
 	public static final String TAG = "USER ACTIVITY ==========>>>>";
-	private TextView mName;
-	private TextView mMail;
-	private TextView mPhone;
-	private String mRoleAccount;
+	private TextView mName,mMail,mPhone;
+	private String mRoleAccount,mPicture_path;
 	private Long mPromo;
 	private User mUser;
-	private Button btCall;
-	private Button btMail;
-	private Button btNote;
+	private Button btCall,btMail,btNote;
     private ImageView mPicture;
 
 	@Override
@@ -77,7 +75,7 @@ public class UserActivity extends Activity {
 			mPromo = getIntent().getExtras().getLong("id_promo");
 		}
 
-		//si le user est passé charge les champs
+		//si le user est passï¿½ charge les champs
 		if(mUser != null){
             mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+mUser.getPicture_path());
             new DownloadImageTask(mPicture).execute();
@@ -100,6 +98,7 @@ public class UserActivity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.user_settings_save).setVisible("IF".equals(mRoleAccount));
+        menu.findItem(R.id.user_settings_photo).setVisible("IF".equals(mRoleAccount));
 		menu.findItem(R.id.user_settings_delete).setVisible("IF".equals(mRoleAccount) && mUser.getId() > 0);
 		menu.findItem(R.id.user_settings_note).setVisible("Intervenant".equals(mRoleAccount));
 		return super.onPrepareOptionsMenu(menu);
@@ -118,10 +117,19 @@ public class UserActivity extends Activity {
 		case R.id.user_settings_note:
 			// Comportement du bouton note
 			return true;
+        case R.id.user_settings_photo:
+            DialogFragment dialog = new PhotoUserDialog(mUser,mUploadListener);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
+    private PhotoUserDialog.UploadListener mUploadListener = new PhotoUserDialog.UploadListener() {
+        @Override
+        public void onUpload(String path) {
+            mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+path);
+            new DownloadImageTask(mPicture).execute();
+        }
+    };
 
 	private void initialize(){
 
@@ -181,7 +189,7 @@ public class UserActivity extends Activity {
 			mUser.setName(mName.getText().toString());
 			mUser.setId_promo(mPromo);
 		}
-
+        mUser.setPicture_path(mPicture_path);
 		mUser.setMail(mMail.getText().toString());
 		mUser.setPhone(mPhone.getText().toString());
 
@@ -190,10 +198,10 @@ public class UserActivity extends Activity {
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
 
-		//déclare un thread qui fait la requéte
+		//dï¿½clare un thread qui fait la requï¿½te
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -218,10 +226,10 @@ public class UserActivity extends Activity {
 		String error ;
 		String success;
 		
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
 
-		//déclare un thread qui fait la requéte
+		//dï¿½clare un thread qui fait la requï¿½te
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -258,7 +266,7 @@ public class UserActivity extends Activity {
 		success = "successfully submitted ! ";
 		return success;
 	}
-	
+
 	//fonction pour aller sur l'onglet qui permet d'afficher et rentrer des notes
 	private void noteUser(){
 

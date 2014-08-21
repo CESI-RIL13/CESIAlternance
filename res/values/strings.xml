@@ -69,5 +69,6 @@
     <string name="user_save_settings">save</string>
     <string name="user_delete_settings">delete</string>
     <string name="user_note_settings">note</string>
+    <string name="user_photo_settings">note</string>
    
 </resources>
