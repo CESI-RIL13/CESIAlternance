@@ -21,8 +21,12 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,6 +56,7 @@ public class PromoListActivity extends FragmentActivity{
 		mListView = (ListView) findViewById(android.R.id.list);
         loader = (ProgressBar) findViewById(android.R.id.progress);
 		id_training = getIntent().getExtras().getLong("training");
+
 		TextView name = (TextView) findViewById(R.id.name);
 		
 		name.setText(getIntent().getExtras().getString("name"));
@@ -67,11 +72,13 @@ public class PromoListActivity extends FragmentActivity{
 	private void syncPromo(){
 
     	mListView.setVisibility(View.GONE);
+
     	loader.setVisibility(View.VISIBLE);
   
 		new Thread(new Runnable() {
 			
 			public void run() {
+				
 				try {
 					final ArrayList<Promo> listPromo = new ArrayList<Promo>();
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
@@ -86,16 +93,27 @@ public class PromoListActivity extends FragmentActivity{
 							p.fromJSON(result.getJSONObject(i));
 							listPromo.add(p);
 						}
+
 						runOnUiThread(new Runnable() {
 							
 							@Override
 							public void run() {
 								getListPromo(listPromo);
-						    	mListView.setVisibility(View.VISIBLE);
+								mListView.setVisibility(View.VISIBLE);
 						    	loader.setVisibility(View.GONE);	
 							}
 						});
+
 					}
+
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							getListPromo(listPromo);
+							mListView.setVisibility(View.VISIBLE);
+					    	loader.setVisibility(View.GONE);	
+						}
+					});
 					
 				} catch (HttpDataException e) {
 					// TODO Auto-generated catch block
@@ -120,7 +138,8 @@ public class PromoListActivity extends FragmentActivity{
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.add_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
-		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_list_action).setVisible(false);
+		//menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
 		return super.onPrepareOptionsMenu(menu);
 	}
 
