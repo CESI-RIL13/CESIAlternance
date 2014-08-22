@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 import com.kolapsis.utils.StringUtils;
 
-import fr.cesi.alternance.helpers.AccountHelper;
+//import fr.cesi.alternance.helpers.AccountHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -21,12 +21,12 @@ import android.provider.CalendarContract.Events;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.ClipData.Item;
+//import android.content.ClipData.Item;
 import android.content.Intent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
+//import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -185,22 +185,17 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		} else if ("Intervenant".equals(role)) {			
 
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
-			Intent intentDoc = new Intent(this, DocListActivity.class);
 			
-			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
-			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
-		
+			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));		
 		} else if ("Stagiaire".equals(role)) {
 			
 			Intent intentPromos = new Intent(this, PromoListActivity.class);
-			Intent intentDocStagiaire = new Intent(this, DocListActivity.class);
 			
 			intentPromos.putExtra("id_training", 0);
 			intentPromos.putExtra("name", getString(R.string.promo_desc));
 			
 			buttons.add(new Holder(getString(R.string.promo_title), getString(R.string.promo_action), intentPromos));
-			buttons.add(new Holder(getString(R.string.support_title), getString(R.string.support_action), null));		
-			buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDocStagiaire));
+			//buttons.add(new Holder(getString(R.string.support_title), getString(R.string.support_action), null));		
 		}
 		
 		intentDocEtablissement.putExtra("id_establishment", 1L);
@@ -208,8 +203,7 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		buttons.add(new Holder(getString(R.string.doc_establishment_title), getString(R.string.doc_establishment_action), intentDocEtablissement));
 		
 		Intent intentDoc = new Intent(this, DocListActivity.class);
-		int id_user = AccountHelper.getUserId();
-		intentDoc.putExtra("id_user", id_user);
+		intentDoc.putExtra("id_user", 1L);
 		buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDoc));
 		
 		mAdapter = new HolderAdapter(this, buttons);
