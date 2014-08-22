@@ -145,7 +145,8 @@ public class PhotoUserDialog extends DialogFragment {
 
     private class UploadPhoto extends AsyncTask<Void, Void, String> {
 
-        private ProgressDialog progress;
+        private static final String TAG = "UploadPhoto";
+		private ProgressDialog progress;
 
         public UploadPhoto() {
 
@@ -162,15 +163,19 @@ public class PhotoUserDialog extends DialogFragment {
         @Override
         protected String doInBackground(Void... params) {
             String picture = null;
+            Log.v(TAG, mPath);
             File file = new File(mPath);
+            Log.v(TAG, "existe "+file.exists());
             try {
                 final String token = AccountHelper.blockingGetAuthToken(
                         AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, true);
-                final String url = Constants.BASE_API_URL + "/picture";
+                final String url = Constants.BASE_API_URL + "/user/picture";
+                Log.v(TAG, url);
                 HttpData p = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).file("file", file)
                         .data("path", "picture/")
-                        .data("photo", "" + mUser.getId())
+                        .data("user_id", String.valueOf(mUser.getId()))
                         .post();
+                Log.v(TAG,p.asString());
                 JSONObject json = p.asJSONObject();
                 if(json.getBoolean("success")){
                     JSONObject result = json.getJSONObject("result");
