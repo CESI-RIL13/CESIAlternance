@@ -125,7 +125,7 @@ public class PromoListActivity extends ListActivity{
 	        	
 	            Promo newPromo = new Promo();
 	            newPromo.setName("");
-	            newPromo.setNumber(0);
+	            newPromo.setNumber(Long.valueOf(0));
 	            newPromo.setCode("");
 	            newPromo.setEnd(new Date());
 	            newPromo.setBegin(new Date());

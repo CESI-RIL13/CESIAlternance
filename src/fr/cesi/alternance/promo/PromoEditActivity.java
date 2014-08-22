@@ -1,32 +1,37 @@
 package fr.cesi.alternance.promo;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.helpers.AccountHelper;
+import fr.cesi.alternance.helpers.Entity.EntityException;
+import fr.cesi.alternance.user.UserActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class PromoEditActivity extends Activity {
 	
-	private EditText begin;
-	private EditText end;
+	private TextView begin;
+	private TextView end;
 	private EditText number;
 	private EditText code;
 	private EditText id_planning;
 	private String mRoleAccount;
 	private Promo promo;
-	private Long training;
+	private Long id_training;
 	private SimpleDateFormat fmt = new SimpleDateFormat("dd MMMM yyyy");
 
 
@@ -38,15 +43,15 @@ public class PromoEditActivity extends Activity {
 		
 		setContentView(R.layout.activity_promo_edit);
 		//initialise les EditText
-		begin = (EditText)findViewById(R.id.begin);
-		end = (EditText)findViewById(R.id.end);
+		begin = (TextView)findViewById(R.id.begin);
+		end = (TextView)findViewById(R.id.end);
 		number = (EditText)findViewById(R.id.number);
 		code = (EditText)findViewById(R.id.code);
 		id_planning = (EditText)findViewById(R.id.id_planning);
 
 		if(getIntent().getExtras() != null){
 			promo = (Promo)getIntent().getExtras().getParcelable("promo");
-			training = getIntent().getExtras().getLong("id_training");
+			id_training = getIntent().getExtras().getLong("id_training");
 		}
 
 		//si le user est passé charge les champs
@@ -128,7 +133,6 @@ public class PromoEditActivity extends Activity {
 			c.set(Calendar.DATE, dayOfMonth);
 			
 			promo.setBegin(c.getTime());
-			
 			begin.setText(fmt.format(c.getTime()));
 		}
 	};	
@@ -150,43 +154,58 @@ public class PromoEditActivity extends Activity {
 	};	
 
 
-//	private void save(Boolean add) {
-//		//modifi l'objet user courant avec les nouveaux paramï¿½tres
-//		if(add) {
-////			mUser.setName(mName.getText().toString());
-////			mUser.setId_promo(mPromo);
-//		}
-//
-////		mUser.setMail(mMail.getText().toString());
-////		mUser.setPhone(mPhone.getText().toString());
-//
-//		//regarde si un champ est vide
-////		if((add && mUser.getName().isEmpty()) || mUser.getMail().isEmpty()|| mUser.getPhone().isEmpty()){
-////			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
-////		}
-//
-//		//écran d'attente
-////		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Submit", "In Progress...");
-//
-//		//déclare un thread qui fait la requéte
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//
-////				if(mUser.save()) {
-////					ActivityCompat.invalidateOptionsMenu(UserActivity.this);
-////					runOnUiThread(new Runnable() {
-////						@Override
-////						public void run() {
-////							UserActivity.this.initialize();
-////							progress.dismiss();
-////						}
-////					});
-//				}
-//
-//			}
-//		}).start();		
-//	}
+	private void save() {
+		//modifi l'objet promo courant avec les nouveaux paramétres
+		
+		try {
+			promo.setBegin(fmt.parse(begin.getText().toString()));
+			promo.setEnd(fmt.parse(end.getText().toString()));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		promo.setNumber(Long.decode(number.getText().toString()));
+		promo.setCode(code.getText().toString());
+		promo.setId_planning(id_planning.getText().toString());
+
+		//regarde si un champ est vide
+		if(promo.getNumber() < 1 || promo.getCode().isEmpty()){
+			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
+		}
+
+		//écran d'attente
+		final ProgressDialog progress = ProgressDialog.show(PromoEditActivity.this, "Submit", "In Progress...");
+
+		//déclare un thread qui fait la requéte
+		//dï¿½clare un thread qui fait la requï¿½te
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+
+						try {
+							promo.save();
+						} catch (final EntityException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									Toast.makeText(PromoEditActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+								}
+							});
+						} finally {
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									progress.dismiss();
+									finish();
+								}
+							});					
+						}
+
+					}
+				}).start();		
+	}
 	
 	//fonction qui delete un utilisateur
 //	private String deletePromo(long l){

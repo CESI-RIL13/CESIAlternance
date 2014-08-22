@@ -3,11 +3,14 @@ package fr.cesi.alternance.user;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.accounts.AuthenticatorException;
@@ -20,6 +23,7 @@ import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.helpers.Entity;
+import fr.cesi.alternance.helpers.Entity.EntityException;
 
 public class User extends Entity implements Parcelable {
 
@@ -233,15 +237,14 @@ public class User extends Entity implements Parcelable {
 		}).start();
 	}
 
-	public boolean save(){
+	public boolean save() throws EntityException {
 
 		boolean success = false;
+		
 		try {
-			//requ�te 
-			//appel de la fonction addUser
-			String url = Constants.BASE_API_URL + "/user/" + (this.id > 0 ? "updateUser" : "addUser");
-			//Authentification
-			String token = AccountHelper.getData(Api.UserColumns.TOKEN);
+			String url = Constants.BASE_API_URL + "/user/" + (this.id > 0 ? this.id +"/save" : "/save");
+			String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
+
 			HttpData post = new HttpData(url).header(Api.APP_AUTH_TOKEN,token)
 					.data("id",""+id)
 					.data("name",name)
@@ -250,11 +253,16 @@ public class User extends Entity implements Parcelable {
 					.data("phone",phone)
 					.data("id_promo", "" + id_promo)
 					.post();
+			
+			Log.v("USER", post.asString());
+			
 			JSONObject obj = post.asJSONObject();
 			success = obj.getBoolean("success");
+			
 			if(success) {
-				JSONObject rs = obj.getJSONObject("result");
-				setId(rs.getLong("id"));
+				setId(obj.getJSONObject("result").getLong("id"));
+			} else {
+				throw new EntityException(obj.getString("error"));
 			}
 
 		} catch (HttpDataException hde) {
@@ -263,8 +271,49 @@ public class User extends Entity implements Parcelable {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (AuthenticatorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return success;
 	}
 
+	public boolean delete() throws EntityException{
+		boolean success = false;
+		
+		try {
+			String url = Constants.BASE_API_URL + "/user/delete/"+this.getId();
+			String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
+			
+			HttpData delete = new HttpData(url).header(Api.APP_AUTH_TOKEN,token);
+			
+			delete.delete();
+			
+			JSONObject obj = delete.asJSONObject();
+			success = obj.getBoolean("success");
+			
+			if(success) {
+				setId(obj.getJSONObject("result").getLong("id"));
+			} else {
+				throw new EntityException(obj.getString("error"));
+			}
+
+		} catch(HttpDataException hde) {
+			hde.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AuthenticatorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return success;
+	}
 }

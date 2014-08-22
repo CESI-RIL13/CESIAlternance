@@ -39,7 +39,7 @@ public class PromoActivity extends ListActivity {
 
 	private void listGoTo() {
 		
-		final String[] values = {getString(R.string.stagiaire_title), getString(R.string.intervenant_title), getString(R.string.support_title), getString(R.string.doc_title)};
+		final String[] values = {getString(R.string.stagiaire_title), getString(R.string.intervenant_title), getString(R.string.doc_title)/*, getString(R.string.support_title)*/};
 		
 		ListView lv = getListView();
 
@@ -63,14 +63,13 @@ public class PromoActivity extends ListActivity {
 						role = "Intervenant";
 					}
 					else if (position == 2){
-						intent.setClass(PromoActivity.this, UserListActivity.class);
-						intent.putExtra("users_list_name", "Supports");
-					}
-					else if (position == 3){
 						intent.setClass(PromoActivity.this, DocListActivity.class);
 						intent.putExtra("users_list_name", "Documents");
 					}
-					
+//					else if (position == 3){
+//						intent.setClass(PromoActivity.this, UserListActivity.class);
+//						intent.putExtra("users_list_name", "Supports");
+//					}					
 					if (role != null)
 						intent.putExtra("role", role);
 					

@@ -20,5 +20,16 @@ public abstract class Entity {
 	public abstract String getApiPath();
 	public abstract Entity fromJSON(JSONObject json);
 	public abstract JSONObject asJSON();
+	
+	public static final class EntityException extends Exception {
+		private static final long serialVersionUID = -7125462297861794715L;
+		public EntityException(String string) {
+			super(string);
+		}
+		public EntityException(String string, StackTraceElement[] stack) {
+			super(string);
+			super.setStackTrace(stack);
+		}
+	}
 
 }
