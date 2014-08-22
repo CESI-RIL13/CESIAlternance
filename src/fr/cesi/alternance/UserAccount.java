@@ -11,6 +11,7 @@ import com.kolapsis.utils.HttpData.HttpDataException;
 
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
+import fr.cesi.alternance.helpers.Entity.EntityException;
 import fr.cesi.alternance.user.Link;
 import fr.cesi.alternance.user.PhotoUserDialog;
 import fr.cesi.alternance.user.TypeEnum;
@@ -44,6 +45,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UserAccount extends FragmentActivity {
 
@@ -57,12 +59,12 @@ public class UserAccount extends FragmentActivity {
 	private boolean remove;	
 	private LinkAdapter mAdapter;
 	private String[] menuItems;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account);
-		
+
 		mBtAdd=(Button)findViewById(R.id.buttonAjoutLien);
 		mEditNom=(EditText)findViewById(R.id.editTextNom);
 		mEditMail=(EditText)findViewById(R.id.editTextMail);
@@ -70,10 +72,10 @@ public class UserAccount extends FragmentActivity {
 		mIVPhoto=(ImageView)findViewById(R.id.imageViewPhoto);
 		mLVLinks=(ListView)findViewById(R.id.listViewLinks);
 		mBtAdd.setOnClickListener(mAddListener);
-	    menuItems = new String[] { getResources().getString(R.string.menu_contextuel_open), getResources().getString(R.string.menu_contextuel_edit), getResources().getString(R.string.menu_contextuel_delete)};
+		menuItems = new String[] { getResources().getString(R.string.menu_contextuel_open), getResources().getString(R.string.menu_contextuel_edit), getResources().getString(R.string.menu_contextuel_delete)};
 		loadUser();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
@@ -85,36 +87,60 @@ public class UserAccount extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.user_settings_save:
-			//save(mUser.getId() == 0);
+		case R.id.submitUser:
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						Log.v("useraccount", "okidoki");
+						utilisateur.setId_promo(0);
+						utilisateur.setName(mEditNom.getText().toString());
+						utilisateur.setMail(mEditMail.getText().toString());
+						utilisateur.setPhone(mEditPhone.getText().toString());
+						utilisateur.save();
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								Toast.makeText(getApplicationContext(), "Modifications effectuées", Toast.LENGTH_SHORT).show();								
+							}
+						});
+					} catch (EntityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}).start();
 			return true;
-        case R.id.user_account_photo:
-            PhotoUserDialog dialog = new PhotoUserDialog(utilisateur,mUploadListener);
-            dialog.show(getFragmentManager(), "dialog");
+		case R.id.user_account_photo:
+			PhotoUserDialog dialog = new PhotoUserDialog(utilisateur,mUploadListener);
+			dialog.show(getFragmentManager(), "dialog");
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-    private PhotoUserDialog.UploadListener mUploadListener = new PhotoUserDialog.UploadListener() {
-        @Override
-        public void onUpload(String path) {
-            mIVPhoto.setTag( Constants.BASE_URL + "/picture/"+path);
-            new DownloadImageTask(mIVPhoto).execute();
-        }
-    };
-	
+
+	private PhotoUserDialog.UploadListener mUploadListener = new PhotoUserDialog.UploadListener() {
+		@Override
+		public void onUpload(String path) {
+			mIVPhoto.setTag( Constants.BASE_URL + "/picture/"+path);
+			new DownloadImageTask(mIVPhoto).execute();
+		}
+	};
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-	  if (v.getId()==R.id.listViewLinks) {
-	    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-	    menu.setHeaderTitle(utilisateur.getLinks().get(info.position).getType().value());
-	    for (int i = 0; i<menuItems.length; i++) {
-	      menu.add(Menu.NONE, i, i, menuItems[i]);
-	    }
-	  }
+		if (v.getId()==R.id.listViewLinks) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+			menu.setHeaderTitle(utilisateur.getLinks().get(info.position).getType().value());
+			for (int i = 0; i<menuItems.length; i++) {
+				menu.add(Menu.NONE, i, i, menuItems[i]);
+			}
+		}
 	}
-	
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
@@ -131,7 +157,7 @@ public class UserAccount extends FragmentActivity {
 			// Case "Modifier"
 			new SaveLink(link).show(getSupportFragmentManager(), "TAG");
 			break;
-			
+
 		case 2:
 			// Case "supprimer"
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -151,7 +177,7 @@ public class UserAccount extends FragmentActivity {
 				@Override
 				public void onDismiss(DialogInterface dialog) {
 					if (remove) {
-						
+
 						deleteLinks(link);
 						utilisateur.getLinks().remove(link);
 						mAdapter.notifyDataSetChanged();
@@ -166,11 +192,11 @@ public class UserAccount extends FragmentActivity {
 		}
 		return true;
 	}
-	
+
 	protected void deleteLinks(final Link link) {
 		// TODO Auto-generated method stub
 		final ProgressDialog progress = ProgressDialog.show(UserAccount.this, getString(R.string.progress_delete_title), getString(R.string.progress_delete_infos));
-		
+
 		new Thread(new Runnable() {
 
 			@Override
@@ -179,23 +205,23 @@ public class UserAccount extends FragmentActivity {
 					final String url = Constants.BASE_API_URL +"/user/deleteLink/";
 					final String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
 
-						Log.v("objet link avant delete", ""+ link.getUrl());
-						String u = url + link.getId();
-						Log.v("objet u", ""+ u);
-						HttpData get = new HttpData(u).header(Api.APP_AUTH_TOKEN, token).get();
-						Log.v("retour du serveur", get.asString());
-						JSONObject result = get.asJSONObject();
-						Log.v("resultat de l'appel serveur", ""+ result.toString());
-//						if(result.getBoolean("success")){
-//							utilisateur.getLinks().remove(l);
-//							Log.v("objet docs apres delete", ""+ utilisateur.getLinks().toString());
-//						}
+					Log.v("objet link avant delete", ""+ link.getUrl());
+					String u = url + link.getId();
+					Log.v("objet u", ""+ u);
+					HttpData get = new HttpData(u).header(Api.APP_AUTH_TOKEN, token).get();
+					Log.v("retour du serveur", get.asString());
+					JSONObject result = get.asJSONObject();
+					Log.v("resultat de l'appel serveur", ""+ result.toString());
+					//						if(result.getBoolean("success")){
+					//							utilisateur.getLinks().remove(l);
+					//							Log.v("objet docs apres delete", ""+ utilisateur.getLinks().toString());
+					//						}
 				} catch (HttpDataException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-//				} catch (JSONException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
+					//				} catch (JSONException e) {
+					//					// TODO Auto-generated catch block
+					//					e.printStackTrace();
 				} catch (AuthenticatorException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -213,7 +239,7 @@ public class UserAccount extends FragmentActivity {
 	private void loadUser() {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -254,14 +280,14 @@ public class UserAccount extends FragmentActivity {
 	}
 
 	private View.OnClickListener mAddListener = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
 			new SaveLink(new Link()).show(getSupportFragmentManager(), "TAG");
 		}
 	};
-	
+
 	private class LinkAdapter extends ArrayAdapter<Link>{
 
 		private LayoutInflater mInflater;
@@ -271,7 +297,7 @@ public class UserAccount extends FragmentActivity {
 			mInflater = LayoutInflater.from(getContext());
 			// TODO Auto-generated constructor stub
 		}
-		
+
 		@Override
 		public View getView(int position, View view, ViewGroup parent) {
 			if (view == null) view = mInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
@@ -282,20 +308,20 @@ public class UserAccount extends FragmentActivity {
 			tv.setText(link.getUrl());
 			return view;
 		}
-		
+
 	}
-	
+
 	private class SaveLink extends DialogFragment{
-		
+
 		private Spinner spinner;
 		private EditText url;
 		private ArrayAdapter<String> adapter;
 		private Link mLink;
-		
+
 		public SaveLink(Link link){
 			mLink=link;
 		}
-		
+
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// TODO Auto-generated method stub
@@ -311,19 +337,19 @@ public class UserAccount extends FragmentActivity {
 				url.setText(mLink.getUrl());
 				spinner.setSelection(TypeEnum.indexOf(mLink.getType()));
 			}
-			
+
 			return new AlertDialog.Builder(getActivity())
-								.setTitle(title)
-								.setView(view)
-								.setNegativeButton("Annuler", null)
-								.setPositiveButton("Accepter", new DialogInterface.OnClickListener() {
-									
-									@Override
-									public void onClick(DialogInterface arg0, int arg1) {
-										// TODO Auto-generated method stub
-										saveLink();
-									}
-								}).create();
+			.setTitle(title)
+			.setView(view)
+			.setNegativeButton("Annuler", null)
+			.setPositiveButton("Accepter", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					saveLink();
+				}
+			}).create();
 		}
 
 		protected void saveLink() {
@@ -333,14 +359,14 @@ public class UserAccount extends FragmentActivity {
 			utilisateur.saveLink(mLink, mListener);
 		}
 	}
-	
+
 	User.SaveLinkListener mListener =new User.SaveLinkListener() {
-		
+
 		@Override
 		public void onSaveLink() {
 			// TODO Auto-generated method stub
 			runOnUiThread(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
