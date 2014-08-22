@@ -13,12 +13,16 @@ import com.kolapsis.utils.HttpData.HttpDataException;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
+import fr.cesi.alternance.docs.Doc;
 import fr.cesi.alternance.docs.DocListActivity;
+import fr.cesi.alternance.docs.DocUploadDialog;
 import fr.cesi.alternance.helpers.AccountHelper;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +35,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
-public class PromoListActivity extends ListActivity{
+public class PromoListActivity extends FragmentActivity{
 
+	private ListView mListView;
 	private long id_training;
     private ProgressBar loader;
 	
@@ -44,8 +49,9 @@ public class PromoListActivity extends ListActivity{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_home);
+		mListView = (ListView) findViewById(android.R.id.list);
         loader = (ProgressBar) findViewById(android.R.id.progress);
-		id_training = getIntent().getExtras().getInt("training");
+		id_training = getIntent().getExtras().getLong("training");
 		TextView name = (TextView) findViewById(R.id.name);
 		
 		name.setText(getIntent().getExtras().getString("name"));
@@ -60,7 +66,7 @@ public class PromoListActivity extends ListActivity{
 
 	private void syncPromo(){
 
-    	getListView().setVisibility(View.GONE);
+    	mListView.setVisibility(View.GONE);
     	loader.setVisibility(View.VISIBLE);
   
 		new Thread(new Runnable() {
@@ -85,7 +91,7 @@ public class PromoListActivity extends ListActivity{
 							@Override
 							public void run() {
 								getListPromo(listPromo);
-						    	getListView().setVisibility(View.VISIBLE);
+						    	mListView.setVisibility(View.VISIBLE);
 						    	loader.setVisibility(View.GONE);	
 							}
 						});
@@ -137,29 +143,39 @@ public class PromoListActivity extends ListActivity{
 	            startActivity(intent); 
 	            return true;
 	        case R.id.add_doc_action:
-	//            intent = new Intent(PromoListActivity.this, DocListActivity.class); 
-	//            intent.putExtra("promo", newPromo); 
-	//            intent.putExtra("id_training", training); 
-	//            startActivity(intent);         	
+	        	Bundle args = new Bundle();
+	        	args.putLong("id_establishment", 1);
+	        	args.putLong("id_training", id_training);
+				DialogFragment dialog = DocUploadDialog.newInstance(args, mUploadListener);
+				dialog.show(getSupportFragmentManager(), "dialog");       	
 	        	return true;
 	        case R.id.view_doc_action:
-//	            intent = new Intent(PromoListActivity.this, DocListActivity.class); 
-//	            startActivity(intent);  	
+	            intent = new Intent(this, DocListActivity.class);
+	            intent.putExtra("id_establishment", 1L);
+	            intent.putExtra("id_training", id_training);
+	            startActivity(intent);  	
 	        	return true;
 	        default: 
 	            return super.onOptionsItemSelected(item); 
         } 
-    } 
+    }
+	
+	private DocUploadDialog.UploadListener mUploadListener = new DocUploadDialog.UploadListener() {
+		
+		@Override
+		public void onUpload(Doc newDoc) {
+			
+		}
+	};
 
 	private void getListPromo(final ArrayList<Promo> listPromo) {
 		
 		PromoAdapter adapter= new PromoAdapter(this, android.R.layout.simple_list_item_2, listPromo);
 		
-		setListAdapter(adapter);
+		mListView.setAdapter(adapter);
 		
-		ListView lv = getListView();
 		
-		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> list, View view, int position,
 					long id) {

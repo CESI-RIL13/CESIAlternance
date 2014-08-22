@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.accounts.Account;
 import android.accounts.AuthenticatorException;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -47,7 +48,7 @@ import fr.cesi.alternance.helpers.AccountHelper;
 public class DocListActivity extends FragmentActivity {
 
 	public static final String TAG = "DocListActivity";
-	private Boolean selection;
+	private int selected;
 	private DocsAdapter adapter;
 	private ArrayList<Doc> docs = new ArrayList<Doc>();
 	private boolean remove;
@@ -65,7 +66,10 @@ public class DocListActivity extends FragmentActivity {
 		connexionServer();
 		mList.setOnItemLongClickListener(docLongClick);
 		mList.setOnItemClickListener(docClick);
-		selection = false;
+		selected = -1;
+		
+		TextView name = (TextView) findViewById(R.id.doc_name);
+		name.setText("Documents");
 	}
 
 	@Override
@@ -84,6 +88,7 @@ public class DocListActivity extends FragmentActivity {
 	// ---------------------------------------------------------------------------------------
 	// Procedures menu
 
+	@SuppressLint("NewApi")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -144,7 +149,7 @@ public class DocListActivity extends FragmentActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.doc_delete);
-		if (selection)
+		if(selected > 0)
 			item.setVisible(true);
 		else
 			item.setVisible(false);
@@ -157,21 +162,23 @@ public class DocListActivity extends FragmentActivity {
 	private OnItemClickListener docClick = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> adapterView, View view,
-				int position, long id) {
-			if (selection) {
-				selection = false;
-				if (checkItem(position))
-					view.setBackgroundColor(Color.CYAN);
-				else
-					view.setBackgroundColor(Color.WHITE);
-				invalidateOptionsMenu();
-			} else {
+		public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+			if(selected == -1){
 				String url = Constants.BASE_URL + "/"+ docs.get(position).getPath();
 				Log.v(TAG, url);
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				startActivity(intent);
+			}else {
+				if(selected == position) {
+					selected = -1;
+					view.setBackground(null);
+				}else {
+					mList.getChildAt(selected).setBackground(null);
+					selected = position;
+					view.setBackgroundColor(Color.CYAN);
+				}
 			}
+			invalidateOptionsMenu();
 		}
 	};
 
@@ -180,14 +187,12 @@ public class DocListActivity extends FragmentActivity {
 		@Override
 		public boolean onItemLongClick(AdapterView<?> adapterView, View view,
 				int position, long id) {
-			if(selection)
-				selection = false;
-			else
-				selection = true;
+
+			selected = position;
 			if (checkItem(position))
 				view.setBackgroundColor(Color.CYAN);
 			else
-				view.setBackgroundColor(Color.WHITE);
+				view.setBackground(null);
 			invalidateOptionsMenu();
 			return true;
 		}
@@ -272,7 +277,9 @@ public class DocListActivity extends FragmentActivity {
 					adapter.notifyDataSetChanged();
 				}
 				progress.dismiss();
-				selection = false;
+
+				selected = -1;
+
 				invalidateOptionsMenu();
 			}
 		}.execute();
@@ -290,6 +297,7 @@ public class DocListActivity extends FragmentActivity {
 		Log.v("promo", "" + id_promo);
 		Log.v("training", "" + id_training);
 		Log.v("establishment", "" + id_establishment);
+		Log.v("user", "" + id_user);
 		final String url = Constants.BASE_API_URL + "/document";
 		new Thread(new Runnable() {
 			@Override
@@ -391,7 +399,7 @@ public class DocListActivity extends FragmentActivity {
 			if (doc.isSelected())
 				view.setBackgroundColor(Color.CYAN);
 			else
-				view.setBackgroundColor(Color.WHITE);
+				view.setBackground(null);
 
 			return view;
 		}

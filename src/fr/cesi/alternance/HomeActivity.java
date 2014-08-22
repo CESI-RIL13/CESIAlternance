@@ -12,6 +12,8 @@ import java.util.Calendar;
 
 import com.kolapsis.utils.StringUtils;
 
+
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -20,10 +22,14 @@ import android.provider.CalendarContract.Events;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+
+
 import android.content.Intent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+
+
 import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -180,18 +186,18 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		} else if ("Intervenant".equals(role)) {			
 
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
-		
-			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
-		
+			
+			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));		
 		} else if ("Stagiaire".equals(role)) {
 			
 			Intent intentPromos = new Intent(this, PromoListActivity.class);
-		
+			
+
 			intentPromos.putExtra("id_training", 0);
 			intentPromos.putExtra("name", getString(R.string.promo_desc));
 			
 			buttons.add(new Holder(getString(R.string.promo_title), getString(R.string.promo_action), intentPromos));
-			buttons.add(new Holder(getString(R.string.support_title), getString(R.string.support_action), null));		
+
 		}
 		
 		intentDocEtablissement.putExtra("id_establishment", 1L);
