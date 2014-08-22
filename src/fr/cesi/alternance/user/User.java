@@ -72,6 +72,7 @@ public class User extends Entity implements Parcelable {
 	
 	public static User fromBundle(Bundle bundle){
 		User u = new User();
+		Log.v(TAG,bundle.toString());
 		u.id= Integer.parseInt(bundle.getString(Api.UserColumns.ID));
 		u.name=bundle.getString(Api.UserColumns.NAME);
 		u.mail=bundle.getString(Api.UserColumns.EMAIL);
@@ -199,25 +200,33 @@ public class User extends Entity implements Parcelable {
 		}
 	};
 	
-	public void addLink(final String type, final String url){
+	public static interface SaveLinkListener{
+		public void onSaveLink();
+	}
+	
+	public void saveLink(final Link link, final SaveLinkListener listener){
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				String apiUrl = Constants.BASE_API_URL + "/user/addLink";
+				String apiUrl = Constants.BASE_API_URL + "/user/saveLink";
+				if(link.getId() >0) apiUrl+="/" + link.getId();
 				try {
 					String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
 					JSONObject json = new HttpData(apiUrl).header(Api.APP_AUTH_TOKEN, token)
-											.data("id", String.valueOf(id))
-											.data("type", type)
-											.data("url", url)
+											.data("user_id", String.valueOf(id))
+											.data("type", link.getType().value())
+											.data("url", link.getUrl())
 											.post().asJSONObject();
 					Log.v(TAG, json.toString());					
 					if(json.getBoolean("success"))
 					{
 						JSONObject result = json.getJSONObject("result");
-						links.add(new Link(result.getInt("id"), TypeEnum.fromString(type), url));
+						if(link.getId()==0){
+							link.setId(result.getInt("id"));
+							links.add(link);
+						}
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -232,6 +241,8 @@ public class User extends Entity implements Parcelable {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} finally{
+					listener.onSaveLink();
 				}
 			}
 		}).start();
