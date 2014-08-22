@@ -109,10 +109,10 @@ public class PromoEditActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.user_settings_save:
-//			save(mUser.getId() == 0);
+			save();
 			return true;
 		case R.id.user_settings_delete:
-//			deleteUser(mUser.getId());
+//			delete();
 			return true;
 		case R.id.user_settings_note:
 			// Comportement du bouton note
