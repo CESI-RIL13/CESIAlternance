@@ -1,12 +1,7 @@
 package fr.cesi.alternance.docs;
 
-import java.io.IOException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.util.JsonWriter;
-
 import fr.cesi.alternance.helpers.Entity;
 
 public class Doc extends Entity {
@@ -44,17 +39,10 @@ public class Doc extends Entity {
 	public void setPath(String path) {
 		this.path = path;
 	}
-
-
-
-
-
 	@Override
 	public String getApiPath() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public Doc fromJSON(JSONObject json) {
 		try {
@@ -63,7 +51,6 @@ public class Doc extends Entity {
 			this.description = json.getString("description");
 			this.path = json.getString("path");
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return this;

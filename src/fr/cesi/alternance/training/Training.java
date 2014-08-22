@@ -1,6 +1,7 @@
 package fr.cesi.alternance.training;
 
 public class Training {
+	
 	private int id;
 	private String name;
 	private String alias;

@@ -181,7 +181,16 @@ public class Promo extends Entity implements Parcelable {
 		}
 	};
 
-	public boolean save() throws EntityException{
+	public boolean save() {
+		try {
+			save(Long.valueOf(0));
+		} catch (EntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public boolean save(Long id_training) throws EntityException{
 
 		boolean success = false;
 		
@@ -192,13 +201,16 @@ public class Promo extends Entity implements Parcelable {
 			HttpData post = new HttpData(url).header(Api.APP_AUTH_TOKEN,token)
 					.data("id",""+id)
 					.data("id_training_establishment",""+id_training_establishment)
-					.data("name",name)
 					.data("number",""+number)
 					.data("code",code)
 					.data("begin",fmt.format(begin.getTime()))
 					.data("end", fmt.format(end.getTime()))
-					.data("id_planning", id_planning)
-					.post();
+					.data("id_planning", id_planning);
+			
+			if(id_training > 0)
+				post.data("id_training", ""+id_training);
+			
+			post.post();
 
 			Log.v("PROMO", post.asString());
 			
@@ -226,7 +238,6 @@ public class Promo extends Entity implements Parcelable {
 		}
 		return success;
 	}
-
 	public boolean delete() throws EntityException{
 		boolean success = false;
 		

@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -108,14 +109,14 @@ public class PromoEditActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.user_settings_save:
-			save();
+		case R.id.save_action:
+			//save();
 			return true;
-		case R.id.user_settings_delete:
+		case R.id.delete_action:
 //			delete();
 			return true;
-		case R.id.user_settings_note:
-			// Comportement du bouton note
+		case R.id.cancel_action:
+			// Comportement du bouton cancel
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -167,7 +168,8 @@ public class PromoEditActivity extends Activity {
 		promo.setNumber(Long.decode(number.getText().toString()));
 		promo.setCode(code.getText().toString());
 		promo.setId_planning(id_planning.getText().toString());
-
+		
+		Log.v("PROMO EDIT", promo.toString());
 		//regarde si un champ est vide
 		if(promo.getNumber() < 1 || promo.getCode().isEmpty()){
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
@@ -183,7 +185,7 @@ public class PromoEditActivity extends Activity {
 					public void run() {
 
 						try {
-							promo.save();
+							promo.save(id_training);
 						} catch (final EntityException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
