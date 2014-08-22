@@ -1,6 +1,8 @@
 package fr.cesi.alternance.user;
 
 
+import java.util.ArrayList;
+
 import android.app.DialogFragment;
 import android.widget.ImageView;
 import fr.cesi.alternance.user.PhotoUserDialog;
@@ -31,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +41,7 @@ public class UserActivity extends Activity {
 
 	public static final String TAG = "USER ACTIVITY ==========>>>>";
 	private TextView mName,mMail,mPhone;
+	private ListView mLinks;
 	private String mRoleAccount,mPicture_path;
 	private Long mPromo;
 	private User mUser;
@@ -63,6 +67,8 @@ public class UserActivity extends Activity {
 			mMail = (TextView)findViewById(R.id.mailUser);
 			mPhone = (TextView)findViewById(R.id.phoneUser);			
 		}
+		
+		mLinks=(ListView)findViewById(R.id.listViewLinks);
 
 		//initialise les boutons
 		btCall = (Button) findViewById(R.id.callUser);
@@ -87,6 +93,8 @@ public class UserActivity extends Activity {
 			mName.setText(mUser.getName());
 			mPhone.setText(mUser.getPhone());
 			mMail.setText(mUser.getMail());
+			ArrayList<Link> links = mUser.getLinks();
+			links.add(new Link());
 		}
 
 		setTitle(mUser.getRole());
