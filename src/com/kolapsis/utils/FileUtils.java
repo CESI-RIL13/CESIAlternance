@@ -82,6 +82,7 @@ public class FileUtils {
 				mOutputStream = new CountingOutputStream(out){
 					@Override
 					public void onWrite(int len) {
+						if(mListener != null)
 						mListener.transferred(len);
 					}
 				};

@@ -63,11 +63,6 @@
         </LinearLayout>
 
         <Spinner
-            android:id="@+id/establishment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Spinner
             android:id="@+id/training"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

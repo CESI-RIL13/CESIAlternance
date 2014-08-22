@@ -114,10 +114,6 @@ public class DocListActivity extends FragmentActivity {
 						for (Doc doc : docs)
 							if (doc.isSelected())
 								rm.add(doc);
-
-						afficheMenuDelete();
-						invalidateOptionsMenu();
-						//boolean result = 
 						deleteDocs(rm);
 
 					}
@@ -129,20 +125,26 @@ public class DocListActivity extends FragmentActivity {
 
 			return true;
 		case R.id.doc_add:
-			final long id_promo = getIntent().getLongExtra("id_promo", 0);
-			final long id_training = getIntent().getLongExtra("id_training", 0);
-			final long id_establishment = getIntent().getLongExtra("id_establishment", 1);
-			DialogFragment dialog = new DocUploadDialog(id_establishment,id_training,id_promo);
+			DialogFragment dialog = DocUploadDialog.newInstance(getIntent().getExtras(), mListener);
 			dialog.show(getSupportFragmentManager(), "dialog");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	private DocUploadDialog.UploadListener mListener = new DocUploadDialog.UploadListener() {
+		
+		@Override
+		public void onUpload(Doc newDoc) {
+			docs.add(newDoc);
+			adapter.notifyDataSetChanged();
+			
+		}
+	};
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.doc_delete);
-		if (afficheMenuDelete())
+		if (selection)
 			item.setVisible(true);
 		else
 			item.setVisible(false);
@@ -158,6 +160,7 @@ public class DocListActivity extends FragmentActivity {
 		public void onItemClick(AdapterView<?> adapterView, View view,
 				int position, long id) {
 			if (selection) {
+				selection = false;
 				if (checkItem(position))
 					view.setBackgroundColor(Color.CYAN);
 				else
@@ -177,7 +180,10 @@ public class DocListActivity extends FragmentActivity {
 		@Override
 		public boolean onItemLongClick(AdapterView<?> adapterView, View view,
 				int position, long id) {
-			selection = true;
+			if(selection)
+				selection = false;
+			else
+				selection = true;
 			if (checkItem(position))
 				view.setBackgroundColor(Color.CYAN);
 			else
@@ -197,16 +203,16 @@ public class DocListActivity extends FragmentActivity {
 		return doc.isSelected();
 	}
 
-	private boolean afficheMenuDelete() {
-		for (int i = 0; i < docs.size(); i++) {
-			Doc doc = docs.get(i);
-			Log.v("selection", "" + doc.isSelected() + i);
-			if (doc.isSelected())
-				return true;
-		}
-		selection = false;
-		return false;
-	}
+//	private boolean afficheMenuDelete() {
+//		for (int i = 0; i < docs.size(); i++) {
+//			Doc doc = docs.get(i);
+//			Log.v("selection", "" + doc.isSelected() + i);
+//			if (doc.isSelected())
+//				return true;
+//		}
+//		selection = false;
+//		return false;
+//	}
 
 	private void deleteDocs(final List<Doc> rm) {
 
@@ -266,6 +272,8 @@ public class DocListActivity extends FragmentActivity {
 					adapter.notifyDataSetChanged();
 				}
 				progress.dismiss();
+				selection = false;
+				invalidateOptionsMenu();
 			}
 		}.execute();
 	}
@@ -278,6 +286,7 @@ public class DocListActivity extends FragmentActivity {
 		final long id_promo = getIntent().getLongExtra("id_promo", 0);
 		final long id_training = getIntent().getLongExtra("id_training", 0);
 		final long id_establishment = getIntent().getLongExtra("id_establishment", 0);
+		final long id_user = getIntent().getLongExtra("id_user", 0);
 		Log.v("promo", "" + id_promo);
 		Log.v("training", "" + id_training);
 		Log.v("establishment", "" + id_establishment);
@@ -295,6 +304,8 @@ public class DocListActivity extends FragmentActivity {
 						http.data("id_training", String.valueOf(id_training));
 					if(id_promo > 0)
 						http.data("id_promo", String.valueOf(id_promo));
+					if(id_user > 0)
+						http.data("id_user", String.valueOf(id_user));
 					JSONObject json = http.get().asJSONObject();
 					Log.v("objet Json", "" + json.toString());
 					if(json.has("error")){
