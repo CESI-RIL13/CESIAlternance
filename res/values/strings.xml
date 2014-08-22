@@ -106,4 +106,8 @@
     <string name="code_promo">Code</string>
     <string name="id_planning">ID du planning</string>
     
+    <string name="training_edit_name">Nom de la formation</string>
+    <string name="training_alias">Alias de la formation</string>
+    <string name="training_duration">Durée de la formation</string>
+    
 </resources>

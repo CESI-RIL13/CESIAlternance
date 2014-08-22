@@ -17,9 +17,6 @@ import com.kolapsis.utils.HttpData.HttpDataException;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.promo.PromoListActivity;
-import fr.cesi.alternance.user.UserActivity;
-import fr.cesi.alternance.user.UserListActivity;
-import android.R.integer;
 import android.accounts.AuthenticatorException;
 import android.app.ListActivity;
 import android.os.Bundle;
@@ -76,9 +73,18 @@ public class TrainingActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		//return super.onOptionsItemSelected(item);
+		Intent intent;
 		switch (item.getItemId()){
-        	case R.id.training_menu_document:
-        		Toast.makeText(TrainingActivity.this, "Ohhh yeah", Toast.LENGTH_SHORT).show();
+        	case R.id.training_menu_add:
+	            Training newTraining = new Training();
+	            newTraining.setName("");
+	            newTraining.setDuration(0);
+	            newTraining.setAlias("");
+	
+	            intent = new Intent(TrainingActivity.this, TrainingEditActivity.class); 
+	            intent.putExtra("training", newTraining);
+	            //intent.putExtra("id_training", id_training); 
+	            startActivity(intent);
                 return true;
         	default:
         		return true;
@@ -95,8 +101,7 @@ public class TrainingActivity extends ListActivity {
 			@Override
 			public void run() {
 				try {
-					//String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
-					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
+					String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
 										
 					if (token != null){
 						
@@ -110,7 +115,7 @@ public class TrainingActivity extends ListActivity {
 						}
 
 					}
-				} catch (HttpDataException e) {
+				} catch (HttpDataException | AuthenticatorException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -133,7 +138,9 @@ public class TrainingActivity extends ListActivity {
 					//Log.v(TAG,jsonResult.get(i).toString());
 					JSONObject training = (JSONObject) jsonResult.get(i);
 					//Log.v(TAG, training.toString());
-					Training p = new Training(Integer.parseInt(training.getString("id")), training.getString("name"), training.getString("alias"), Integer.parseInt(training.getString("duration")));
+					//Training p = new Training(Integer.parseInt(training.getString("id")), training.getString("name"), training.getString("alias"), Integer.parseInt(training.getString("duration")));
+					Training p = new Training();
+					p.fromJSON(training);
 					training_list.add(p);
 				}
 				//Log.v(TAG, training_list.toString());

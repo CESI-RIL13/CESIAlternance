@@ -19,6 +19,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,8 @@ public class PromoListActivity extends ListActivity{
 		
 		setContentView(R.layout.activity_home);
         loader = (ProgressBar) findViewById(android.R.id.progress);
-		id_training = getIntent().getExtras().getInt("training");
+		id_training = getIntent().getExtras().getLong("training");
+		Log.v("Training id", ""+id_training);
 		TextView name = (TextView) findViewById(R.id.name);
 		
 		name.setText(getIntent().getExtras().getString("name"));
@@ -59,13 +61,13 @@ public class PromoListActivity extends ListActivity{
     }
 
 	private void syncPromo(){
-
     	getListView().setVisibility(View.GONE);
     	loader.setVisibility(View.VISIBLE);
   
 		new Thread(new Runnable() {
 			
 			public void run() {
+				
 				try {
 					final ArrayList<Promo> listPromo = new ArrayList<Promo>();
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
@@ -80,16 +82,16 @@ public class PromoListActivity extends ListActivity{
 							p.fromJSON(result.getJSONObject(i));
 							listPromo.add(p);
 						}
-						runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								getListPromo(listPromo);
-						    	getListView().setVisibility(View.VISIBLE);
-						    	loader.setVisibility(View.GONE);	
-							}
-						});
 					}
+
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							getListPromo(listPromo);
+					    	getListView().setVisibility(View.VISIBLE);
+					    	loader.setVisibility(View.GONE);	
+						}
+					});
 					
 				} catch (HttpDataException e) {
 					// TODO Auto-generated catch block
