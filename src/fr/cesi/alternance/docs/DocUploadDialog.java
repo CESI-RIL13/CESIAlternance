@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
 
@@ -34,16 +37,35 @@ import android.widget.Toast;
 public class DocUploadDialog extends DialogFragment {
 	private static final int FILE_SELECT_CODE = 56;
 	public static final String TAG = "DocUploadDialog";
-	
+
+	public static DocUploadDialog newInstance(Bundle args, UploadListener listener) {
+		DocUploadDialog instance = new DocUploadDialog();
+		instance.setArguments(args);
+		instance.mListener = listener;
+		return instance;
+	}
+
+	public static interface UploadListener{
+		public void onUpload(Doc newDoc);
+
+	}
+
 	private EditText mTitle,mDesc,mFile;
 	private Button mBrowse;
 	private String mPath;
 	private long mEstablishment, mTraining, mPromo;
+	private UploadListener mListener;
+	public DocUploadDialog(){
 
-	public DocUploadDialog(long establishment, long training, long promo) {
-		mEstablishment = establishment;
-		mTraining = training;
-		mPromo = promo;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Bundle args = getArguments();
+		mEstablishment = args.getLong("id_establishment", 1);
+		mTraining = args.getLong("id_training", 0);
+		mPromo = args.getLong("id_promo", 0);
 	}
 
 	@Override
@@ -60,17 +82,17 @@ public class DocUploadDialog extends DialogFragment {
 			}
 		});
 		return new AlertDialog.Builder(getActivity())
-				.setTitle("Upload")
-				.setView(view)
-				.setNegativeButton(R.string.cancel, null)
-				.setPositiveButton(R.string.validate, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						new UploadDoc().execute();
-					}
-				})
-				.create();
+		.setTitle("Upload")
+		.setView(view)
+		.setNegativeButton(R.string.cancel, null)
+		.setPositiveButton(R.string.validate, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				new UploadDoc().execute();
+			}
+		})
+		.create();
 	}
 
 	public String getPath(Context context, Uri uri)
@@ -131,26 +153,33 @@ public class DocUploadDialog extends DialogFragment {
 	}
 
 	private void onSelectFile(String path) {
-		mPath = path;
-		int index = path.lastIndexOf("/");
-		String name = path.substring(index+1);
-		mFile.setText(name);
-		if(TextUtils.isEmpty(mTitle.getText().toString())){
-			int i = name.lastIndexOf(".");
-			if (i>-1) name = name.substring(0,i);
-			mTitle.setText(name);
+		if(path != null){
+			int indexMime = path.lastIndexOf(".");
+			String nameMimeUp = path.substring(indexMime+1);
+			String nameMimeDown = nameMimeUp.toLowerCase();
+			path = path.replace(nameMimeUp, nameMimeDown);
+			Log.v(TAG, "path"+path);
+			int index = path.lastIndexOf("/");
+			String name = path.substring(index+1);
+			mPath = path;
+			Log.v(TAG, "path mine down"+mPath);
+			mFile.setText(name);
+			if(TextUtils.isEmpty(mTitle.getText().toString())){
+				int i = name.lastIndexOf(".");
+				if (i>-1) name = name.substring(0,i);
+				mTitle.setText(name);
+			}
 		}
-		
 	}
 
-	private class UploadDoc extends AsyncTask<Void, Void, Void> {
+	private class UploadDoc extends AsyncTask<Void, Void, Doc> {
 
 		private ProgressDialog progress;
 
 		public UploadDoc() {
 
 		}
-		
+
 		@Override
 		protected void onPreExecute() {
 			progress = ProgressDialog.show(
@@ -160,8 +189,10 @@ public class DocUploadDialog extends DialogFragment {
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected Doc doInBackground(Void... params) {
 			File file = new File(mPath);
+			Doc newDoc = new Doc();
+			Log.v(TAG, file.getPath());
 			try {
 				final String token = AccountHelper.blockingGetAuthToken(
 						AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, true);
@@ -175,6 +206,14 @@ public class DocUploadDialog extends DialogFragment {
 						.data("id_training", String.valueOf(mTraining))
 						.data("id_promo", String.valueOf(mPromo))
 						.post();
+				JSONObject json =  p.asJSONObject();
+				if(json.getBoolean("success")){
+					
+					newDoc.setName(mTitle.getText().toString());
+					newDoc.setDescription(mDesc.getText().toString());
+					newDoc.setId(json.getJSONObject("result").getLong("id"));
+					newDoc.setPath(json.getJSONObject("result").getString("path_doc"));
+				}
 				Log.v(TAG, p.asString());
 			} catch (AuthenticatorException e) {
 				e.printStackTrace();
@@ -182,14 +221,19 @@ public class DocUploadDialog extends DialogFragment {
 				e.printStackTrace();
 			} catch (HttpDataException e) {
 				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 
-			return null;
+			return newDoc;
 		}
-		
+
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Doc result) {
 			progress.dismiss();
+			if(mListener != null){
+				mListener.onUpload(result);
+			}
 		}
 
 	}

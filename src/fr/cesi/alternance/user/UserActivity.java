@@ -1,18 +1,24 @@
 package fr.cesi.alternance.user;
 
 
+import java.util.ArrayList;
+
 import android.app.DialogFragment;
 import android.widget.ImageView;
 import fr.cesi.alternance.user.PhotoUserDialog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
 import com.kolapsis.utils.DownloadImageTask;
+
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
+import fr.cesi.alternance.helpers.Entity.EntityException;
 import fr.cesi.alternance.user.User;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,28 +33,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UserActivity extends Activity {
 
 	public static final String TAG = "USER ACTIVITY ==========>>>>";
 	private TextView mName,mMail,mPhone;
+	private ListView mLinks;
 	private String mRoleAccount,mPicture_path;
 	private Long mPromo;
 	private User mUser;
 	private Button btCall,btMail,btNote;
-    private ImageView mPicture;
+	private ImageView mPicture;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		mRoleAccount = AccountHelper.getRole();
-		
+
 		if("IF".equals(mRoleAccount)) {
 			setContentView(R.layout.activity_user_edit);
 			//initialise les EditText
-			mName = (TextView)findViewById(R.id.nameUser);
+			mName = (EditText)findViewById(R.id.nameUser);
 			mMail = (EditText)findViewById(R.id.mailUser);
 			mPhone = (EditText)findViewById(R.id.phoneUser);
 		} else {
@@ -58,6 +67,8 @@ public class UserActivity extends Activity {
 			mMail = (TextView)findViewById(R.id.mailUser);
 			mPhone = (TextView)findViewById(R.id.phoneUser);			
 		}
+		
+		mLinks=(ListView)findViewById(R.id.listViewLinks);
 
 		//initialise les boutons
 		btCall = (Button) findViewById(R.id.callUser);
@@ -67,8 +78,8 @@ public class UserActivity extends Activity {
 		btNote = (Button) findViewById(R.id.noteUser);
 		btNote.setOnClickListener(mNoteListener);
 
-        //initialise l'image
-        mPicture = (ImageView)findViewById(R.id.picture);
+		//initialise l'image
+		mPicture = (ImageView)findViewById(R.id.picture);
 
 		if(getIntent().getExtras() != null){
 			mUser = (User)getIntent().getExtras().getParcelable("user");
@@ -77,11 +88,13 @@ public class UserActivity extends Activity {
 
 		//si le user est pass� charge les champs
 		if(mUser != null){
-            mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+mUser.getPicture_path());
-            new DownloadImageTask(mPicture).execute();
-            mName.setText(mUser.getName());
+			mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+mUser.getPicture_path());
+			new DownloadImageTask(mPicture).execute();
+			mName.setText(mUser.getName());
 			mPhone.setText(mUser.getPhone());
 			mMail.setText(mUser.getMail());
+			ArrayList<Link> links = mUser.getLinks();
+			links.add(new Link());
 		}
 
 		setTitle(mUser.getRole());
@@ -98,7 +111,7 @@ public class UserActivity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.user_settings_save).setVisible("IF".equals(mRoleAccount));
-        menu.findItem(R.id.user_settings_photo).setVisible("IF".equals(mRoleAccount));
+		menu.findItem(R.id.user_settings_photo).setVisible("IF".equals(mRoleAccount));
 		menu.findItem(R.id.user_settings_delete).setVisible("IF".equals(mRoleAccount) && mUser.getId() > 0);
 		menu.findItem(R.id.user_settings_note).setVisible("Intervenant".equals(mRoleAccount));
 		return super.onPrepareOptionsMenu(menu);
@@ -109,28 +122,28 @@ public class UserActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.user_settings_save:
-			save(mUser.getId() == 0);
+			save();
 			return true;
 		case R.id.user_settings_delete:
-			deleteUser(mUser.getId());
+			deleteUser();
 			return true;
 		case R.id.user_settings_note:
 			// Comportement du bouton note
 			return true;
-        case R.id.user_settings_photo:
-            DialogFragment dialog = new PhotoUserDialog(mUser,mUploadListener);
-            dialog.show(getFragmentManager(), "dialog");
+		case R.id.user_settings_photo:
+			DialogFragment dialog = new PhotoUserDialog(mUser,mUploadListener);
+			dialog.show(getFragmentManager(), "dialog");
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-    private PhotoUserDialog.UploadListener mUploadListener = new PhotoUserDialog.UploadListener() {
-        @Override
-        public void onUpload(String path) {
-            mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+path);
-            new DownloadImageTask(mPicture).execute();
-        }
-    };
+	private PhotoUserDialog.UploadListener mUploadListener = new PhotoUserDialog.UploadListener() {
+		@Override
+		public void onUpload(String path) {
+			mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+path);
+			new DownloadImageTask(mPicture).execute();
+		}
+	};
 
 	private void initialize(){
 
@@ -140,12 +153,12 @@ public class UserActivity extends Activity {
 
 			btCall.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
 			btMail.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
-			btNote.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
+			//btNote.setVisibility((mUser.getId() > 0 ? View.VISIBLE : View.GONE));
 		}		
 		// 4 - l'eleve(pour plus tard)
 		else if("stagiaire".equals(mRoleAccount)){
 			//prepa interface
-			btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
+			//btNote.setVisibility((mUser.getId() == AccountHelper.getUserId() ? View.VISIBLE : View.GONE));
 		}
 
 	}
@@ -161,7 +174,7 @@ public class UserActivity extends Activity {
 
 	};
 
-	
+
 	private View.OnClickListener mMailerListener = new View.OnClickListener() {
 
 		public void onClick(View v) {
@@ -174,7 +187,7 @@ public class UserActivity extends Activity {
 
 	};
 
-	
+
 	private View.OnClickListener mNoteListener = new View.OnClickListener() {
 
 		public void onClick(View v) {
@@ -183,19 +196,18 @@ public class UserActivity extends Activity {
 
 	};
 
-	
-	private void save(Boolean add) {
+
+	private void save() {
 		//modifi l'objet user courant avec les nouveaux param�tres
-		if(add) {
-			mUser.setName(mName.getText().toString());
-			mUser.setId_promo(mPromo);
-		}
-        mUser.setPicture_path(mPicture_path);
+		mUser.setName(mName.getText().toString());
 		mUser.setMail(mMail.getText().toString());
 		mUser.setPhone(mPhone.getText().toString());
+		if(mUser.getId() == 0) {
+			mUser.setId_promo(mPromo);
+		}
 
 		//regarde si un champ est vide
-		if((add && mUser.getName().isEmpty()) || mUser.getMail().isEmpty()|| mUser.getPhone().isEmpty()){
+		if(mUser.getName().isEmpty() || mUser.getMail().isEmpty()|| mUser.getPhone().isEmpty()){
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
@@ -207,65 +219,57 @@ public class UserActivity extends Activity {
 			@Override
 			public void run() {
 
-				if(mUser.save()) {
-					ActivityCompat.invalidateOptionsMenu(UserActivity.this);
+				try {
+					if(mUser.save()) {
+						ActivityCompat.invalidateOptionsMenu(UserActivity.this);
+					}
+				} catch (final EntityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(UserActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+						}
+					});
+				} finally {
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
 							UserActivity.this.initialize();
 							progress.dismiss();
 						}
-					});
+					});					
 				}
 
 			}
 		}).start();		
 	}
-	
-	//fonction qui delete un utilisateur
-	private String deleteUser(long l){
-		String error ;
-		String success;
-		
-		//�cran d'attente
+
+	private void deleteUser() {
+
 		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
 
-		//d�clare un thread qui fait la requ�te
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					Thread.sleep(3000);
-					progress.dismiss();
-
-					String url = Constants.BASE_API_URL + "/user/delete/"+mUser.getId();
-					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
-					
-					HttpData delete = new HttpData(url).header(Api.APP_AUTH_TOKEN,token);
-					
-					delete.delete();
-					
-					JSONObject obj = delete.asJSONObject();
-					
-					if(obj.getBoolean("success")) {
-						UserActivity.this.finish();
+					if(mUser.delete()) {
+						ActivityCompat.invalidateOptionsMenu(UserActivity.this);
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								progress.dismiss();
+								finish();
+							}
+						});				
 					}
-				
-				} catch (HttpDataException hde) {
-					// TODO Auto-generated catch block
-					hde.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JSONException e) {
+				} catch (EntityException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		}).start();
-		success = "successfully submitted ! ";
-		return success;
 	}
 
 	//fonction pour aller sur l'onglet qui permet d'afficher et rentrer des notes

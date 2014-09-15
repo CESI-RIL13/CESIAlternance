@@ -106,7 +106,13 @@ public class TrainingEditActivity extends Activity {
         						}
 
         					}
-        				} catch (HttpDataException | AuthenticatorException | IOException e) {
+        				} catch (HttpDataException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				} catch (AuthenticatorException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				} catch (IOException e) {
         					// TODO Auto-generated catch block
         					e.printStackTrace();
         				} catch (JSONException e) {

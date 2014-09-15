@@ -8,7 +8,6 @@ import fr.cesi.alternance.helpers.Entity;
 public class Link extends Entity{
 	private TypeEnum type;
 	private String url;
-	private boolean selected;
 	
 	/**
 	 * @param id
@@ -65,20 +64,6 @@ public class Link extends Entity{
 	 */
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	/**
-	 * @return the selected
-	 */
-	public boolean isSelected() {
-		return selected;
-	}
-
-	/**
-	 * @param selected the selected to set
-	 */
-	public void setSelected(boolean selected) {
-		this.selected = selected;
 	}
 
 	@Override

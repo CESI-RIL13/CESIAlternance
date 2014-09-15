@@ -136,7 +136,9 @@ public class AccountHelper {
 		return getUserId(getAccount());
 	}
 	public static final int getUserId(Account account) {
-		return Integer.parseInt(getData(account, Api.UserColumns.ID));
+		String value = getData(account, Api.UserColumns.ID);
+		if (value == null) return 0;
+		return Integer.parseInt(value);
 	}
 
 	public static final String getPassword() {
