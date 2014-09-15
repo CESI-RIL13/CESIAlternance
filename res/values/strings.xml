@@ -94,16 +94,21 @@
     <string name="linkedin">LinkedIn</string>
     <string name="title_activity_user_account">Compte utilisateur</string>
     <string name="user_prenom">Prénom</string>
-    <string name="user_add_link">Ajouter</string>
+    <string name="user_add_link">Ajouter un lien</string>
     <string name="link_type">Type</string>
     <string name="link_lien">Lien</string>
     <string name="menu_contextuel_edit">Modifier</string>
     <string name="menu_contextuel_open">Ouvrir</string>
+    <string name="menu_save">Enregistrer</string>
 
     <string name="date_begin">Date de début</string>
     <string name="date_end">Date de fin</string>
     <string name="number_promo">Numéro</string>
     <string name="code_promo">Code</string>
     <string name="id_planning">ID du planning</string>
+    
+    <string name="training_edit_name">Nom de la formation</string>
+    <string name="training_alias">Alias de la formation</string>
+    <string name="training_duration">Durée de la formation</string>
     
 </resources>

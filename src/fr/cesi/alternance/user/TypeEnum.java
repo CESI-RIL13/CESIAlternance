@@ -43,4 +43,14 @@ public enum TypeEnum {
 		list=l.toArray(list);
 		return list;
 	}
+
+	public static int indexOf(TypeEnum type) {
+		// TODO Auto-generated method stub
+		int index = 0, compteur=0;
+		for (TypeEnum b : TypeEnum.values()) {
+			if(b == type) index = compteur;
+			compteur++;
+		}
+		return index;
+	}
 }
