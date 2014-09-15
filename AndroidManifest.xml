@@ -46,6 +46,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="fr.cesi.alternance.training.TrainingEditActivity"
+            android:label="@string/training_name" >
+        </activity>
+        <activity
             android:name="fr.cesi.alternance.promo.PromoListActivity"
             android:label="@string/app_name" >
         </activity>
