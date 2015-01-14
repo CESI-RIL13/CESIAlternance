@@ -139,7 +139,7 @@ public class PromoListActivity extends FragmentActivity{
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.add_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
 		menu.findItem(R.id.add_list_action).setVisible(false);
-		//menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
 		return super.onPrepareOptionsMenu(menu);
 	}
 

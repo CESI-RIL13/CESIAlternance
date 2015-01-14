@@ -181,14 +181,14 @@ public class Promo extends Entity implements Parcelable {
 		}
 	};
 
-	public boolean save() {
-		try {
-			save(Long.valueOf(0));
-		} catch (EntityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public boolean save() {
+//		try {
+//			save(Long.valueOf(0));
+//		} catch (EntityException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	public boolean save(Long id_training) throws EntityException{
 

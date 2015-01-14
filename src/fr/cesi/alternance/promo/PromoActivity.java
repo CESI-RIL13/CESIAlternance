@@ -93,27 +93,17 @@ public class PromoActivity extends ListActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.add_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
-		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.view_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_list_action).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) { 
         switch (item.getItemId()) { 
-        case R.id.add_list_action:
-        	
-//            Promo newPromo = new Promo();
-//            newPromo.setName("");
-//            newPromo.setNumber(0);
-//            newPromo.setCode("");
-//            newPromo.setEnd("");
-//            newPromo.setBegin("");
-//            newPromo.setId_planning("");
-//
-//            Intent intent = new Intent(PromoActivity.this, PromoEditActivity.class); 
-//            intent.putExtra("promo", newPromo); 
-//            intent.putExtra("id_training", training); 
-//            startActivity(intent); 
-            return true; 
+        case R.id.add_doc_action:
+            return true;
+        case R.id.view_doc_action:
+            return true;
         default: 
             return super.onOptionsItemSelected(item); 
         } 

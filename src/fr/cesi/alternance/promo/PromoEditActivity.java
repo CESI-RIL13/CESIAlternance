@@ -156,7 +156,6 @@ public class PromoEditActivity extends Activity {
 
 
 	private void save() {
-		//modifi l'objet promo courant avec les nouveaux paramétres
 		
 		try {
 			promo.setBegin(fmt.parse(begin.getText().toString()));
@@ -170,6 +169,7 @@ public class PromoEditActivity extends Activity {
 		promo.setId_planning(id_planning.getText().toString());
 		
 		Log.v("PROMO EDIT", promo.toString());
+		
 		//regarde si un champ est vide
 		if(promo.getNumber() < 1 || promo.getCode().isEmpty()){
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
@@ -179,34 +179,33 @@ public class PromoEditActivity extends Activity {
 		final ProgressDialog progress = ProgressDialog.show(PromoEditActivity.this, "Submit", "In Progress...");
 
 		//déclare un thread qui fait la requéte
-		//dï¿½clare un thread qui fait la requï¿½te
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
 
-						try {
-							promo.save(id_training);
-						} catch (final EntityException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									Toast.makeText(PromoEditActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-								}
-							});
-						} finally {
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									progress.dismiss();
-									finish();
-								}
-							});					
+				try {
+					promo.save(id_training);
+				} catch (final EntityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(PromoEditActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
 						}
+					});
+				} finally {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							progress.dismiss();
+							finish();
+						}
+					});					
+				}
 
-					}
-				}).start();		
+			}
+		}).start();		
 	}
 	
 	//fonction qui delete un utilisateur
