@@ -1,4 +1,6 @@
 package fr.cesi.alternance.promo;
+import java.util.Date;
+
 import android.os.Bundle;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.docs.DocListActivity;
@@ -94,12 +96,25 @@ public class PromoActivity extends ListActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.add_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
 		menu.findItem(R.id.view_doc_action).setVisible("IF".equals(AccountHelper.getRole()));
-		menu.findItem(R.id.add_list_action).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) { 
         switch (item.getItemId()) { 
+        case R.id.add_list_action:
+//        	Promo newPromo = new Promo();
+//            newPromo.setName("");
+//            newPromo.setNumber(Long.valueOf(0));
+//            newPromo.setCode("");
+//            newPromo.setEnd(new Date());
+//            newPromo.setBegin(new Date());
+//            newPromo.setId_planning("");
+//
+//            intent = new Intent(PromoListActivity.this, PromoEditActivity.class); 
+//            intent.putExtra("promo", newPromo);
+//            intent.putExtra("id_training", id_training); 
+//            startActivity(intent); 
+            return true;
         case R.id.add_doc_action:
             return true;
         case R.id.view_doc_action:
