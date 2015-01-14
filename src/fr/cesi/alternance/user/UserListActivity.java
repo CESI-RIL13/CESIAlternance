@@ -2,19 +2,13 @@ package fr.cesi.alternance.user;
   
 import java.util.ArrayList; 
 import java.util.List; 
-  
-
-
-
 import fr.cesi.alternance.Constants; 
 import fr.cesi.alternance.R; 
-import fr.cesi.alternance.user.User; 
-  
+import fr.cesi.alternance.user.User;   
 import android.app.ListActivity; 
 import android.content.Context; 
 import android.content.Intent; 
 import android.os.Bundle; 
-import android.util.Log; 
 import android.view.LayoutInflater; 
 import android.view.Menu; 
 import android.view.MenuItem; 
