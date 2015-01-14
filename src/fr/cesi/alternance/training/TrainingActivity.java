@@ -65,8 +65,18 @@ public class TrainingActivity extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//return super.onCreateOptionsMenu(menu);
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.training_menu, menu);
+		menuInflater.inflate(R.menu.add_action, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_doc_action).setVisible(false);
+		menu.findItem(R.id.view_doc_action).setVisible(false);
+		//menu.findItem(R.id.training_menu_add).setVisible("IF".equals(AccountHelper.getRole()));
+		return super.onPrepareOptionsMenu(menu);
 	}
 	
 	@Override
@@ -75,7 +85,7 @@ public class TrainingActivity extends ListActivity {
 		//return super.onOptionsItemSelected(item);
 		Intent intent;
 		switch (item.getItemId()){
-        	case R.id.training_menu_add:
+        	case R.id.add_list_action:
 	            Training newTraining = new Training();
 	            newTraining.setName("");
 	            newTraining.setDuration(0);
@@ -107,7 +117,7 @@ public class TrainingActivity extends ListActivity {
 						
 						String url = Constants.BASE_API_URL + "/training";
 						
-						//TODO : créer une instance httpdata méthode get
+						//TODO : crï¿½er une instance httpdata mï¿½thode get
 						JSONObject trainings = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).get().asJSONObject();
 												
 						if(trainings != null){
@@ -217,7 +227,7 @@ public class TrainingActivity extends ListActivity {
 			tv2.setText(training.getName());
 			
 			//tv = (TextView) view.findViewById(R.id.info);
-			//tv.setText(product.getPrice() + "€");
+			//tv.setText(product.getPrice() + "ï¿½");
 			
 			return view;
 		}
