@@ -20,7 +20,6 @@ import fr.cesi.alternance.promo.PromoListActivity;
 import android.accounts.AuthenticatorException;
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
 

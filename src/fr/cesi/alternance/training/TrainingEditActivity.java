@@ -20,8 +20,6 @@ import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
-import fr.cesi.alternance.user.Link;
-import fr.cesi.alternance.user.TypeEnum;
 
 public class TrainingEditActivity extends Activity {
 

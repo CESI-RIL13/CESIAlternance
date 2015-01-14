@@ -1,6 +1,4 @@
 package fr.cesi.alternance.promo;
-import java.util.Date;
-
 import android.os.Bundle;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.docs.Doc;
@@ -8,17 +6,13 @@ import fr.cesi.alternance.docs.DocListActivity;
 import fr.cesi.alternance.docs.DocUploadDialog;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.user.UserListActivity;
-import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
