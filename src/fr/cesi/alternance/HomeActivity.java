@@ -206,6 +206,7 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		
 		Intent intentDoc = new Intent(this, DocListActivity.class);
 		intentDoc.putExtra("id_user", 1L);
+		intentDoc.putExtra("add", true);
 		buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDoc));
 		
 		mAdapter = new HolderAdapter(this, buttons);

@@ -20,6 +20,6 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="cancel"
-        android:icon="@android:drawable/ic_menu_send"/>
+        android:icon="@android:drawable/ic_delete"/>
 
 </menu>

@@ -171,6 +171,7 @@ public class PromoListActivity extends FragmentActivity{
 	            intent = new Intent(this, DocListActivity.class);
 	            intent.putExtra("id_establishment", 1L);
 	            intent.putExtra("id_training", id_training);
+	            intent.putExtra("add", true);
 	            startActivity(intent);  	
 	        	return true;
 	        default: 
