@@ -91,11 +91,7 @@ public class PromoEditActivity extends Activity {
 				new DatePickerDialog(PromoEditActivity.this, endCallBack, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE)).show();
 			}
 		});
-		
-		// A Supprimer
-		number.setText("01");
-		code.setText("12345");
-		id_planning.setText("AZERTY");
+
 	}
 
 	@Override
@@ -120,7 +116,7 @@ public class PromoEditActivity extends Activity {
 			save();
 			return true;
 		case R.id.delete_action:
-//			delete();
+			deletePromo();
 			return true;
 		case R.id.cancel_action:
 			// Comportement du bouton cancel
@@ -216,49 +212,29 @@ public class PromoEditActivity extends Activity {
 	}
 	
 	//fonction qui delete un utilisateur
-//	private String deletePromo(long l){
-//		String error ;
-//		String success;
-//		
-//		//écran d'attente
-//		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
-//
-//		//déclare un thread qui fait la requéte
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				try {
-//					Thread.sleep(3000);
-//					progress.dismiss();
-//
-//					String url = Constants.BASE_API_URL + "/user/delete/"+mUser.getId();
-//					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
-//					
-//					HttpData delete = new HttpData(url).header(Api.APP_AUTH_TOKEN,token);
-//					
-//					delete.delete();
-//					
-//					JSONObject obj = delete.asJSONObject();
-//					
-//					if(obj.getBoolean("success")) {
-//						UserActivity.this.finish();
-//					}
-//				
-//				} catch (HttpDataException hde) {
-//					// TODO Auto-generated catch block
-//					hde.printStackTrace();
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (JSONException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//
-//			}
-//		}).start();
-//		success = "successfully submitted ! ";
-//		return success;
-//	}
+	private void deletePromo(){
+		final ProgressDialog progress = ProgressDialog.show(PromoEditActivity.this, "Delete", "In Progress...");
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					if(promo.delete()) {
+						ActivityCompat.invalidateOptionsMenu(PromoEditActivity.this);
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								progress.dismiss();
+								finish();
+							}
+						});				
+					}
+				} catch (EntityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
 }

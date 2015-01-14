@@ -17,16 +17,15 @@ import fr.cesi.alternance.docs.Doc;
 import fr.cesi.alternance.docs.DocListActivity;
 import fr.cesi.alternance.docs.DocUploadDialog;
 import fr.cesi.alternance.helpers.AccountHelper;
+import fr.cesi.alternance.training.Training;
+import fr.cesi.alternance.user.User;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,7 +41,7 @@ import android.widget.TextView;
 public class PromoListActivity extends FragmentActivity{
 
 	private ListView mListView;
-	private long id_training;
+	private Training training;
     private ProgressBar loader;
 	
     public static final String TAG = "PromoListActivity";
@@ -55,11 +54,11 @@ public class PromoListActivity extends FragmentActivity{
 		setContentView(R.layout.activity_home);
 		mListView = (ListView) findViewById(android.R.id.list);
         loader = (ProgressBar) findViewById(android.R.id.progress);
-		id_training = getIntent().getExtras().getLong("training");
+		training = getIntent().getExtras().getParcelable("training");
 
 		TextView name = (TextView) findViewById(R.id.name);
 		
-		name.setText(getIntent().getExtras().getString("name"));
+		name.setText(training.getName());
 		
 	}
 
@@ -83,7 +82,7 @@ public class PromoListActivity extends FragmentActivity{
 					final ArrayList<Promo> listPromo = new ArrayList<Promo>();
 					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
 					
-					HttpData get = new  HttpData(Constants.BASE_API_URL + "/promo").header(Api.APP_AUTH_TOKEN, token).data("id_training", String.valueOf(id_training)).get();
+					HttpData get = new  HttpData(Constants.BASE_API_URL + "/promo").header(Api.APP_AUTH_TOKEN, token).data("id_training", String.valueOf(training.getId())).get();
 					JSONObject json = get.asJSONObject();
 					
 					if(json.getBoolean("success")) {
@@ -157,20 +156,20 @@ public class PromoListActivity extends FragmentActivity{
 	
 	            intent = new Intent(PromoListActivity.this, PromoEditActivity.class); 
 	            intent.putExtra("promo", newPromo);
-	            intent.putExtra("id_training", id_training); 
+	            intent.putExtra("id_training", training.getId()); 
 	            startActivity(intent); 
 	            return true;
 	        case R.id.add_doc_action:
 	        	Bundle args = new Bundle();
 	        	args.putLong("id_establishment", 1);
-	        	args.putLong("id_training", id_training);
+	        	args.putLong("id_training", training.getId());
 				DialogFragment dialog = DocUploadDialog.newInstance(args, mUploadListener);
 				dialog.show(getSupportFragmentManager(), "dialog");       	
 	        	return true;
 	        case R.id.view_doc_action:
 	            intent = new Intent(this, DocListActivity.class);
 	            intent.putExtra("id_establishment", 1L);
-	            intent.putExtra("id_training", id_training);
+	            intent.putExtra("id_training", training.getId());
 	            startActivity(intent);  	
 	        	return true;
 	        default: 
@@ -197,11 +196,23 @@ public class PromoListActivity extends FragmentActivity{
 
 			public void onItemClick(AdapterView<?> list, View view, int position,
 					long id) {
-				
+
 				Intent intent = new Intent(PromoListActivity.this, PromoActivity.class);
-				intent.putExtra("id_promo", listPromo.get(position).getId());
-				intent.putExtra("name_promo", listPromo.get(position).getName());
+				intent.putExtra("promo", (Promo)listPromo.get(position));
 				startActivity(intent);
+			}
+
+		});
+		
+		mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> list, View view, int position,
+					long id) {
+
+				Intent intent = new Intent(PromoListActivity.this, PromoEditActivity.class);
+				intent.putExtra("promo", (Promo)listPromo.get(position));
+				intent.putExtra("id_training", training.getId());
+				startActivity(intent);
+				return true;
 			}
 		});
 	}
