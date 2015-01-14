@@ -210,26 +210,36 @@ public class Promo extends Entity implements Parcelable {
 			if(id_training > 0)
 				post.data("id_training", ""+id_training);
 			
+			Log.v("PROMO", "id = " + id 
+					+ ", id_training_establishment = " + id_training_establishment
+					+", id_training = " + id_training
+					+ ", number = " + number
+					+ ", code = " + code
+					+ ", begin = " + fmt.format(begin.getTime())
+					+ "end = " + fmt.format(end.getTime())
+					+ "id_planning = " + id_planning);
+		
 			post.post();
 
 			Log.v("PROMO", post.asString());
+			return false;
 			
-			JSONObject obj = post.asJSONObject();
+			/*JSONObject obj = post.asJSONObject();
 			success = obj.getBoolean("success");
 			
 			if(success) {
 				setId(obj.getJSONObject("result").getLong("id"));
 			} else {
 				throw new EntityException(obj.getString("error"));
-			}
+			}*/
 
 		} catch (HttpDataException hde) {
 			// TODO Auto-generated catch block
 			hde.printStackTrace();
-		} catch (JSONException e) {
+		}/* catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (AuthenticatorException e) {
+		}*/ catch (AuthenticatorException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {

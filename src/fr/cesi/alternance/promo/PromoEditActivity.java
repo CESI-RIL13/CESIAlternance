@@ -54,6 +54,8 @@ public class PromoEditActivity extends Activity {
 			promo = (Promo)getIntent().getExtras().getParcelable("promo");
 			id_training = getIntent().getExtras().getLong("id_training");
 		}
+		
+		//Log.v("PromoEditActivity", "id_training = " + id_training.toString());
 
 		//si le user est passé charge les champs
 		if(promo != null){
@@ -89,6 +91,11 @@ public class PromoEditActivity extends Activity {
 				new DatePickerDialog(PromoEditActivity.this, endCallBack, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE)).show();
 			}
 		});
+		
+		// A Supprimer
+		number.setText("01");
+		code.setText("12345");
+		id_planning.setText("AZERTY");
 	}
 
 	@Override
@@ -110,7 +117,7 @@ public class PromoEditActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.save_action:
-			//save();
+			save();
 			return true;
 		case R.id.delete_action:
 //			delete();

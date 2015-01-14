@@ -147,7 +147,6 @@ public class PromoListActivity extends FragmentActivity{
 		Intent intent;
         switch (item.getItemId()) { 
 	        case R.id.add_list_action:
-	        	
 	            Promo newPromo = new Promo();
 	            newPromo.setName("");
 	            newPromo.setNumber(Long.valueOf(0));
