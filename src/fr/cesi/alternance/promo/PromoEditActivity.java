@@ -56,7 +56,7 @@ public class PromoEditActivity extends Activity {
 		
 		//Log.v("PromoEditActivity", "id_training = " + id_training.toString());
 
-		//si le user est passé charge les champs
+		//si le user est passï¿½ charge les champs
 		if(promo != null){
             begin.setText(fmt.format(promo.getBegin()));
 			end.setText(fmt.format(promo.getEnd()));
@@ -97,7 +97,6 @@ public class PromoEditActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.save_action).setVisible("IF".equals(mRoleAccount));
 		menu.findItem(R.id.delete_action).setVisible("IF".equals(mRoleAccount) && promo.getId() > 0);
-		menu.findItem(R.id.cancel_action).setVisible("IF".equals(mRoleAccount));
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -116,9 +115,6 @@ public class PromoEditActivity extends Activity {
 			return true;
 		case R.id.delete_action:
 			deletePromo();
-			return true;
-		case R.id.cancel_action:
-			// Comportement du bouton cancel
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -177,7 +173,7 @@ public class PromoEditActivity extends Activity {
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(PromoEditActivity.this, "Submit", "In Progress...");
 
 		//déclare un thread qui fait la requéte

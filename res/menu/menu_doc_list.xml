@@ -3,7 +3,7 @@
     <item 
           android:id="@+id/doc_add"
           android:title="@string/menu_add"
-          android:icon="@android:drawable/ic_menu_add"
+          android:icon="@android:drawable/ic_menu_upload"
           android:showAsAction="always"/>
 
     

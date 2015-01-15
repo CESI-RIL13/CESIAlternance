@@ -44,12 +44,14 @@ public class TrainingEditActivity extends Activity {
 		if(getIntent().getExtras() != null){
 			training = getIntent().getExtras().getParcelable("training");
 		}
+
 		//si le user est pass� charge les champs
 		if(training != null){
             name.setText(training.getName());
 			alias.setText(training.getAlias());
             if(training.getDuration() != 0)
 			    duration.setText(Integer.toString(training.getDuration()));
+
 		}
 
 		setTitle(R.string.training_name);
@@ -59,8 +61,7 @@ public class TrainingEditActivity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.save_action).setVisible("IF".equals(mRoleAccount));
-		//menu.findItem(R.id.delete_action).setVisible("IF".equals(mRoleAccount));
-		//menu.findItem(R.id.cancel_action).setVisible("IF".equals(mRoleAccount));
+		menu.findItem(R.id.delete_action).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -91,6 +92,7 @@ public class TrainingEditActivity extends Activity {
         						    url = Constants.BASE_API_URL + "/training/save";
                                 else
                                     url = Constants.BASE_API_URL + "/training/"+training.getId()+"/save";
+
         						//TODO : cr�er une instance httpdata m�thode post
         						JSONObject json = new HttpData(url).header(Api.APP_AUTH_TOKEN, token)
         								.data("name", name.getText().toString())

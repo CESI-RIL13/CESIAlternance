@@ -14,12 +14,5 @@
         android:showAsAction="always"
         android:title="delete"
         android:icon="@android:drawable/ic_menu_delete"/>
-    
-    <item
-        android:id="@+id/cancel_action"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:title="cancel"
-        android:icon="@android:drawable/ic_delete"/>
 
 </menu>
