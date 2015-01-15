@@ -54,7 +54,6 @@ public class PromoListActivity extends FragmentActivity{
 		training = getIntent().getExtras().getParcelable("training");
 
 		TextView name = (TextView) findViewById(R.id.name);
-		
 		name.setText(training.getName());
 		
 	}
@@ -203,18 +202,20 @@ public class PromoListActivity extends FragmentActivity{
 
 		});
 		
-		mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> list, View view, int position,
-					long id) {
-
-				Intent intent = new Intent(PromoListActivity.this, PromoEditActivity.class);
-				intent.putExtra("promo", (Promo)listPromo.get(position));
-				intent.putExtra("id_training", training.getId());
-				startActivity(intent);
-				return true;
-			}
-
-		});
+		if("IF".equals(AccountHelper.getRole())) {
+			mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				public boolean onItemLongClick(AdapterView<?> list, View view, int position,
+						long id) {
+	
+					Intent intent = new Intent(PromoListActivity.this, PromoEditActivity.class);
+					intent.putExtra("promo", (Promo)listPromo.get(position));
+					intent.putExtra("id_training", training.getId());
+					startActivity(intent);
+					return true;
+				}
+	
+			});
+		}
 	}
 
 	private class PromoAdapter extends ArrayAdapter<Promo> {

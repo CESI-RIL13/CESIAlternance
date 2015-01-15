@@ -101,8 +101,8 @@
     <string name="menu_contextuel_open">Ouvrir</string>
     <string name="menu_save">Enregistrer</string>
 
-    <string name="date_begin">Date de début</string>
-    <string name="date_end">Date de fin</string>
+    <string name="date_begin">Date de début :</string>
+    <string name="date_end">Date de fin :</string>
     <string name="number_promo">Numéro</string>
     <string name="code_promo">Code</string>
     <string name="id_planning">ID du planning</string>

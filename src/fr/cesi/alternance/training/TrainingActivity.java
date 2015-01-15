@@ -118,7 +118,8 @@ public class TrainingActivity extends ListActivity {
 						
 						//TODO : cr�er une instance httpdata m�thode get
 						JSONObject trainings = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).get().asJSONObject();
-												
+						
+						
 						if(trainings != null){
 							trainingListComplex(trainings);
 						}

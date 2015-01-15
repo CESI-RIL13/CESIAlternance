@@ -60,7 +60,8 @@ public class PromoEditActivity extends Activity {
 		if(promo != null){
             begin.setText(fmt.format(promo.getBegin()));
 			end.setText(fmt.format(promo.getEnd()));
-			number.setText(""+promo.getNumber());
+			if(!promo.getNumber().equals(0L))
+				number.setText(""+promo.getNumber());
 			code.setText(promo.getCode());
 			id_planning.setText(promo.getId_planning());
 		}

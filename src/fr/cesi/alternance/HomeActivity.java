@@ -2,17 +2,15 @@ package fr.cesi.alternance;
 
 
 import fr.cesi.alternance.helpers.AccountHelper;
-//import fr.cesi.alternance.user.UserListActivity;
 import fr.cesi.alternance.docs.DocListActivity;
 import fr.cesi.alternance.promo.PromoListActivity;
+import fr.cesi.alternance.training.Training;
 import fr.cesi.alternance.training.TrainingActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.kolapsis.utils.StringUtils;
-
-
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,14 +20,10 @@ import android.provider.CalendarContract.Events;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
-
-
 import android.content.Intent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-
-
 import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -181,6 +175,7 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 			
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
 			intentDocEtablissement.putExtra("add", true);
+			
 			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));
 		
 		} else if ("Intervenant".equals(role)) {			
@@ -188,13 +183,13 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 			Intent intentFormations = new Intent(this, TrainingActivity.class);
 			
 			buttons.add(new Holder(getString(R.string.training_title), getString(R.string.training_action), intentFormations));		
+		
 		} else if ("Stagiaire".equals(role)) {
 			
 			Intent intentPromos = new Intent(this, PromoListActivity.class);
-			
-
-			intentPromos.putExtra("id_training", 0);
-			intentPromos.putExtra("name", getString(R.string.promo_desc));
+			Training training = new Training(0);
+			training.setName("Mes Formations");
+			intentPromos.putExtra("training", training);
 			
 			buttons.add(new Holder(getString(R.string.promo_title), getString(R.string.promo_action), intentPromos));
 
