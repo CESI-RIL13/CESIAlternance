@@ -43,7 +43,7 @@ public class PromoActivity extends FragmentActivity {
 
 	private void listGoTo() {
 		
-		final String[] values = {getString(R.string.stagiaire_title), getString(R.string.intervenant_title), getString(R.string.doc_title)/*, getString(R.string.support_title)*/};
+		final String[] values = {getString(R.string.stagiaire_title), getString(R.string.intervenant_title)/*, getString(R.string.doc_title), getString(R.string.support_title)*/};
 		
 		ListView lv = (ListView) findViewById(android.R.id.list);
 
@@ -65,11 +65,6 @@ public class PromoActivity extends FragmentActivity {
 						intent.setClass(PromoActivity.this, UserListActivity.class);
 						intent.putExtra("users_list_name", "Intervenants");
 						role = "Intervenant";
-					}
-					else if (position == 2){
-						intent.setClass(PromoActivity.this, DocListActivity.class);
-						intent.putExtra("users_list_name", "Documents");
-						intent.putExtra("add", "IF".equals(AccountHelper.getRole()) || "Intervenant".equals(AccountHelper.getRole()));
 					}
 //					else if (position == 3){
 //						intent.setClass(PromoActivity.this, UserListActivity.class);
@@ -97,7 +92,6 @@ public class PromoActivity extends FragmentActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.view_doc_action).setVisible(false);
 		menu.findItem(R.id.add_list_action).setVisible(false);
 		menu.findItem(R.id.add_doc_action).setVisible(!"Stagiaire".equals(AccountHelper.getRole()));
 		return super.onPrepareOptionsMenu(menu);
@@ -110,7 +104,14 @@ public class PromoActivity extends FragmentActivity {
         	args.putLong("id_establishment", 1);
         	args.putLong("id_promo", promo);
 			DialogFragment dialog = DocUploadDialog.newInstance(args, mUploadListener);
-			dialog.show(getSupportFragmentManager(), "dialog");       	
+			dialog.show(getSupportFragmentManager(), "dialog");
+			return true;
+        case R.id.view_doc_action:
+        	Intent intent=new Intent();
+			intent.setClass(PromoActivity.this, DocListActivity.class);
+			intent.putExtra("users_list_name", "Documents");
+			intent.putExtra("add", "IF".equals(AccountHelper.getRole()) || "Intervenant".equals(AccountHelper.getRole()));
+			startActivity(intent);
         	return true;
         default: 
             return super.onOptionsItemSelected(item); 

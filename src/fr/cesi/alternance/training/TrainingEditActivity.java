@@ -47,7 +47,7 @@ public class TrainingEditActivity extends Activity {
 			training = getIntent().getExtras().getParcelable("training");
 		}
 		/*
-		//si le user est passé charge les champs
+		//si le user est passï¿½ charge les champs
 		if(promo != null){
             begin.setText(fmt.format(promo.getBegin()));
 			end.setText(fmt.format(promo.getEnd()));
@@ -64,8 +64,7 @@ public class TrainingEditActivity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.save_action).setVisible("IF".equals(mRoleAccount));
-		//menu.findItem(R.id.delete_action).setVisible("IF".equals(mRoleAccount));
-		//menu.findItem(R.id.cancel_action).setVisible("IF".equals(mRoleAccount));
+		menu.findItem(R.id.delete_action).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -92,7 +91,7 @@ public class TrainingEditActivity extends Activity {
         					String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
         					if (token != null){
         						String url = Constants.BASE_API_URL + "/training/save";
-        						//TODO : créer une instance httpdata méthode post
+        						//TODO : crï¿½er une instance httpdata mï¿½thode post
         						JSONObject json = new HttpData(url).header(Api.APP_AUTH_TOKEN, token)
         								.data("name", name.getText().toString())
 										.data("alias", alias.getText().toString())

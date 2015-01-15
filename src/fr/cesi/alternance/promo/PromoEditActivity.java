@@ -54,7 +54,7 @@ public class PromoEditActivity extends Activity {
 			id_training = getIntent().getExtras().getLong("id_training");
 		}
 
-		//si le user est passé charge les champs
+		//si le user est passï¿½ charge les champs
 		if(promo != null){
             begin.setText(fmt.format(promo.getBegin()));
 			end.setText(fmt.format(promo.getEnd()));
@@ -94,7 +94,6 @@ public class PromoEditActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.save_action).setVisible("IF".equals(mRoleAccount));
 		menu.findItem(R.id.delete_action).setVisible("IF".equals(mRoleAccount) && promo.getId() > 0);
-		menu.findItem(R.id.cancel_action).setVisible("IF".equals(mRoleAccount));
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -155,7 +154,7 @@ public class PromoEditActivity extends Activity {
 
 
 	private void save() {
-		//modifi l'objet promo courant avec les nouveaux paramétres
+		//modifi l'objet promo courant avec les nouveaux paramï¿½tres
 		
 		try {
 			promo.setBegin(fmt.parse(begin.getText().toString()));
@@ -173,10 +172,10 @@ public class PromoEditActivity extends Activity {
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(PromoEditActivity.this, "Submit", "In Progress...");
 
-		//déclare un thread qui fait la requéte
+		//dï¿½clare un thread qui fait la requï¿½te
 		//dï¿½clare un thread qui fait la requï¿½te
 				new Thread(new Runnable() {
 					@Override
@@ -212,10 +211,10 @@ public class PromoEditActivity extends Activity {
 //		String error ;
 //		String success;
 //		
-//		//écran d'attente
+//		//ï¿½cran d'attente
 //		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
 //
-//		//déclare un thread qui fait la requéte
+//		//dï¿½clare un thread qui fait la requï¿½te
 //		new Thread(new Runnable() {
 //			@Override
 //			public void run() {
