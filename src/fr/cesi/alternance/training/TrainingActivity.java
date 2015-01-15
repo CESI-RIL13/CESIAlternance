@@ -107,7 +107,7 @@ public class TrainingActivity extends ListActivity {
 						
 						String url = Constants.BASE_API_URL + "/training";
 						
-						//TODO : créer une instance httpdata méthode get
+						//TODO : crï¿½er une instance httpdata mï¿½thode get
 						JSONObject trainings = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).get().asJSONObject();
 												
 						if(trainings != null){
@@ -181,6 +181,15 @@ public class TrainingActivity extends ListActivity {
 						startActivity(intent);
 					}
 				});
+                lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> list, View view, int position, long id) {
+                        Intent intent = new Intent(TrainingActivity.this, TrainingEditActivity.class);
+                        intent.putExtra("training", (Training)training_list.get(position));
+                        startActivity(intent);
+                        return true;
+                    }
+                });
 			}
 			
 		} catch (JSONException e) {
@@ -217,7 +226,7 @@ public class TrainingActivity extends ListActivity {
 			tv2.setText(training.getName());
 			
 			//tv = (TextView) view.findViewById(R.id.info);
-			//tv.setText(product.getPrice() + "€");
+			//tv.setText(product.getPrice() + "ï¿½");
 			
 			return view;
 		}
