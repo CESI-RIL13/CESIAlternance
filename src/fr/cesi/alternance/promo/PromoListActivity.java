@@ -201,6 +201,7 @@ public class PromoListActivity extends FragmentActivity{
 				startActivity(intent);
 			}
 
+
 		});
 		
 		if("IF".equals(AccountHelper.getRole())) {

@@ -109,6 +109,9 @@ public class PromoActivity extends FragmentActivity {
 			intent.setClass(PromoActivity.this, DocListActivity.class);
 			intent.putExtra("users_list_name", "Documents");
 			intent.putExtra("add", "IF".equals(AccountHelper.getRole()) || "Intervenant".equals(AccountHelper.getRole()));
+
+			intent.putExtra("id_promo", promo.getId());
+
 			startActivity(intent);
         	return true;
         default: 

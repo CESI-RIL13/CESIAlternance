@@ -210,11 +210,7 @@ public class CalendarHelper {
 		public void setSourceId(String sourceId) {
 			this.sourceId = sourceId;
 		}
-		
-		@Override
-		public String getName() {
-			return title;
-		}
+
 
 		public String getTitle() {
 			return title;
@@ -372,6 +368,12 @@ public class CalendarHelper {
 			Uri deleteUri = asSyncAdapter(uri, account.name, account.type);
 			cr.delete(deleteUri, null, null);
 			Log.v(TAG, "Calendar Event deleted");
+		}
+
+		@Override
+		public String getName() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 	}

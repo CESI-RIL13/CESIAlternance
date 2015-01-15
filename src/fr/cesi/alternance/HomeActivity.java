@@ -115,8 +115,8 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 			if (resultCode == Activity.RESULT_OK) {
 				String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 				if (!StringUtils.isEmpty(accountName)) {
-					Account account = new Account(accountName, Constants.ACCOUNT_TYPE);
-					if (!AccountHelper.isAccount(account)) AccountHelper.setAccount(account);
+					mAccount = new Account(accountName, Constants.ACCOUNT_TYPE);
+					if (!AccountHelper.isAccount(mAccount)) AccountHelper.setAccount(mAccount);
 				}
 				if (AccountHelper.isEmpty()) showAccount();
 				else showApp();
@@ -200,8 +200,9 @@ public class HomeActivity extends Activity implements AdapterView.OnItemClickLis
 		buttons.add(new Holder(getString(R.string.doc_establishment_title), getString(R.string.doc_establishment_action), intentDocEtablissement));
 		
 		Intent intentDoc = new Intent(this, DocListActivity.class);
-		intentDoc.putExtra("id_user", 1L);
 		intentDoc.putExtra("add", true);
+		Log.v(TAG, "Id : " + AccountHelper.getUserId());
+		intentDoc.putExtra("id_user", AccountHelper.getUserId());
 		buttons.add(new Holder(getString(R.string.doc_title), getString(R.string.doc_action), intentDoc));
 		
 		mAdapter = new HolderAdapter(this, buttons);

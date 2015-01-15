@@ -75,6 +75,7 @@ public class DocUploadDialog extends DialogFragment {
 		mTraining = args.getLong("id_training", 0);
 		mPromo = args.getLong("id_promo", 0);
 		mUser = args.getLong("id_user", 0);
+		Log.v(TAG, "Id après envoi :" + mUser);
 	}
 
 	@Override
@@ -309,13 +310,10 @@ public class DocUploadDialog extends DialogFragment {
 			boolean success = false;
 			File file = new File(mPath);
 			Doc newDoc = new Doc();
-//			Log.v(TAG, file.getPath());
 			try {
 				final String token = AccountHelper.blockingGetAuthToken(
 						AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, true);
 				final String url = Constants.BASE_API_URL + "/document/upload";
-//				Log.v(TAG, "establishment : " + mEstablishment);
-//				Log.v(TAG, "mpath : " + mPath);
 				HttpData p = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).file("file", file)
 						.data("titre", mTitle.getText().toString())
 						.data("description", mDesc.getText().toString())
@@ -327,6 +325,7 @@ public class DocUploadDialog extends DialogFragment {
 				Log.v(TAG, p.asString());
 				JSONObject json =  p.asJSONObject();
 				success = json.has("success") && json.getBoolean("success");
+
 				if (success) {
 					newDoc.setName(mTitle.getText().toString());
 					newDoc.setDescription(mDesc.getText().toString());
