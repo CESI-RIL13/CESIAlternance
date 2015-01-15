@@ -67,8 +67,10 @@ public class TrainingEditActivity extends FragmentActivity {
 			    duration.setText(Integer.toString(training.getDuration()));
 
 		}
+
 		
 		btBrowse.setVisibility((training.getId() == 0 ? View.VISIBLE : View.GONE));
+
 
 		setTitle(R.string.training_name);
 	}
@@ -76,7 +78,11 @@ public class TrainingEditActivity extends FragmentActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.save_action).setVisible("IF".equals(mRoleAccount));
+
 		menu.findItem(R.id.delete_action).setVisible("IF".equals(mRoleAccount));
+
+		menu.findItem(R.id.delete_action).setVisible(false);
+
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -94,6 +100,7 @@ public class TrainingEditActivity extends FragmentActivity {
         switch (item.getItemId()){
         	case R.id.save_action:
 
+
         		new Thread(new Runnable() {
         			@Override
         			public void run() {
@@ -107,6 +114,7 @@ public class TrainingEditActivity extends FragmentActivity {
         						    url = Constants.BASE_API_URL + "/training/save";
                                 else
                                     url = Constants.BASE_API_URL + "/training/"+training.getId()+"/save";
+
 
         						JSONObject json = new HttpData(url).header(Api.APP_AUTH_TOKEN, token)
         								.data("name", name.getText().toString())
@@ -180,7 +188,6 @@ public class TrainingEditActivity extends FragmentActivity {
 		}
 	}
 
-
 	private View.OnClickListener mBrowseListener = new View.OnClickListener() {
 		public void onClick(View v) {
 			loadTraining();
@@ -242,7 +249,6 @@ public class TrainingEditActivity extends FragmentActivity {
 		}
 		return list;
 	}
-
 
 }
 

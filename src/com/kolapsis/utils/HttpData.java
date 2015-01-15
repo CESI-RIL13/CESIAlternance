@@ -258,7 +258,12 @@ public class HttpData extends Thread {
 					File file = this.files.get(key);
 					String name = file.getName();
 					//String ext = MimeTypeMap.getFileExtensionFromUrl(name);
+<<<<<<< HEAD
 					String mimeType = StringUtils.getMimeType(name); //MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
+=======
+					String mimeType = StringUtils.getMimeType(name);
+					//MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
+>>>>>>> nicolas
 					FileBody fb = new FileBody(file, mimeType);
 					//Log.v(TAG, "key: "+key+", name: "+fb.getFilename()+", mediatype: "+fb.getMediaType()+", length: "+fb.getContentLength());
 					reqEntity.addPart(key, fb);
