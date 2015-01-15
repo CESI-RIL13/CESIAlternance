@@ -2,14 +2,11 @@ package fr.cesi.alternance.promo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
-
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
@@ -17,13 +14,14 @@ import fr.cesi.alternance.docs.Doc;
 import fr.cesi.alternance.docs.DocListActivity;
 import fr.cesi.alternance.docs.DocUploadDialog;
 import fr.cesi.alternance.helpers.AccountHelper;
+import fr.cesi.alternance.user.User;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -195,12 +193,12 @@ public class PromoListActivity extends FragmentActivity{
 
 			public void onItemClick(AdapterView<?> list, View view, int position,
 					long id) {
-				
+
 				Intent intent = new Intent(PromoListActivity.this, PromoActivity.class);
-				intent.putExtra("id_promo", listPromo.get(position).getId());
-				intent.putExtra("name_promo", listPromo.get(position).getName());
+				intent.putExtra("promo", (Promo)listPromo.get(position));
 				startActivity(intent);
 			}
+
 		});
 	}
 

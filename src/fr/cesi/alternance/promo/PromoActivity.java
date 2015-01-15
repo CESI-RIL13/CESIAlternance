@@ -1,4 +1,6 @@
 package fr.cesi.alternance.promo;
+import java.util.Date;
+
 import android.os.Bundle;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.docs.Doc;
@@ -21,7 +23,7 @@ import android.widget.Toast;
 public class PromoActivity extends FragmentActivity {
 	public static final String TAG = "PromoListActivity";
 	private String role;
-	private long promo;
+	private Promo promo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +31,10 @@ public class PromoActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
-		promo = getIntent().getExtras().getLong("id_promo");		
+		promo = (Promo)getIntent().getExtras().getParcelable("promo");
 		
 		TextView name = (TextView) findViewById(R.id.name);
-		name.setText(getIntent().getExtras().getString("name_promo"));
+		name.setText(promo.getName());
 		
 		listGoTo();
 	}
@@ -74,7 +76,7 @@ public class PromoActivity extends FragmentActivity {
 					if (role != null)
 						intent.putExtra("role", role);
 					
-					intent.putExtra("id_promo", promo);
+					intent.putExtra("id_promo", promo.getId());
 					startActivity(intent);
 					//finish();
 				} catch (Exception e) {
