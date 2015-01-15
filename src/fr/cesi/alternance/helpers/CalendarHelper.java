@@ -368,6 +368,12 @@ public class CalendarHelper {
 			cr.delete(deleteUri, null, null);
 			Log.v(TAG, "Calendar Event deleted");
 		}
+
+		@Override
+		public String getName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
 }

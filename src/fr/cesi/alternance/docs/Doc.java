@@ -21,6 +21,7 @@ public class Doc extends Entity {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+	@Override
 	public String getName() {
 		return name;
 	}

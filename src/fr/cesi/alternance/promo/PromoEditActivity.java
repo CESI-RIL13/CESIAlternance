@@ -7,13 +7,13 @@ import java.util.Calendar;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.helpers.Entity.EntityException;
-import fr.cesi.alternance.user.UserActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,8 +53,10 @@ public class PromoEditActivity extends Activity {
 			promo = (Promo)getIntent().getExtras().getParcelable("promo");
 			id_training = getIntent().getExtras().getLong("id_training");
 		}
+		
+		//Log.v("PromoEditActivity", "id_training = " + id_training.toString());
 
-		//si le user est passé charge les champs
+		//si le user est passï¿½ charge les champs
 		if(promo != null){
             begin.setText(fmt.format(promo.getBegin()));
 			end.setText(fmt.format(promo.getEnd()));
@@ -88,13 +90,13 @@ public class PromoEditActivity extends Activity {
 				new DatePickerDialog(PromoEditActivity.this, endCallBack, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE)).show();
 			}
 		});
+
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.save_action).setVisible("IF".equals(mRoleAccount));
 		menu.findItem(R.id.delete_action).setVisible("IF".equals(mRoleAccount) && promo.getId() > 0);
-		menu.findItem(R.id.cancel_action).setVisible("IF".equals(mRoleAccount));
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -108,14 +110,11 @@ public class PromoEditActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.user_settings_save:
-//			save(mUser.getId() == 0);
+		case R.id.save_action:
+			save();
 			return true;
-		case R.id.user_settings_delete:
-//			deleteUser(mUser.getId());
-			return true;
-		case R.id.user_settings_note:
-			// Comportement du bouton note
+		case R.id.delete_action:
+			deletePromo();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -155,7 +154,6 @@ public class PromoEditActivity extends Activity {
 
 
 	private void save() {
-		//modifi l'objet promo courant avec les nouveaux paramétres
 		
 		try {
 			promo.setBegin(fmt.parse(begin.getText().toString()));
@@ -167,90 +165,71 @@ public class PromoEditActivity extends Activity {
 		promo.setNumber(Long.decode(number.getText().toString()));
 		promo.setCode(code.getText().toString());
 		promo.setId_planning(id_planning.getText().toString());
-
+		
+		Log.v("PROMO EDIT", promo.toString());
+		
 		//regarde si un champ est vide
 		if(promo.getNumber() < 1 || promo.getCode().isEmpty()){
 			new AlertDialog.Builder(this).setTitle("Erreur").setMessage("A field is empty !").create().show();
 		}
 
-		//écran d'attente
+		//ï¿½cran d'attente
 		final ProgressDialog progress = ProgressDialog.show(PromoEditActivity.this, "Submit", "In Progress...");
 
 		//déclare un thread qui fait la requéte
-		//dï¿½clare un thread qui fait la requï¿½te
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
 
-						try {
-							promo.save();
-						} catch (final EntityException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									Toast.makeText(PromoEditActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-								}
-							});
-						} finally {
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									progress.dismiss();
-									finish();
-								}
-							});					
+				try {
+					promo.save(id_training);
+				} catch (final EntityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(PromoEditActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
 						}
+					});
+				} finally {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							progress.dismiss();
+							finish();
+						}
+					});					
+				}
 
-					}
-				}).start();		
+			}
+		}).start();		
 	}
 	
 	//fonction qui delete un utilisateur
-//	private String deletePromo(long l){
-//		String error ;
-//		String success;
-//		
-//		//écran d'attente
-//		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Delete", "In Progress...");
-//
-//		//déclare un thread qui fait la requéte
-//		new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				try {
-//					Thread.sleep(3000);
-//					progress.dismiss();
-//
-//					String url = Constants.BASE_API_URL + "/user/delete/"+mUser.getId();
-//					String token = AccountHelper.getData(Api.UserColumns.TOKEN);
-//					
-//					HttpData delete = new HttpData(url).header(Api.APP_AUTH_TOKEN,token);
-//					
-//					delete.delete();
-//					
-//					JSONObject obj = delete.asJSONObject();
-//					
-//					if(obj.getBoolean("success")) {
-//						UserActivity.this.finish();
-//					}
-//				
-//				} catch (HttpDataException hde) {
-//					// TODO Auto-generated catch block
-//					hde.printStackTrace();
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (JSONException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//
-//			}
-//		}).start();
-//		success = "successfully submitted ! ";
-//		return success;
-//	}
+	private void deletePromo(){
+		final ProgressDialog progress = ProgressDialog.show(PromoEditActivity.this, "Delete", "In Progress...");
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					if(promo.delete()) {
+						ActivityCompat.invalidateOptionsMenu(PromoEditActivity.this);
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								progress.dismiss();
+								finish();
+							}
+						});				
+					}
+				} catch (EntityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
 }

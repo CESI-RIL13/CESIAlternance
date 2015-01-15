@@ -75,6 +75,7 @@ public class DocUploadDialog extends DialogFragment {
 		mTraining = args.getLong("id_training", 0);
 		mPromo = args.getLong("id_promo", 0);
 		mUser = args.getLong("id_user", 0);
+		Log.v(TAG, "Id après envoi :" + mUser);
 	}
 
 	@Override
@@ -306,17 +307,14 @@ public class DocUploadDialog extends DialogFragment {
 
 		@Override
 		protected Doc doInBackground(Void... params) {
+			boolean success = false;
 			File file = new File(mPath);
 			Doc newDoc = new Doc();
-//			Log.v(TAG, file.getPath());
 			try {
 				final String token = AccountHelper.blockingGetAuthToken(
 						AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, true);
 				final String url = Constants.BASE_API_URL + "/document/upload";
-//				Log.v(TAG, "establishment : " + mEstablishment);
-//				Log.v(TAG, "mpath : " + mPath);
 				HttpData p = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).file("file", file)
-						.data("path", "document/")
 						.data("titre", mTitle.getText().toString())
 						.data("description", mDesc.getText().toString())
 						.data("id_establishment", String.valueOf(mEstablishment))
@@ -324,15 +322,16 @@ public class DocUploadDialog extends DialogFragment {
 						.data("id_promo", String.valueOf(mPromo))
 						.data("id_user", String.valueOf(mUser))
 						.post();
+				Log.v(TAG, p.asString());
 				JSONObject json =  p.asJSONObject();
-				if(json.getBoolean("success")){
-					
+				success = json.has("success") && json.getBoolean("success");
+				Log.v(TAG, "success : " + success);
+				if (success) {
 					newDoc.setName(mTitle.getText().toString());
 					newDoc.setDescription(mDesc.getText().toString());
 					newDoc.setId(json.getJSONObject("result").getLong("id"));
 					newDoc.setPath(json.getJSONObject("result").getString("path_doc"));
 				}
-				Log.v(TAG, p.asString());
 			} catch (AuthenticatorException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -343,7 +342,7 @@ public class DocUploadDialog extends DialogFragment {
 				e.printStackTrace();
 			}
 
-			return newDoc;
+			return success ? newDoc : null;
 		}
 
 		@Override

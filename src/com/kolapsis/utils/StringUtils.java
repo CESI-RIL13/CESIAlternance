@@ -367,15 +367,15 @@ public class StringUtils {
 		return false;
 	}
 
-	public static String getMimieType(String name) {
+	public static String getMimeType(String name) {
 		String ext = getExtension(name);
 		//Log.i("Freebox", "ext: "+ext);
 		String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
 		if (mimeType == null) mimeType = getMimeTypeByExtension(ext);
 		return mimeType;
 	}
-	public static String getMimieType(String name, boolean complete) {
-		String mimeType = getMimieType(name);
+	public static String getMimeType(String name, boolean complete) {
+		String mimeType = getMimeType(name);
 		if (!complete && mimeType != null) mimeType = mimeType.substring(0,mimeType.indexOf("/"))+"/*";
 		return mimeType;
 	}
@@ -385,11 +385,11 @@ public class StringUtils {
 		return "";
 	}
 
-	public static String getMimieType(File file) {
-		return getMimieType(file.getName());
+	public static String getMimeType(File file) {
+		return getMimeType(file.getName());
 	}
-	public static String getMimieType(File file, boolean complete) {
-		return getMimieType(file.getName(), complete);
+	public static String getMimeType(File file, boolean complete) {
+		return getMimeType(file.getName(), complete);
 	}
 
 	public static String capitalizeFirstLetters( String s ) {

@@ -132,13 +132,13 @@ public class AccountHelper {
 		return getData(Api.UserColumns.ROLE);
 	}
 
-	public static final int getUserId() {
+	public static final long getUserId() {
 		return getUserId(getAccount());
 	}
-	public static final int getUserId(Account account) {
+	public static final long getUserId(Account account) {
 		String value = getData(account, Api.UserColumns.ID);
-		if (value == null) return 0;
-		return Integer.parseInt(value);
+		if (value == null) return 0L;
+		return Long.parseLong(value);
 	}
 
 	public static final String getPassword() {
