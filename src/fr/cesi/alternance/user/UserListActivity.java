@@ -9,6 +9,7 @@ import android.app.ListActivity;
 import android.content.Context; 
 import android.content.Intent; 
 import android.os.Bundle; 
+import android.util.Log;
 import android.view.LayoutInflater; 
 import android.view.Menu; 
 import android.view.MenuItem; 
@@ -36,8 +37,8 @@ public class UserListActivity extends ListActivity {
         loader = (ProgressBar) findViewById(android.R.id.progress);
 
         role = getIntent().getExtras().getString("role"); 
-        promo = new Promo(getIntent().getExtras().getLong("id_promo")); 
-
+        promo = getIntent().getExtras().getParcelable("promo"); 
+        Log.v("UserListActivity", promo.toString());
 		TextView name = (TextView) findViewById(R.id.name);
 		name.setText(getIntent().getExtras().getString("users_list_name"));
 

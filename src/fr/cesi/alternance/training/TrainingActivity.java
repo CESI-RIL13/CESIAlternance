@@ -16,6 +16,7 @@ import com.kolapsis.utils.HttpData.HttpDataException;
 
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
+import fr.cesi.alternance.promo.Promo;
 import fr.cesi.alternance.promo.PromoListActivity;
 import android.accounts.AuthenticatorException;
 import android.app.ListActivity;
@@ -183,8 +184,7 @@ public class TrainingActivity extends ListActivity {
 								Toast.LENGTH_LONG).show();
 						*/
 						Intent intent = new Intent(TrainingActivity.this, PromoListActivity.class);
-						intent.putExtra("training", training_list.get(position).getId());
-						intent.putExtra("name", training_list.get(position).getName());
+						intent.putExtra("training", (Training) training_list.get(position));
 						//Log.v(TAG, training_list.get(position).getName());
 						startActivity(intent);
 					}

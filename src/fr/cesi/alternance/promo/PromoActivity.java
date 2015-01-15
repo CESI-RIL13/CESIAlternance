@@ -76,7 +76,7 @@ public class PromoActivity extends FragmentActivity {
 					if (role != null)
 						intent.putExtra("role", role);
 					
-					intent.putExtra("id_promo", promo.getId());
+					intent.putExtra("promo", promo);
 					startActivity(intent);
 					//finish();
 				} catch (Exception e) {
@@ -103,24 +103,10 @@ public class PromoActivity extends FragmentActivity {
 
 	public boolean onOptionsItemSelected(MenuItem item) { 
         switch (item.getItemId()) { 
-        case R.id.add_list_action:
-//        	Promo newPromo = new Promo();
-//            newPromo.setName("");
-//            newPromo.setNumber(Long.valueOf(0));
-//            newPromo.setCode("");
-//            newPromo.setEnd(new Date());
-//            newPromo.setBegin(new Date());
-//            newPromo.setId_planning("");
-//
-//            intent = new Intent(PromoListActivity.this, PromoEditActivity.class); 
-//            intent.putExtra("promo", newPromo);
-//            intent.putExtra("id_training", id_training); 
-//            startActivity(intent); 
-            return true;
         case R.id.add_doc_action:
         	Bundle args = new Bundle();
         	args.putLong("id_establishment", 1);
-        	args.putLong("id_promo", promo);
+        	args.putLong("id_promo", promo.getId());
 			DialogFragment dialog = DocUploadDialog.newInstance(args, mUploadListener);
 			dialog.show(getSupportFragmentManager(), "dialog");       	
         	return true;
