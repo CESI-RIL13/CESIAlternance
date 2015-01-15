@@ -24,7 +24,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -42,13 +42,18 @@ public class PhotoUserDialog extends DialogFragment {
     private EditText mFile;
     private Button mBrowse;
     private String mPath;
-    private User mUser;
-    private UploadListener mListener;
+    private static User mUser;
+    private static UploadListener mListener;
 
-    public PhotoUserDialog(User user, UploadListener listener) {
+    public static PhotoUserDialog newInstance(User user, UploadListener listener) {
         mUser = user;
         mListener = listener;
+        return new PhotoUserDialog();
     }
+    
+    public PhotoUserDialog() {
+		
+	}
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

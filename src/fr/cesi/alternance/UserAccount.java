@@ -115,8 +115,8 @@ public class UserAccount extends FragmentActivity {
 			}).start();
 			return true;
 		case R.id.user_account_photo:
-			PhotoUserDialog dialog = new PhotoUserDialog(utilisateur,mUploadListener);
-			dialog.show(getFragmentManager(), "dialog");
+			PhotoUserDialog dialog = PhotoUserDialog.newInstance(utilisateur,mUploadListener);
+			dialog.show(getSupportFragmentManager(), "dialog");
 		default:
 			return super.onOptionsItemSelected(item);
 		}

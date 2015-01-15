@@ -306,6 +306,7 @@ public class DocUploadDialog extends DialogFragment {
 
 		@Override
 		protected Doc doInBackground(Void... params) {
+			boolean success = false;
 			File file = new File(mPath);
 			Doc newDoc = new Doc();
 //			Log.v(TAG, file.getPath());
@@ -316,7 +317,6 @@ public class DocUploadDialog extends DialogFragment {
 //				Log.v(TAG, "establishment : " + mEstablishment);
 //				Log.v(TAG, "mpath : " + mPath);
 				HttpData p = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).file("file", file)
-						.data("path", "document/")
 						.data("titre", mTitle.getText().toString())
 						.data("description", mDesc.getText().toString())
 						.data("id_establishment", String.valueOf(mEstablishment))
@@ -324,15 +324,15 @@ public class DocUploadDialog extends DialogFragment {
 						.data("id_promo", String.valueOf(mPromo))
 						.data("id_user", String.valueOf(mUser))
 						.post();
+				Log.v(TAG, p.asString());
 				JSONObject json =  p.asJSONObject();
-				if(json.getBoolean("success")){
-					
+				success = json.has("success") && json.getBoolean("success");
+				if (success) {
 					newDoc.setName(mTitle.getText().toString());
 					newDoc.setDescription(mDesc.getText().toString());
 					newDoc.setId(json.getJSONObject("result").getLong("id"));
 					newDoc.setPath(json.getJSONObject("result").getString("path_doc"));
 				}
-				Log.v(TAG, p.asString());
 			} catch (AuthenticatorException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -343,7 +343,7 @@ public class DocUploadDialog extends DialogFragment {
 				e.printStackTrace();
 			}
 
-			return newDoc;
+			return success ? newDoc : null;
 		}
 
 		@Override

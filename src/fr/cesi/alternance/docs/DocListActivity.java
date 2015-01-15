@@ -144,9 +144,10 @@ public class DocListActivity extends FragmentActivity {
 		
 		@Override
 		public void onUpload(Doc newDoc) {
-			docs.add(newDoc);
-			adapter.notifyDataSetChanged();
-			
+			if (newDoc != null) {
+				docs.add(newDoc);
+				adapter.notifyDataSetChanged();
+			}
 		}
 	};
 	@Override

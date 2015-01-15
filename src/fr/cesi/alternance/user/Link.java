@@ -51,6 +51,11 @@ public class Link extends Entity{
 	public void setType(TypeEnum type) {
 		this.type = type;
 	}
+	
+	@Override
+	public String getName() {
+		return url;
+	}
 
 	/**
 	 * @return the url

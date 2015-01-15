@@ -34,9 +34,11 @@ public class User extends Entity implements Parcelable {
 	private String picture_path;
 	private ArrayList<Link> links;
 	private long id_promo;
+	private boolean isSelected;
 
 	public User() {
 		links = new ArrayList<Link>();
+		isSelected = false;
 	}
 
 	public User(Parcel in){
@@ -144,6 +146,14 @@ public class User extends Entity implements Parcelable {
 
 	public void setId_promo(long id_promo) {
 		this.id_promo = id_promo;
+	}
+	
+	public boolean getIs_selected() {
+		return isSelected;
+	}
+
+	public void setIs_selected(Boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 
 	/**
@@ -264,7 +274,7 @@ public class User extends Entity implements Parcelable {
 					.data("phone",phone)
 					.data("id_promo", "" + id_promo)
 					.post();
-			
+			Log.v("user", ""+id);
 			Log.v("USER", post.asString());
 			
 			JSONObject obj = post.asJSONObject();
@@ -291,7 +301,7 @@ public class User extends Entity implements Parcelable {
 		}
 		return success;
 	}
-
+	
 	public boolean delete() throws EntityException{
 		boolean success = false;
 		
@@ -326,5 +336,10 @@ public class User extends Entity implements Parcelable {
 		}
 
 		return success;
+	}
+	
+	@Override
+	public String toString() {
+		return "User ["+id+"] " + name;
 	}
 }

@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
 
             <ImageView
                 android:id="@+id/picture"
@@ -25,18 +27,34 @@
                 android:layout_height="150dp"
                 android:src="@drawable/ic_launcher" />
 
-            <EditText
-                android:id="@+id/nameUser"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="Name"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="text" />
+                android:gravity="center_horizontal"
+                android:orientation="horizontal" >
 
+                <EditText
+                    android:id="@+id/nameUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="Name"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="text" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:id="@+id/browse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/doc_browser" />
+            </LinearLayout>
+	        
             <EditText
                 android:id="@+id/mailUser"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="E-mail"
@@ -44,7 +62,7 @@
 
             <EditText
                 android:id="@+id/phoneUser"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Phone"
@@ -72,7 +90,8 @@
                 android:id="@+id/noteUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Show note" />
+                android:text="Show note"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

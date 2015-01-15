@@ -54,6 +54,7 @@ public class PromoListActivity extends FragmentActivity{
 		training = getIntent().getExtras().getParcelable("training");
 
 		TextView name = (TextView) findViewById(R.id.name);
+
 		name.setText(training.getName());
 		
 	}
