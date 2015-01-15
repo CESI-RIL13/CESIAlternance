@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/code_promo"
-        android:inputType="numberDecimal" />
+        android:inputType="text|textCapCharacters" />
 
      <EditText
         android:id="@+id/id_planning"
