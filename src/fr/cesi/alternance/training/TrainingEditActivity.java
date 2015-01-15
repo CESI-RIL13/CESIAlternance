@@ -44,16 +44,13 @@ public class TrainingEditActivity extends Activity {
 		if(getIntent().getExtras() != null){
 			training = getIntent().getExtras().getParcelable("training");
 		}
-		/*
-		//si le user est passé charge les champs
-		if(promo != null){
-            begin.setText(fmt.format(promo.getBegin()));
-			end.setText(fmt.format(promo.getEnd()));
-			number.setText(""+promo.getNumber());
-			code.setText(promo.getCode());
-			id_planning.setText(promo.getId_planning());
+		//si le user est passï¿½ charge les champs
+		if(training != null){
+            name.setText(training.getName());
+			alias.setText(training.getAlias());
+            if(training.getDuration() != 0)
+			    duration.setText(Integer.toString(training.getDuration()));
 		}
-		*/
 
 		setTitle(R.string.training_name);
 		
@@ -79,7 +76,7 @@ public class TrainingEditActivity extends Activity {
 		//return super.onOptionsItemSelected(item);
 		switch (item.getItemId()){
         	case R.id.save_action:
-        		
+
         		new Thread(new Runnable() {
         			
         			Intent intent;
@@ -89,8 +86,12 @@ public class TrainingEditActivity extends Activity {
         				try {
         					String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
         					if (token != null){
-        						String url = Constants.BASE_API_URL + "/training/save";
-        						//TODO : créer une instance httpdata méthode post
+                                String url = "";
+                                if(training.getId() == 0)
+        						    url = Constants.BASE_API_URL + "/training/save";
+                                else
+                                    url = Constants.BASE_API_URL + "/training/"+training.getId()+"/save";
+        						//TODO : crï¿½er une instance httpdata mï¿½thode post
         						JSONObject json = new HttpData(url).header(Api.APP_AUTH_TOKEN, token)
         								.data("name", name.getText().toString())
 										.data("alias", alias.getText().toString())
@@ -117,7 +118,7 @@ public class TrainingEditActivity extends Activity {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-        				
+
         			}
         		}).start();
                 return true;
@@ -125,5 +126,6 @@ public class TrainingEditActivity extends Activity {
         		return true;
 		}
 	}
-	
+
 }
+

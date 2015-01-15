@@ -189,6 +189,15 @@ public class TrainingActivity extends ListActivity {
 						startActivity(intent);
 					}
 				});
+                lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> list, View view, int position, long id) {
+                        Intent intent = new Intent(TrainingActivity.this, TrainingEditActivity.class);
+                        intent.putExtra("training", (Training)training_list.get(position));
+                        startActivity(intent);
+                        return true;
+                    }
+                });
 			}
 			
 		} catch (JSONException e) {
