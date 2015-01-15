@@ -61,7 +61,7 @@ public class DocUploadDialog extends DialogFragment {
 	private EditText mTitle,mDesc,mFile;
 	private Button mBrowse;
 	private String mPath;
-	private long mEstablishment, mTraining, mPromo;
+	private long mEstablishment, mTraining, mPromo, mUser;
 	private UploadListener mListener;
 	public DocUploadDialog(){
 
@@ -74,6 +74,7 @@ public class DocUploadDialog extends DialogFragment {
 		mEstablishment = args.getLong("id_establishment", 1);
 		mTraining = args.getLong("id_training", 0);
 		mPromo = args.getLong("id_promo", 0);
+		mUser = args.getLong("id_user", 0);
 	}
 
 	@Override
@@ -321,7 +322,7 @@ public class DocUploadDialog extends DialogFragment {
 						.data("id_establishment", String.valueOf(mEstablishment))
 						.data("id_training", String.valueOf(mTraining))
 						.data("id_promo", String.valueOf(mPromo))
-						.data("id_user", String.valueOf(AccountHelper.getUserId()))
+						.data("id_user", String.valueOf(mUser))
 						.post();
 				JSONObject json =  p.asJSONObject();
 				if(json.getBoolean("success")){
