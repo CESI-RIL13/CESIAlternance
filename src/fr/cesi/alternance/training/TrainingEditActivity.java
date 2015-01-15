@@ -76,12 +76,10 @@ public class TrainingEditActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		//return super.onOptionsItemSelected(item);
-		switch (item.getItemId()){
+        switch (item.getItemId()){
         	case R.id.save_action:
 
         		new Thread(new Runnable() {
-        			
-        			Intent intent;
 
         			@Override
         			public void run() {
@@ -124,6 +122,50 @@ public class TrainingEditActivity extends Activity {
         			}
         		}).start();
                 return true;
+            case R.id.delete_action:
+
+                Log.v("helllooowooooorld","yoyoy");
+
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        Log.v("helllooowooooorld","yoyo2");
+
+                        try {
+
+
+                            String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
+                            if (token != null){
+                                String url = "";
+                                url = Constants.BASE_API_URL + "/training/"+training.getId()+"/delete";
+                                //TODO : cr�er une instance httpdata m�thode post
+                                JSONObject json = new HttpData(url).header(Api.APP_AUTH_TOKEN, token)
+                                        .post().asJSONObject();
+
+                                Log.v("TrainingEdit",json.toString());
+                                if(json.getBoolean("success"))
+                                {
+                                    finish();
+                                }
+
+                            }
+                        } catch (HttpDataException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (AuthenticatorException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
         	default:
         		return true;
 		}
