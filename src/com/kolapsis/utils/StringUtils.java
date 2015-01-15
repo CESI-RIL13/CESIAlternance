@@ -104,7 +104,7 @@ public class StringUtils {
 	}
 
 	public static String percent(float pct) {
-		String str = String.format("%2.02f", pct);
+		String str = String.format(Locale.FRENCH, "%2.02f", pct);
 		String sep = ".";
 		if (str.indexOf(",") > -1) sep = ",";
 		if (str.endsWith(sep+"00")) str = str.replace(sep+"00", "");
@@ -148,7 +148,7 @@ public class StringUtils {
 
 	public static String dateUTCToLocalDate(String date) {
 		if (StringUtils.isEmpty(date)) return date;
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.FRENCH);
 		df.setTimeZone(TimeZone.getTimeZone("UTC"));
 		try {
 			Date myDate = df.parse(date);
@@ -305,7 +305,7 @@ public class StringUtils {
 
 	public static String getExtension(String name) {
 		String ext = null;
-		if (name.indexOf(".") > -1) ext = name.substring(name.lastIndexOf(".")+1).toLowerCase();
+		if (name.indexOf(".") > -1) ext = name.substring(name.lastIndexOf(".")+1).toLowerCase(Locale.FRENCH);
 		return ext;
 	}
 
@@ -367,15 +367,15 @@ public class StringUtils {
 		return false;
 	}
 
-	public static String getMimieType(String name) {
+	public static String getMimeType(String name) {
 		String ext = getExtension(name);
 		//Log.i("Freebox", "ext: "+ext);
 		String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
 		if (mimeType == null) mimeType = getMimeTypeByExtension(ext);
 		return mimeType;
 	}
-	public static String getMimieType(String name, boolean complete) {
-		String mimeType = getMimieType(name);
+	public static String getMimeType(String name, boolean complete) {
+		String mimeType = getMimeType(name);
 		if (!complete && mimeType != null) mimeType = mimeType.substring(0,mimeType.indexOf("/"))+"/*";
 		return mimeType;
 	}
@@ -385,11 +385,11 @@ public class StringUtils {
 		return "";
 	}
 
-	public static String getMimieType(File file) {
-		return getMimieType(file.getName());
+	public static String getMimeType(File file) {
+		return getMimeType(file.getName());
 	}
-	public static String getMimieType(File file, boolean complete) {
-		return getMimieType(file.getName(), complete);
+	public static String getMimeType(File file, boolean complete) {
+		return getMimeType(file.getName(), complete);
 	}
 
 	public static String capitalizeFirstLetters( String s ) {

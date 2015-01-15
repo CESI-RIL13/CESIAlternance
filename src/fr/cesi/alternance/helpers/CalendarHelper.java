@@ -210,6 +210,11 @@ public class CalendarHelper {
 		public void setSourceId(String sourceId) {
 			this.sourceId = sourceId;
 		}
+		
+		@Override
+		public String getName() {
+			return title;
+		}
 
 		public String getTitle() {
 			return title;

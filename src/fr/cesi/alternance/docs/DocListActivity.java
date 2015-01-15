@@ -70,6 +70,9 @@ public class DocListActivity extends FragmentActivity {
 		
 		TextView name = (TextView) findViewById(R.id.doc_name);
 		name.setText("Documents");
+		
+		adapter = new DocsAdapter(DocListActivity.this, R.layout.doc_row, docs);
+		mList.setAdapter(adapter);
 	}
 
 	@Override
@@ -141,15 +144,16 @@ public class DocListActivity extends FragmentActivity {
 		
 		@Override
 		public void onUpload(Doc newDoc) {
-			docs.add(newDoc);
-			adapter.notifyDataSetChanged();
-			
+			if (newDoc != null) {
+				docs.add(newDoc);
+				adapter.notifyDataSetChanged();
+			}
 		}
 	};
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.doc_delete);
-		if(selected > 0)
+		if(selected >= 0)
 			item.setVisible(true);
 		else
 			item.setVisible(false);
@@ -327,7 +331,13 @@ public class DocListActivity extends FragmentActivity {
 							Doc d = new Doc().fromJSON(objet);
 							docs.add(d);
 						}
-						generationDeVue();
+						runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								adapter.notifyDataSetChanged();
+							}
+						});
 					}
 				} catch (HttpDataException e) {
 					e.printStackTrace();
@@ -352,18 +362,6 @@ public class DocListActivity extends FragmentActivity {
 			@Override
 			public void run() {
 				Toast.makeText(DocListActivity.this, err, Toast.LENGTH_LONG).show();
-			}
-		});
-	}
-
-	private void generationDeVue() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				adapter = new DocsAdapter(DocListActivity.this,
-						R.layout.doc_row, docs);
-				mList.setAdapter(adapter);
 			}
 		});
 	}

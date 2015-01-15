@@ -13,8 +13,7 @@
         android:layout_width="136dp"
         android:layout_height="150dp"
         android:contentDescription="@string/user_photo"
-        android:paddingLeft="0dp"
-        android:src="@drawable/user_default" />
+        android:paddingLeft="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

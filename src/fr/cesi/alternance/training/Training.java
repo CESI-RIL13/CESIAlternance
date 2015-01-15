@@ -1,14 +1,11 @@
 package fr.cesi.alternance.training;
 
-import java.text.ParseException;
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import fr.cesi.alternance.helpers.Entity;
+
 public class Training extends Entity implements Parcelable {
 	private long id;
 	private String name;
@@ -48,7 +45,7 @@ public class Training extends Entity implements Parcelable {
 		return name;
 	}
 	public void setName(String title) {
-		this.name = name;
+		this.name = title;
 	}
 	public int getDuration() {
 		return duration;

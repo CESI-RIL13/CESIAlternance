@@ -1,32 +1,32 @@
 package fr.cesi.alternance.user;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
-
-import android.app.DialogFragment;
-import android.widget.ImageView;
-import fr.cesi.alternance.user.PhotoUserDialog;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.accounts.AuthenticatorException;
+import android.widget.ImageView;
+import com.kolapsis.utils.DownloadImageTask;
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
-import com.kolapsis.utils.DownloadImageTask;
-
-import fr.cesi.alternance.R;
 import fr.cesi.alternance.Constants;
+import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
+import fr.cesi.alternance.helpers.Entity;
+import fr.cesi.alternance.helpers.EntitySelector;
 import fr.cesi.alternance.helpers.Entity.EntityException;
 import fr.cesi.alternance.user.User;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,16 +37,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UserActivity extends Activity {
+public class UserActivity extends FragmentActivity {
 
 	public static final String TAG = "USER ACTIVITY ==========>>>>";
 	private TextView mName,mMail,mPhone;
-	private ListView mLinks;
-	private String mRoleAccount,mPicture_path;
+	private String mRoleAccount;
 	private Long mPromo;
 	private User mUser;
-	private Button btCall,btMail,btNote;
+	private Button btCall,btMail,btNote,btBrowse;
 	private ImageView mPicture;
+	private ListView mLinks;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class UserActivity extends Activity {
 			mMail = (TextView)findViewById(R.id.mailUser);
 			mPhone = (TextView)findViewById(R.id.phoneUser);			
 		}
-		
+
 		mLinks=(ListView)findViewById(R.id.listViewLinks);
 
 		//initialise les boutons
@@ -77,14 +77,17 @@ public class UserActivity extends Activity {
 		btMail.setOnClickListener(mMailerListener);
 		btNote = (Button) findViewById(R.id.noteUser);
 		btNote.setOnClickListener(mNoteListener);
-
+		btBrowse = (Button) findViewById(R.id.browse);
+		btBrowse.setOnClickListener(mBrowseListener);
 		//initialise l'image
 		mPicture = (ImageView)findViewById(R.id.picture);
 
 		if(getIntent().getExtras() != null){
 			mUser = (User)getIntent().getExtras().getParcelable("user");
 			mPromo = getIntent().getExtras().getLong("id_promo");
+
 		}
+		btBrowse.setVisibility((mUser.getId() == 0 ? View.VISIBLE : View.GONE));
 
 		//si le user est pass� charge les champs
 		if(mUser != null){
@@ -131,8 +134,8 @@ public class UserActivity extends Activity {
 			// Comportement du bouton note
 			return true;
 		case R.id.user_settings_photo:
-			DialogFragment dialog = new PhotoUserDialog(mUser,mUploadListener);
-			dialog.show(getFragmentManager(), "dialog");
+			DialogFragment dialog = PhotoUserDialog.newInstance(mUser, mUploadListener);
+			dialog.show(getSupportFragmentManager(), "dialog");
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -196,12 +199,96 @@ public class UserActivity extends Activity {
 
 	};
 
+	private View.OnClickListener mBrowseListener = new View.OnClickListener() {
+		public void onClick(View v) {
+			loadUser();
+		}
+	};
+
+	private void loadUser() {
+
+		final ProgressDialog progress = ProgressDialog.show(UserActivity.this, "Load", "In Progress...");
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Bundle args = new Bundle();
+				ArrayList<User> list = getListUser(mUser.getRole());
+				args.putParcelableArrayList("list", list);
+				DialogFragment dialog = EntitySelector.newInstance(args, mListener);
+				dialog.show(getSupportFragmentManager(), "dialog");  
+				runOnUiThread(new Runnable() { 
+
+					@Override
+					public void run() { 
+
+						progress.dismiss();
+					} 
+				}); 
+			} 
+		}).start(); 
+	}
+
+	private EntitySelector.SelectUserListener mListener = new EntitySelector.SelectUserListener() {
+
+		@Override
+		public void onSelect(Entity selected) {
+			User existUser = (User) selected;
+			Log.v(TAG, existUser.toString());
+			//TODO
+			mUser.setId(existUser.getId());
+			mUser.setId_promo(getIntent().getExtras().getLong("id_promo"));
+			mName.setText(existUser.getName());
+			mPhone.setText(existUser.getPhone());
+			mMail.setText(existUser.getMail());
+			mPicture.setTag("http://cesi.kolapsis.com/cesi_alternance/picture/"+existUser.getPicture_path());
+			new DownloadImageTask(mPicture).execute();
+		}
+	};
+
+
+
+	public ArrayList<User> getListUser(String role) {
+		ArrayList<User> user_list = new ArrayList<User>();
+		// Remplacer par list d'�l�ve ou intervenant
+
+		String url = Constants.BASE_API_URL + "/user/listUser";
+
+		try {
+			String token = AccountHelper.blockingGetAuthToken(AccountHelper.getAccount(), Constants.ACCOUNT_TOKEN_TYPE, false);
+
+			JSONObject json = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).data("role", role).get().asJSONObject();
+			if(json.getBoolean("success")) {
+				JSONArray result = json.getJSONArray("result");
+				for (int i = 0; i < result.length(); i++) {
+					User e = new User().fromJSON(result.getJSONObject(i));
+					user_list.add(e);
+				}
+			}
+		} catch (HttpDataException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AuthenticatorException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return user_list;
+	}
 
 	private void save() {
 		//modifi l'objet user courant avec les nouveaux param�tres
 		mUser.setName(mName.getText().toString());
 		mUser.setMail(mMail.getText().toString());
 		mUser.setPhone(mPhone.getText().toString());
+
 		if(mUser.getId() == 0) {
 			mUser.setId_promo(mPromo);
 		}
@@ -241,7 +328,6 @@ public class UserActivity extends Activity {
 						}
 					});					
 				}
-
 			}
 		}).start();		
 	}
