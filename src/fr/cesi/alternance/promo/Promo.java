@@ -22,7 +22,6 @@ import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.helpers.Entity;
-import fr.cesi.alternance.helpers.Entity.EntityException;
 import fr.cesi.alternance.user.User;
 
 public class Promo extends Entity implements Parcelable {

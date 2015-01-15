@@ -13,7 +13,7 @@
         android:orderInCategory="2"
         android:showAsAction="always"
         android:title="view_doc_action"
-        android:icon="@android:drawable/ic_menu_gallery"/>
+        android:icon="@drawable/ic_menu_archive"/>
     
     <item 
         android:id="@+id/add_list_action"

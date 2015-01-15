@@ -2,7 +2,6 @@ package fr.cesi.alternance.user;
   
 import java.util.ArrayList; 
 import java.util.List; 
-
 import fr.cesi.alternance.Constants; 
 import fr.cesi.alternance.R; 
 import fr.cesi.alternance.user.User;   

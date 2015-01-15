@@ -2,14 +2,11 @@ package fr.cesi.alternance.promo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
-
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.R;
 import fr.cesi.alternance.api.Api;
@@ -170,6 +167,7 @@ public class PromoListActivity extends FragmentActivity{
 	            intent = new Intent(this, DocListActivity.class);
 	            intent.putExtra("id_establishment", 1L);
 	            intent.putExtra("id_training", training.getId());
+	            intent.putExtra("add", true);
 	            startActivity(intent);  	
 	        	return true;
 	        default: 
@@ -199,6 +197,7 @@ public class PromoListActivity extends FragmentActivity{
 
 				Intent intent = new Intent(PromoListActivity.this, PromoActivity.class);
 				intent.putExtra("promo", (Promo)listPromo.get(position));
+
 				startActivity(intent);
 			}
 
@@ -214,6 +213,7 @@ public class PromoListActivity extends FragmentActivity{
 				startActivity(intent);
 				return true;
 			}
+
 		});
 	}
 

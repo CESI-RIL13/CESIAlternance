@@ -21,7 +21,6 @@ import fr.cesi.alternance.promo.PromoListActivity;
 import android.accounts.AuthenticatorException;
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +32,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
 
@@ -66,8 +64,18 @@ public class TrainingActivity extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//return super.onCreateOptionsMenu(menu);
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.training_menu, menu);
+		menuInflater.inflate(R.menu.add_action, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		menu.findItem(R.id.add_list_action).setVisible("IF".equals(AccountHelper.getRole()));
+		menu.findItem(R.id.add_doc_action).setVisible(false);
+		menu.findItem(R.id.view_doc_action).setVisible(false);
+		//menu.findItem(R.id.training_menu_add).setVisible("IF".equals(AccountHelper.getRole()));
+		return super.onPrepareOptionsMenu(menu);
 	}
 	
 	@Override
@@ -76,7 +84,7 @@ public class TrainingActivity extends ListActivity {
 		//return super.onOptionsItemSelected(item);
 		Intent intent;
 		switch (item.getItemId()){
-        	case R.id.training_menu_add:
+        	case R.id.add_list_action:
 	            Training newTraining = new Training();
 	            newTraining.setName("");
 	            newTraining.setDuration(0);
@@ -108,7 +116,7 @@ public class TrainingActivity extends ListActivity {
 						
 						String url = Constants.BASE_API_URL + "/training";
 						
-						//TODO : créer une instance httpdata méthode get
+						//TODO : crï¿½er une instance httpdata mï¿½thode get
 						JSONObject trainings = new HttpData(url).header(Api.APP_AUTH_TOKEN, token).get().asJSONObject();
 												
 						if(trainings != null){
@@ -181,6 +189,15 @@ public class TrainingActivity extends ListActivity {
 						startActivity(intent);
 					}
 				});
+                lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> list, View view, int position, long id) {
+                        Intent intent = new Intent(TrainingActivity.this, TrainingEditActivity.class);
+                        intent.putExtra("training", (Training)training_list.get(position));
+                        startActivity(intent);
+                        return true;
+                    }
+                });
 			}
 			
 		} catch (JSONException e) {
@@ -217,7 +234,7 @@ public class TrainingActivity extends ListActivity {
 			tv2.setText(training.getName());
 			
 			//tv = (TextView) view.findViewById(R.id.info);
-			//tv.setText(product.getPrice() + "€");
+			//tv.setText(product.getPrice() + "ï¿½");
 			
 			return view;
 		}
