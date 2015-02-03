@@ -1,5 +1,4 @@
 package fr.cesi.alternance.promo;
-import java.util.Date;
 
 import android.os.Bundle;
 import fr.cesi.alternance.R;

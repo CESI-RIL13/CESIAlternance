@@ -103,9 +103,4 @@ public class Link extends Entity{
 		return "link :" + url + ", type :" + type.value();
 	}
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

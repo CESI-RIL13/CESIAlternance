@@ -5,19 +5,16 @@ import java.util.ArrayList;
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class ListSample extends ListActivity {
 	
-	private static final String TAG = Constants.APP_NAME + ".ListSample";
+	//private static final String TAG = Constants.APP_NAME + ".ListSample";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

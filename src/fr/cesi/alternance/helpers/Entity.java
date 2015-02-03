@@ -32,7 +32,4 @@ public abstract class Entity {
 			super.setStackTrace(stack);
 		}
 	}
-
-	public abstract String getName();
-
 }
