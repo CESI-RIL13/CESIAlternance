@@ -51,6 +51,11 @@ public class Link extends Entity{
 	public void setType(TypeEnum type) {
 		this.type = type;
 	}
+	
+	@Override
+	public String getName() {
+		return url;
+	}
 
 	/**
 	 * @return the url
@@ -98,9 +103,4 @@ public class Link extends Entity{
 		return "link :" + url + ", type :" + type.value();
 	}
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

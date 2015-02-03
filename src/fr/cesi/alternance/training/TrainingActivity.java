@@ -16,7 +16,6 @@ import com.kolapsis.utils.HttpData.HttpDataException;
 
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
-import fr.cesi.alternance.promo.Promo;
 import fr.cesi.alternance.promo.PromoListActivity;
 import android.accounts.AuthenticatorException;
 import android.app.ListActivity;

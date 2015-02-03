@@ -29,7 +29,6 @@ import fr.cesi.alternance.helpers.CalendarHelper;
 import fr.cesi.alternance.helpers.Entity;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.accounts.AuthenticatorException;
 import android.content.Context;
 import android.os.Bundle;

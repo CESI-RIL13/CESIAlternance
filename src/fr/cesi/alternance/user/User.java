@@ -2,28 +2,21 @@ package fr.cesi.alternance.user;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.kolapsis.utils.HttpData;
 import com.kolapsis.utils.HttpData.HttpDataException;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.accounts.AuthenticatorException;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import fr.cesi.alternance.Constants;
 import fr.cesi.alternance.api.Api;
 import fr.cesi.alternance.helpers.AccountHelper;
 import fr.cesi.alternance.helpers.Entity;
-import fr.cesi.alternance.helpers.Entity.EntityException;
+
 
 public class User extends Entity implements Parcelable {
 

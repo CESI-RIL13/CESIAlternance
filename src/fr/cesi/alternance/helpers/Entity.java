@@ -32,5 +32,4 @@ public abstract class Entity {
 			super.setStackTrace(stack);
 		}
 	}
-
 }
